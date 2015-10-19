@@ -38,7 +38,7 @@ public class Cocinero implements Runnable {
             comienzo.countDown();
             comienzo.await();
         } catch (InterruptedException ex) {
-            
+
         }
         ArrayList<Lock> lockers = new ArrayList();
         for (int i = 0; i < ingredientes.size(); i++) {
@@ -51,49 +51,49 @@ public class Cocinero implements Runnable {
             waiting[2] = true;
             try {
                 TimeUnit.SECONDS.sleep(tiempo);
-            } catch (InterruptedException ex) {
-                stop.setStop(true);
-            }
-            for (int i = 0; i < ingredientes.size() && !stop.isStop(); i++) {
-                while (waiting[i]) {
-                    try {
-                        lockers.get(i).lock();
-                        if (ingredientes.get(i).coger()) {
-                            System.out.println("cocinero coge " + ingredientes.get(i).toString());
-                            waiting[i] = false;
-                            ingredientes.get(i).getEstaVacio().signalAll();
-                        } else {
-                            try {
-                                ingredientes.get(i).getEstaLleno().await();
-                            } catch (InterruptedException ex) {
+                for (int i = 0; i < ingredientes.size() && !stop.isStop(); i++) {
+                    while (waiting[i]) {
+                        try {
+                            lockers.get(i).lock();
+                            if (ingredientes.get(i).coger()) {
+                                System.out.println("cocinero coge " + ingredientes.get(i).toString());
                                 waiting[i] = false;
-                                stop.setStop(true);
+                                ingredientes.get(i).getEstaVacio().signalAll();
+                            } else {
+                                ingredientes.get(i).getEstaLleno().await();
                             }
-                        }
-                        if (i == ingredientes.size() - 1) {
-                            System.out.print("Cocinero ");
-                            for (int j = 0; j < ingredientes.size(); j++) {
-                                System.out.print(ingredientes.get(j));
+                            if (i == ingredientes.size() - 1) {
+                                System.out.print("Cocinero ");
+                                for (int j = 0; j < ingredientes.size(); j++) {
+                                    System.out.print(ingredientes.get(j));
+                                }
+                                System.out.println(" ha hecho un plato.");
                             }
-                            System.out.println(" ha hecho un plato.");
+                        } catch (InterruptedException ex) {
+                            stop.setStop(true);
+                        } finally {
+                            lockers.get(i).unlock();
+                            waiting[i] = false;
                         }
-                    } finally {
-                        lockers.get(i).unlock();
-                        waiting[i] = false;
                     }
                 }
-            }
+            } catch (InterruptedException ex) {
+                stop.setStop(true);
+            } 
         }
+        System.out.println("Espero Cocinero " + ingredientes.size());
         try {
             TimeUnit.SECONDS.sleep(3);//PONEMOS ESTOS TIEMPOS ANTES DEL COUNTDOWN PORQUE EXISTE LA POSIBILIDIDAD DE QUE EL COUNTDOWN SEA INTERRUMPIDO DEBIDO AL SHUTDOWN DEL EXECUTOR
         } catch (InterruptedException ex) {
-            
+
         }
+        System.out.println("Ya no espera Cocinero " + ingredientes.size());
         try {
             finalizo.countDown();
+            System.out.println("Cocinero " + ingredientes.size() + " esta counting=" + finalizo.getCount());
             finalizo.await();
         } catch (InterruptedException ex) {
-            
+
         }
     }
 }

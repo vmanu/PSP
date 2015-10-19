@@ -25,8 +25,8 @@ public class Restaurante {
      */
     public static void main(String[] args) {
         System.out.println("Pulse intro para parar");
-        CountDownLatch comienzo=new CountDownLatch(5);
-        CountDownLatch finalizo=new CountDownLatch(6);
+        CountDownLatch comienzo=new CountDownLatch(6);
+        CountDownLatch finalizo=new CountDownLatch(7);
         int ns = 4, nc = 2, nv = 3, np = 1, timeByVerd = 2, timeByPasta = 1, timeBySal = 5, timeByCarne = 3, timeCookVCS = 3, timeCookPS = 2;
         Almacen verduras = new Almacen("verdura", nv, 0);
         Almacen carne = new Almacen("carne", nc, 0);
@@ -73,6 +73,7 @@ public class Restaurante {
         }
         try {
             finalizo.countDown();
+            System.out.println("Countin main="+finalizo.getCount());
             finalizo.await();
         } catch (InterruptedException ex1) {
             System.out.println("FALLO EN FINAL");
