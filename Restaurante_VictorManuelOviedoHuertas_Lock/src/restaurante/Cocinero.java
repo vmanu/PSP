@@ -81,16 +81,13 @@ public class Cocinero implements Runnable {
                 stop.setStop(true);
             } 
         }
-        System.out.println("Espero Cocinero " + ingredientes.size());
         try {
             TimeUnit.SECONDS.sleep(3);//PONEMOS ESTOS TIEMPOS ANTES DEL COUNTDOWN PORQUE EXISTE LA POSIBILIDIDAD DE QUE EL COUNTDOWN SEA INTERRUMPIDO DEBIDO AL SHUTDOWN DEL EXECUTOR
         } catch (InterruptedException ex) {
 
         }
-        System.out.println("Ya no espera Cocinero " + ingredientes.size());
         try {
             finalizo.countDown();
-            System.out.println("Cocinero " + ingredientes.size() + " esta counting=" + finalizo.getCount());
             finalizo.await();
         } catch (InterruptedException ex) {
 

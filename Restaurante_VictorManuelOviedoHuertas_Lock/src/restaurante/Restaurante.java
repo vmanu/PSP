@@ -73,7 +73,6 @@ public class Restaurante {
         }
         try {
             finalizo.countDown();
-            System.out.println("Countin main="+finalizo.getCount());
             finalizo.await();
         } catch (InterruptedException ex1) {
             System.out.println("FALLO EN FINAL");

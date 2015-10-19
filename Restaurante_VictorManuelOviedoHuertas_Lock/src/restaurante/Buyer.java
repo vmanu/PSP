@@ -46,32 +46,29 @@ public class Buyer implements Runnable {
             } catch (InterruptedException ex) {
                 stop.setStop(true);
             }
-            try {
-                lock.lock();
-                if (alm.reponer()) {
-                    System.out.println("reponedor repone ingrediente " + alm.toString());
-                    alm.getEstaLleno().signalAll();
-                } else {
-
-                    alm.getEstaVacio().await();
-
+            if (!stop.isStop()) {
+                try {
+                    lock.lock();
+                    if (alm.reponer()) {
+                        System.out.println("reponedor repone ingrediente " + alm.toString());
+                        alm.getEstaLleno().signalAll();
+                    } else {
+                        alm.getEstaVacio().await();
+                    }
+                } catch (InterruptedException ex) {
+                    stop.setStop(true);
+                } finally {
+                    lock.unlock();
                 }
-            } catch (InterruptedException ex) {
-                stop.setStop(true);
-            } finally {
-                lock.unlock();
             }
         }
-        System.out.println("Espero Buyer " + alm.toString());
         try {
             TimeUnit.SECONDS.sleep(3);//PONEMOS ESTOS TIEMPOS ANTES DEL COUNTDOWN PORQUE EXISTE LA POSIBILIDIDAD DE QUE EL COUNTDOWN SEA INTERRUMPIDO DEBIDO AL SHUTDOWN DEL EXECUTOR
         } catch (InterruptedException ex) {
 
         }
-        System.out.println("Ya no espera Buyer " + alm.toString());
         try {
             finalizo.countDown();
-            System.out.println("Buyer " + alm.toString() + " esta counting=" + finalizo.getCount());
             finalizo.await();
         } catch (InterruptedException ex) {
 
