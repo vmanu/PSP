@@ -6,7 +6,11 @@
 package lugares;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,13 +22,23 @@ import modelo.Dinosaurio;
  */
 public class Habitat implements Runnable{
 
-    ArrayList<Dinosaurio>dinosaurios;
-    ArrayList<Dinosaurio>dinosMuertos;
+    List<Dinosaurio>dinosaurios;
+    List<Dinosaurio>dinosMuertos;
+    Thread tiempo=null;
+    ExecutorService ex=null;
+    boolean stop=false;
+    Estadio santiagoBernabeu=null;
     
 
     public Habitat() {
-        this.dinosaurios = new ArrayList();
-        this.dinosMuertos = new ArrayList();
+        dinosaurios = Collections.synchronizedList(new ArrayList());
+        dinosMuertos = Collections.synchronizedList(new ArrayList());
+        ex=Executors.newFixedThreadPool(10);
+        santiagoBernabeu=new Estadio();
+    }
+    
+    public void bigBang(){
+        
     }
     
     public void addDinosaurio(Dinosaurio dino){
@@ -51,7 +65,7 @@ public class Habitat implements Runnable{
     
     @Override
     public void run() {
-        while(true){//Quitar el true
+        while(!stop){//Quitar el true
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
                 synchronized(dinosaurios){
@@ -67,6 +81,7 @@ public class Habitat implements Runnable{
                 
             } catch (InterruptedException ex) {
                 Logger.getLogger(Habitat.class.getName()).log(Level.SEVERE, null, ex);
+                stop=true;
             }
         }
         for (Dinosaurio dino : dinosaurios) {

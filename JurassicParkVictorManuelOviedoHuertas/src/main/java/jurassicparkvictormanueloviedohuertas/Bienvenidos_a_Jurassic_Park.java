@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.jurassicparkvictormanueloviedohuertas;
+package jurassicparkvictormanueloviedohuertas;
+
+import lugares.Habitat;
 
 /**
  *
@@ -16,6 +18,12 @@ public class Bienvenidos_a_Jurassic_Park {
      */
     public static void main(String[] args) {
         int generaVida=((int)Math.random()*100)+1000;
+        Thread h=new Thread(new Habitat());
+        h.start();
+        int op=0;
+        do{
+            System.out.println("Introduce una opcion:\n\t1.");
+        }while(op!=3);
     }
     
 }

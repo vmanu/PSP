@@ -5,7 +5,11 @@
  */
 package modelo;
 
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lugares.Habitat;
+import lugares.Lugares;
 
 /**
  *
@@ -56,6 +60,10 @@ public class Dinosaurio implements Runnable{
         vida=0;
     }
     
+    public Lugares irLugar(){
+        return Lugares.SANTIAGO_BERNABEU;
+    }
+    
     @Override
     public String toString(){
         StringBuffer cadena=new StringBuffer();
@@ -65,7 +73,12 @@ public class Dinosaurio implements Runnable{
     @Override
     public void run() {
         while(vida>0){
-            
+            try {
+                TimeUnit.MILLISECONDS.sleep(10);
+                //Lugares lugarIr=irLugar();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Dinosaurio.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

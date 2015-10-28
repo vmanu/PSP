@@ -9,6 +9,6 @@ package lugares;
  *
  * @author dam2
  */
-public class SantiagoBernabeu {
-    
+public enum Lugares {
+    SANTIAGO_BERNABEU,PICADERO,BOSQUE,RESTAURANTE
 }
