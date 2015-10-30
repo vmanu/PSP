@@ -38,7 +38,10 @@ public class Habitat implements Runnable{
     }
     
     public void bigBang(){
-        
+        Thread bBang=new Thread(this);
+        for(int i=0;i<10;i++){
+            ex.execute(new Dinosaurio("dino"+1,100,this));
+        }
     }
     
     public void addDinosaurio(Dinosaurio dino){
@@ -78,7 +81,6 @@ public class Habitat implements Runnable{
                     }
                     dinosaurios.removeAll(dinosMuertos);
                 }
-                
             } catch (InterruptedException ex) {
                 Logger.getLogger(Habitat.class.getName()).log(Level.SEVERE, null, ex);
                 stop=true;

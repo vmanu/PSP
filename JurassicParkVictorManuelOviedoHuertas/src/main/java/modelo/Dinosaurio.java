@@ -18,6 +18,7 @@ import lugares.Lugares;
 public class Dinosaurio implements Runnable{
     int vida;
     int hambre;
+    Lugares lugarActual;
     String nombre;
 
     
@@ -80,5 +81,9 @@ public class Dinosaurio implements Runnable{
                 Logger.getLogger(Dinosaurio.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    public void setLugarActuar(Lugares lugares) {
+        lugarActual=lugares;
     }
 }
