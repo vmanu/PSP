@@ -23,13 +23,13 @@ import static lugares.Constantes.*;
  */
 public class Habitat implements Runnable{
 
-    List<Dinosaurio>dinosaurios;
-    List<Dinosaurio>dinosMuertos;
-    Thread tiempo=null;
-    ExecutorService ex=null;
-    boolean stop=false;
-    Thread bBang;
-    Estadio santiagoBernabeu=null;
+    private List<Dinosaurio>dinosaurios;
+    private List<Dinosaurio>dinosMuertos;
+    private Thread tiempo=null;
+    private ExecutorService ex=null;
+    private boolean stop=false;
+    private Thread bBang;
+    private Estadio santiagoBernabeu=null;
     
 
     public Habitat() {
@@ -43,7 +43,7 @@ public class Habitat implements Runnable{
         bBang=new Thread(this);
         bBang.start();
         for(int i=0;i<10;i++){
-            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000));
+            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000,this));
             ex.execute(dinosaurios.get(i));
         }
     }
@@ -74,6 +74,10 @@ public class Habitat implements Runnable{
         bBang.interrupt();
     }
     
+    public void entrarEstadio(Dinosaurio dino){
+        santiagoBernabeu.entra(dino);
+    }
+    
     @Override
     public void run() {
         while(!stop){
@@ -98,6 +102,7 @@ public class Habitat implements Runnable{
             dino.mata();
         }
         ex.shutdown();
+        santiagoBernabeu.parar();
     }
     
 }

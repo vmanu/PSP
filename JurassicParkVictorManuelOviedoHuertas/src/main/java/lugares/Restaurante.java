@@ -19,11 +19,11 @@ import static lugares.Constantes.*;
 public class Restaurante implements Runnable{
     /*ArrayBlockingQueue
     Baja hambre*/
-    ArrayBlockingQueue<Object> comensales;
-    boolean stop=false;
+    private ArrayBlockingQueue<Object> comensales;
+    private boolean stop=false;
     
     public Restaurante(){
-        comensales=new ArrayBlockingQueue(Constantes.RESTAURANT_SIZE,true);
+        comensales=new ArrayBlockingQueue(RESTAURANT_SIZE,true);
         Thread t=new Thread(this);
         t.start();
     }

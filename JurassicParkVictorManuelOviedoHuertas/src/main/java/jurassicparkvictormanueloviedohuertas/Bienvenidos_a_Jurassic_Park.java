@@ -16,9 +16,9 @@ import modelo.Dinosaurio;
  */
 public class Bienvenidos_a_Jurassic_Park {
 
-    public static Dinosaurio creaDinosaurio(){
+    public static Dinosaurio creaDinosaurio(Habitat habitat){
         System.out.println("Introduzca el nombre de su nuevo dinosaurio");
-        Dinosaurio dino=new Dinosaurio(new Scanner(System.in).nextLine(),((int)(Math.random()*1000)+1000));
+        Dinosaurio dino=new Dinosaurio(new Scanner(System.in).nextLine(),((int)(Math.random()*1000)+1000),habitat);
         return dino;
     }
     
@@ -44,7 +44,7 @@ public class Bienvenidos_a_Jurassic_Park {
                     System.out.println(habitat.muestraDinosauriosMuertos());
                     break;
                 case 4:
-                    habitat.addDinosaurio(creaDinosaurio());
+                    habitat.addDinosaurio(creaDinosaurio(habitat));
                     break;
                 case MENU_SIZE:
                     habitat.lanzaMeteorito();
