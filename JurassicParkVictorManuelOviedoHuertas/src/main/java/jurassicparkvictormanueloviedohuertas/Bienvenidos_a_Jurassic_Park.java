@@ -6,8 +6,9 @@
 package jurassicparkvictormanueloviedohuertas;
 
 import java.util.Scanner;
-import lugares.Constantes;
+import static lugares.Constantes.*;
 import lugares.Habitat;
+import modelo.Dinosaurio;
 
 /**
  *
@@ -15,6 +16,12 @@ import lugares.Habitat;
  */
 public class Bienvenidos_a_Jurassic_Park {
 
+    public static Dinosaurio creaDinosaurio(){
+        System.out.println("Introduzca el nombre de su nuevo dinosaurio");
+        Dinosaurio dino=new Dinosaurio(new Scanner(System.in).nextLine(),((int)(Math.random()*1000)+1000));
+        return dino;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -23,21 +30,28 @@ public class Bienvenidos_a_Jurassic_Park {
         Habitat habitat=new Habitat();
         int op=0;
         do{
-            System.out.println("Introduce una opcion:\n\t1.Ver Dinosaurios Vivos\n\t2.BigBang\n\t3.Lanzar Meteorito");
+            System.out.println("Introduce una opcion:\n\t1.BigBang\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
+                    +"\n\t"+MENU_SIZE+".Lanzar Meteorito");
             op=keyb.nextInt();
             switch(op){
                 case 1:
-                    System.out.println(habitat.muestraDinosaurios());
-                    break;
-                case 2:
                     habitat.bigBang();
                     break;
-                case Constantes.MENU_SIZE:
+                case 2:
+                    System.out.println(habitat.muestraDinosaurios());
+                    break;
+                case 3:
+                    System.out.println(habitat.muestraDinosauriosMuertos());
+                    break;
+                case 4:
+                    habitat.addDinosaurio(creaDinosaurio());
+                    break;
+                case MENU_SIZE:
                     habitat.lanzaMeteorito();
                     System.out.println("Este es el final");
                     break;
             }
-        }while(op!=Constantes.MENU_SIZE);
+        }while(op!=MENU_SIZE);
     }
     
 }

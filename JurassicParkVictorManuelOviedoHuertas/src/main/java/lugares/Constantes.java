@@ -10,9 +10,10 @@ package lugares;
  * @author dam2
  */
 public class Constantes {
-    public static final int MENU_SIZE=3;
+    public static final int MENU_SIZE=5;
     public static final int RESTAURANT_SIZE=5;
     public static final int ESTADIO_SIZE=5;
     public static final int TIEMPO_HABITAT=100;
     public static final int DINOSAURIOS_INICIALES=10;
+    public static final int DINOSAURIOS_HAMBRE_MAXIMA=100;
 }

@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Dinosaurio;
-import lugares.Constantes.*;
+import static lugares.Constantes.*;
 
 /**
  *
@@ -43,14 +43,14 @@ public class Habitat implements Runnable{
         bBang=new Thread(this);
         bBang.start();
         for(int i=0;i<10;i++){
-            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*100))+1000,this));
+            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000));
             ex.execute(dinosaurios.get(i));
         }
     }
     
     public void addDinosaurio(Dinosaurio dino){
-        Thread dinos=new Thread(dino);
         dinosaurios.add(dino);
+        Thread dinos=new Thread(dino);
         dinos.start();
     }
     

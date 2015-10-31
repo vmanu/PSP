@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import lugares.Habitat;
 import lugares.Lugares;
+import static lugares.Constantes.*;
 
 /**
  *
@@ -18,29 +19,30 @@ import lugares.Lugares;
 public class Dinosaurio implements Runnable{
     int vida;
     int hambre;
+    int alegria;
     Lugares lugarActual;
     String nombre;
 
     
-    public Dinosaurio(String nombre, int vida, Habitat habitat){
+    public Dinosaurio(String nombre, int vida){
         this.vida=vida;
         this.nombre=nombre;
         hambre=0;
+        alegria=0;
     }
     
     public void restaVida(){
         vida--;
-        if(hambre>80&&hambre<100){
-            vida--;
-        }else{
-            if(hambre>=100){
-               vida-=2; 
-            }
-        }
     }
     
     public void aumentaHambre(){
         hambre++;
+        if(hambre>DINOSAURIOS_HAMBRE_MAXIMA){
+            hambre=DINOSAURIOS_HAMBRE_MAXIMA;
+        }
+        if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.8){
+            vida--;
+        }
     }
     
     public void restaHambre(int cuanto){
@@ -84,7 +86,7 @@ public class Dinosaurio implements Runnable{
         }
     }
 
-    public void setLugarActuar(Lugares lugares) {
+    public void setLugarActual(Lugares lugares) {
         lugarActual=lugares;
     }
 }

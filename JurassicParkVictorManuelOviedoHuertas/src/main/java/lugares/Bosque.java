@@ -5,6 +5,8 @@
  */
 package lugares;
 
+import static lugares.Constantes.*;
+
 /**
  *
  * @author dam2

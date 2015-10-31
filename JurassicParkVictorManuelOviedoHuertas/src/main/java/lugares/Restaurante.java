@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Dinosaurio;
+import static lugares.Constantes.*;
 
 /**
  *
@@ -44,7 +45,7 @@ public class Restaurante implements Runnable{
      * @param dino 
      */
     public void entrar(Dinosaurio dino){
-        dino.setLugarActuar(Lugares.RESTAURANTE);
+        dino.setLugarActual(Lugares.RESTAURANTE);
         try{
             if(comensales.poll(500,TimeUnit.MILLISECONDS)!=null){
                 

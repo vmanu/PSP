@@ -7,6 +7,7 @@ package lugares;
 
 import java.util.ArrayList;
 import modelo.Dinosaurio;
+import static lugares.Constantes.*;
 
 /**
  *
