@@ -11,6 +11,8 @@ package lugares;
  */
 public class Constantes {
     public static final int MENU_SIZE=3;
-    public static int RESTAURANT_SIZE=5;
-    public static int ESTADIO_SIZE=5;
+    public static final int RESTAURANT_SIZE=5;
+    public static final int ESTADIO_SIZE=5;
+    public static final int TIEMPO_HABITAT=100;
+    public static final int DINOSAURIOS_INICIALES=10;
 }

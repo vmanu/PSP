@@ -21,21 +21,20 @@ public class Bienvenidos_a_Jurassic_Park {
     public static void main(String[] args) {
         Scanner keyb=new Scanner(System.in);
         Habitat habitat=new Habitat();
-        //Thread h=new Thread(habitat);
-        //h.start();
         int op=0;
         do{
             System.out.println("Introduce una opcion:\n\t1.Ver Dinosaurios Vivos\n\t2.BigBang\n\t3.Lanzar Meteorito");
             op=keyb.nextInt();
             switch(op){
                 case 1:
-                    habitat.muestraDinosaurios();
+                    System.out.println(habitat.muestraDinosaurios());
                     break;
                 case 2:
                     habitat.bigBang();
                     break;
                 case Constantes.MENU_SIZE:
-                    System.out.println("Adios");
+                    habitat.lanzaMeteorito();
+                    System.out.println("Este es el final");
                     break;
             }
         }while(op!=Constantes.MENU_SIZE);

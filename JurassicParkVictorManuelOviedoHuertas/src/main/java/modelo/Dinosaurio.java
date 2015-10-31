@@ -24,6 +24,7 @@ public class Dinosaurio implements Runnable{
     
     public Dinosaurio(String nombre, int vida, Habitat habitat){
         this.vida=vida;
+        this.nombre=nombre;
         hambre=0;
     }
     

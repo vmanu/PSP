@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.Dinosaurio;
+import lugares.Constantes.*;
 
 /**
  *
@@ -27,20 +28,23 @@ public class Habitat implements Runnable{
     Thread tiempo=null;
     ExecutorService ex=null;
     boolean stop=false;
+    Thread bBang;
     Estadio santiagoBernabeu=null;
     
 
     public Habitat() {
         dinosaurios = Collections.synchronizedList(new ArrayList());
         dinosMuertos = Collections.synchronizedList(new ArrayList());
-        ex=Executors.newFixedThreadPool(10);
+        ex=Executors.newFixedThreadPool(DINOSAURIOS_INICIALES);
         santiagoBernabeu=new Estadio();
     }
     
     public void bigBang(){
-        Thread bBang=new Thread(this);
+        bBang=new Thread(this);
+        bBang.start();
         for(int i=0;i<10;i++){
-            ex.execute(new Dinosaurio("dino"+1,100,this));
+            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*100))+1000,this));
+            ex.execute(dinosaurios.get(i));
         }
     }
     
@@ -53,7 +57,7 @@ public class Habitat implements Runnable{
     public String muestraDinosaurios(){
         StringBuffer cadena=new StringBuffer();
         for(Dinosaurio dino:dinosaurios){
-            cadena.append(dino.toString());
+            cadena.append(dino.toString()).append("\n");
         }
         return cadena.toString();
     }
@@ -66,11 +70,15 @@ public class Habitat implements Runnable{
         return cadena.toString();
     }
     
+    public void lanzaMeteorito(){
+        bBang.interrupt();
+    }
+    
     @Override
     public void run() {
-        while(!stop){//Quitar el true
+        while(!stop){
             try {
-                TimeUnit.MILLISECONDS.sleep(10);
+                TimeUnit.MILLISECONDS.sleep(TIEMPO_HABITAT);
                 synchronized(dinosaurios){
                     for(Dinosaurio dino:dinosaurios){
                         dino.aumentaHambre();
@@ -81,14 +89,15 @@ public class Habitat implements Runnable{
                     }
                     dinosaurios.removeAll(dinosMuertos);
                 }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Habitat.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException e) {
                 stop=true;
             }
         }
+        
         for (Dinosaurio dino : dinosaurios) {
             dino.mata();
         }
+        ex.shutdown();
     }
     
 }
