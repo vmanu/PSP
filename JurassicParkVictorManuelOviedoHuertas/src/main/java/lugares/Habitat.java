@@ -26,6 +26,7 @@ public class Habitat implements Runnable{
     private ExecutorService ex=null;
     private boolean stop=false;
     private Thread bBang;
+    private Picadero sexBoom;
     private Estadio santiagoBernabeu=null;
     
 
@@ -34,6 +35,7 @@ public class Habitat implements Runnable{
         dinosMuertos = Collections.synchronizedList(new ArrayList());
         ex=Executors.newFixedThreadPool(DINOSAURIOS_INICIALES);
         santiagoBernabeu=new Estadio();
+        sexBoom=new Picadero();
     }
     
     public void bigBang(){
@@ -94,7 +96,6 @@ public class Habitat implements Runnable{
                 stop=true;
             }
         }
-        
         for (Dinosaurio dino : dinosaurios) {
             dino.mata();
         }

@@ -37,7 +37,7 @@ public class Estadio implements Runnable {
 
     public void entra(Dinosaurio di) {
         try {
-            if (barrera.getNumberWaiting() < ESTADIO_SIZE) {//USAR EL BARRIER.getWaitingNuember
+            if (dinos.size() < ESTADIO_SIZE) {//USAR EL BARRIER.getWaitingNuember
                 synchronized (dinos) {
                     dinos.add(di);
                     di.setLugarActual(SANTIAGO_BERNABEU);
@@ -62,6 +62,7 @@ public class Estadio implements Runnable {
                     for (Dinosaurio dino : dinos) {
                         dino.setLugarActual(HABITAT);
                         dino.aumentaAlegria();
+                        
                     }
                     dinos.clear();
                     barrera.reset();
