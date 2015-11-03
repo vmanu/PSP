@@ -39,7 +39,7 @@ public class Habitat implements Runnable{
     public void bigBang(){
         bBang=new Thread(this);
         bBang.start();
-        for(int i=0;i<10;i++){
+        for(int i=0;i<DINOSAURIOS_INICIALES;i++){
             dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000,this));
             ex.execute(dinosaurios.get(i));
         }
