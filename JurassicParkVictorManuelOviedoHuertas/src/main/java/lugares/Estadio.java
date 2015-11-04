@@ -6,6 +6,8 @@
 package lugares;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
@@ -17,42 +19,16 @@ import static lugares.Lugares.*;
  *
  * @author dam2
  */
-public class Estadio implements Runnable {
+public class Estadio {
 
-    private ArrayList<Dinosaurio> dinos;
+    private List<Dinosaurio> dinos;
     private boolean stop;
     private Thread estadio;
     private CyclicBarrier barrera;
 
     public Estadio() {
-        dinos = new ArrayList();
+        dinos = Collections.synchronizedList(new ArrayList());
         stop = false;
-        estadio = new Thread(this);
-        estadio.start();
-    }
-
-    public void parar() {
-        estadio.interrupt();
-    }
-
-    public void entra(Dinosaurio di) {
-        try {
-            if (dinos.size() < ESTADIO_SIZE) {//USAR EL BARRIER.getWaitingNuember
-                synchronized (dinos) {
-                    dinos.add(di);
-                    di.setLugarActual(SANTIAGO_BERNABEU);
-                }
-                barrera.await();
-            }
-        } catch (InterruptedException ex) {
-
-        } catch (BrokenBarrierException ex) {
-
-        }
-    }
-
-    @Override
-    public void run() {
         barrera = new CyclicBarrier(ESTADIO_SIZE, new Runnable() {
 
             @Override
@@ -71,5 +47,25 @@ public class Estadio implements Runnable {
                 }
             }
         });
+    }
+
+    public void entra(Dinosaurio di) {
+        try {
+            boolean entrar=false;//SE USA PARA SABER SI ENTRA EN AWAIT O NO
+            synchronized (dinos) {
+                if (dinos.size() < ESTADIO_SIZE) {//USAR EL BARRIER.getWaitingNuember
+                    dinos.add(di);
+                    di.setLugarActual(SANTIAGO_BERNABEU);
+                    entrar=true;
+                }
+            }
+            if(entrar){
+                barrera.await();
+            }
+        } catch (InterruptedException ex) {
+
+        } catch (BrokenBarrierException ex) {
+
+        }
     }
 }

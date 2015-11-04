@@ -100,7 +100,6 @@ public class Habitat implements Runnable{
             dino.mata();
         }
         ex.shutdown();
-        santiagoBernabeu.parar();
     }
     
 }

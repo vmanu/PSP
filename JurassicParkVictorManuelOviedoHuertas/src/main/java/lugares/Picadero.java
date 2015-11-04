@@ -12,5 +12,6 @@ import static lugares.Constantes.*;
  * @author dam2
  */
 public class Picadero {
+    //List <SalaRedHouse> salas;
     
 }
