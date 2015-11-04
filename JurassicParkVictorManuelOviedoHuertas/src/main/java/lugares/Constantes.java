@@ -17,4 +17,8 @@ public class Constantes {
     public static final int TIEMPO_HABITAT=100;
     public static final int DINOSAURIOS_INICIALES=10;
     public static final int DINOSAURIOS_HAMBRE_MAXIMA=100;
+    public static final int TIEMPO_COMER=200;
+    public static final int TIEMPO_COCINA=500;
+    public static final int TIEMPO_ESPERA_RESTAURANTE=500;
+    public static final int EFECTO_COMIDA_RESTAURANTE=20;
 }

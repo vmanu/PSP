@@ -51,9 +51,9 @@ public class Estadio {
 
     public void entra(Dinosaurio di) {
         try {
-            boolean entrar=false;//SE USA PARA SABER SI ENTRA EN AWAIT O NO
+            boolean entrar=false;
             synchronized (dinos) {
-                if (dinos.size() < ESTADIO_SIZE) {//USAR EL BARRIER.getWaitingNuember
+                if (dinos.size() < ESTADIO_SIZE) {
                     dinos.add(di);
                     di.setLugarActual(SANTIAGO_BERNABEU);
                     entrar=true;
@@ -62,9 +62,7 @@ public class Estadio {
             if(entrar){
                 barrera.await();
             }
-        } catch (InterruptedException ex) {
-
-        } catch (BrokenBarrierException ex) {
+        } catch (InterruptedException | BrokenBarrierException ex) {
 
         }
     }

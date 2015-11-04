@@ -22,35 +22,32 @@ public class Habitat implements Runnable{
 
     private List<Dinosaurio>dinosaurios;
     private List<Dinosaurio>dinosMuertos;
-    private Thread tiempo=null;
-    private ExecutorService ex=null;
+    //private Thread tiempo=null;
     private boolean stop=false;
-    private Thread bBang;
+    private Thread habitat;
     private Picadero sexBoom;
     private Estadio santiagoBernabeu=null;
+    private Restaurante bulli;
     
 
     public Habitat() {
         dinosaurios = Collections.synchronizedList(new ArrayList());
         dinosMuertos = Collections.synchronizedList(new ArrayList());
-        ex=Executors.newFixedThreadPool(DINOSAURIOS_INICIALES);
         santiagoBernabeu=new Estadio();
+        bulli=new Restaurante();
         sexBoom=new Picadero();
+        habitat=new Thread(this);
+        habitat.start();
     }
     
     public void bigBang(){
-        bBang=new Thread(this);
-        bBang.start();
         for(int i=0;i<DINOSAURIOS_INICIALES;i++){
             dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000,this));
-            ex.execute(dinosaurios.get(i));
         }
     }
     
     public void addDinosaurio(Dinosaurio dino){
         dinosaurios.add(dino);
-        Thread dinos=new Thread(dino);
-        dinos.start();
     }
     
     public String muestraDinosaurios(){
@@ -70,11 +67,15 @@ public class Habitat implements Runnable{
     }
     
     public void lanzaMeteorito(){
-        bBang.interrupt();
+        habitat.interrupt();
     }
     
     public void entrarEstadio(Dinosaurio dino){
         santiagoBernabeu.entra(dino);
+    }
+    
+    public void entrarRestaurante(Dinosaurio dino){
+        bulli.entra(dino);
     }
     
     @Override
@@ -99,7 +100,7 @@ public class Habitat implements Runnable{
         for (Dinosaurio dino : dinosaurios) {
             dino.mata();
         }
-        ex.shutdown();
+        bulli.para();
     }
     
 }

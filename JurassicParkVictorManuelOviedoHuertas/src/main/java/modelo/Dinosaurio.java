@@ -6,8 +6,6 @@
 package modelo;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import lugares.Habitat;
 import static lugares.Lugares.*;
 import lugares.Lugares;
@@ -24,6 +22,7 @@ public class Dinosaurio implements Runnable{
     private Lugares lugarActual;
     private String nombre;
     private Habitat habitat;
+    private Thread dino;
 
     
     public Dinosaurio(String nombre, int vida, Habitat habitat){
@@ -32,6 +31,8 @@ public class Dinosaurio implements Runnable{
         this.habitat=habitat;
         hambre=0;
         alegria=0;
+        dino=new Thread(this);
+        dino.start();
     }
     
     public void restaVida(){
@@ -68,7 +69,13 @@ public class Dinosaurio implements Runnable{
     }
     
     public Lugares irLugar(){
-        return SANTIAGO_BERNABEU;
+        Lugares lugar;
+        if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.5){
+            lugar=RESTAURANTE;
+        }else{
+            lugar=SANTIAGO_BERNABEU;
+        }
+        return lugar;
     }
     
     public Lugares getLugar(){
@@ -105,6 +112,7 @@ public class Dinosaurio implements Runnable{
                     case PICADERO:
                         break;
                     case RESTAURANTE:
+                        habitat.entrarRestaurante(this);
                         break;
                     case SANTIAGO_BERNABEU:
                         habitat.entrarEstadio(this);
