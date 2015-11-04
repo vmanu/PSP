@@ -5,13 +5,10 @@
  */
 package lugares;
 
-import static lugares.Constantes.*;
-import static lugares.Lugares.*;
-
 /**
  *
- * @author Victor Manuel Oviedo Huertas
+ * @author Victor
  */
-public class Bosque {
+public class QuiquiRoom {
     
 }

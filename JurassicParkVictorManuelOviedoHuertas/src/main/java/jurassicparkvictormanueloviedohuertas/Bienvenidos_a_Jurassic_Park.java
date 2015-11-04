@@ -5,6 +5,7 @@
  */
 package jurassicparkvictormanueloviedohuertas;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import static lugares.Constantes.*;
 import lugares.Habitat;
@@ -12,7 +13,7 @@ import modelo.Dinosaurio;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Bienvenidos_a_Jurassic_Park {
 
@@ -22,17 +23,35 @@ public class Bienvenidos_a_Jurassic_Park {
         return dino;
     }
     
+    public static int getOpcion(){
+        Scanner keyb=new Scanner(System.in);
+        int op=0;
+        do{
+            System.out.println("Introduce una opcion:\n\t1.BigBang (Crea 10 dinosaurios)\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
+                    +"\n\t"+MENU_SIZE+".Lanzar Meteorito");
+            try{
+                op=keyb.nextInt();
+                if(op<1||op>MENU_SIZE){
+                    System.out.print("El valor introducido no se encuentra entre los elegibles. ");
+                    keyb.nextLine();
+                }
+            }catch(InputMismatchException e){
+                keyb.nextLine();
+                System.out.print("El valor introducido no es de tipo numerico entero (acorde a las opciones). ");
+            }
+        }while(op<1||op>MENU_SIZE);
+        return op;
+    }
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Scanner keyb=new Scanner(System.in);
+        
         Habitat habitat=new Habitat();
         int op=0;
         do{
-            System.out.println("Introduce una opcion:\n\t1.BigBang\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
-                    +"\n\t"+MENU_SIZE+".Lanzar Meteorito");
-            op=keyb.nextInt();
+            op=getOpcion();
             switch(op){
                 case 1:
                     habitat.bigBang();

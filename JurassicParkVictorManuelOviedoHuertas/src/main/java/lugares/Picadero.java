@@ -5,13 +5,23 @@
  */
 package lugares;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import static lugares.Constantes.*;
+import static lugares.Lugares.*;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Picadero {
-    //List <SalaRedHouse> salas;
+    private List <QuiquiRoom> salas;
     
+    public Picadero(){
+        salas=Collections.synchronizedList(new ArrayList());
+        for(int i=0;i<NUMERO_DE_SALAS_PICANTES;i++){
+            //CONSTRUIR Y AÑADIR LAS SALAS
+        }
+    }
 }

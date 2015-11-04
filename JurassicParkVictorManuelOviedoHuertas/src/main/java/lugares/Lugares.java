@@ -7,7 +7,7 @@ package lugares;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public enum Lugares {
     SANTIAGO_BERNABEU,PICADERO,BOSQUE,RESTAURANTE,HABITAT

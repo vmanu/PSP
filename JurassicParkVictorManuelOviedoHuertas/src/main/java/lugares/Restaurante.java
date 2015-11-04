@@ -16,7 +16,7 @@ import static lugares.Lugares.*;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Restaurante implements Runnable{
     /*ArrayBlockingQueue

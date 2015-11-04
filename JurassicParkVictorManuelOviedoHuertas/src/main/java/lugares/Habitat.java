@@ -16,7 +16,7 @@ import static lugares.Constantes.*;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Habitat implements Runnable{
 

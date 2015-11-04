@@ -7,7 +7,7 @@ package lugares;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Constantes {
     public static final int MENU_SIZE=5;
@@ -21,4 +21,5 @@ public class Constantes {
     public static final int TIEMPO_COCINA=500;
     public static final int TIEMPO_ESPERA_RESTAURANTE=500;
     public static final int EFECTO_COMIDA_RESTAURANTE=20;
+    public static final int NUMERO_DE_SALAS_PICANTES=3;
 }

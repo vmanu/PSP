@@ -17,13 +17,12 @@ import static lugares.Lugares.*;
 
 /**
  *
- * @author dam2
+ * @author Victor Manuel Oviedo Huertas
  */
 public class Estadio {
 
     private List<Dinosaurio> dinos;
     private boolean stop;
-    private Thread estadio;
     private CyclicBarrier barrera;
 
     public Estadio() {
@@ -38,7 +37,6 @@ public class Estadio {
                     for (Dinosaurio dino : dinos) {
                         dino.setLugarActual(HABITAT);
                         dino.aumentaAlegria();
-                        
                     }
                     dinos.clear();
                     barrera.reset();
