@@ -19,6 +19,7 @@ public class Dinosaurio implements Runnable{
     private int vida;
     private int hambre;
     private int alegria;
+    private int edad;
     private Lugares lugarActual;
     private String nombre;
     private Habitat habitat;
@@ -30,16 +31,18 @@ public class Dinosaurio implements Runnable{
         this.vida=vida;
         this.nombre=nombre;
         this.habitat=habitat;
+        edad=0;
         hambre=0;
         alegria=0;
         dino=new Thread(this);
         dino.start();
         dino.setName(nombre);
-        sexo=(Math.random()%2==0?MASCULINO:FEMENINO);
+        sexo=(((int)(Math.random()*10)%2)==0?MASCULINO:FEMENINO);
     }
     
     public void restaVida(){
         vida--;
+        edad++;
     }
     
     public void aumentaHambre(){
@@ -67,6 +70,10 @@ public class Dinosaurio implements Runnable{
         return nombre;
     }
     
+    public int getEdad(){
+        return edad;
+    }
+    
     public void mata(){
         vida=0;
     }
@@ -79,8 +86,13 @@ public class Dinosaurio implements Runnable{
         Lugares lugar;
         if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.5){
             lugar=RESTAURANTE;
+            //AQUI UN CONDICIONAL DE PROBABILIDAD(POSIBLE JUEGO CON LA VIDA
         }else{
-            lugar=SANTIAGO_BERNABEU;
+            if(edad>18&&edad<vida*0.8&&((int)(Math.random()*10))<7){
+                lugar=PICADERO;
+            }else{
+                lugar=SANTIAGO_BERNABEU;
+            }
         }
         return lugar;
     }
@@ -97,7 +109,9 @@ public class Dinosaurio implements Runnable{
         alegria++;
         if(alegria==20){
             alegria=0;
-            vida+=5;
+            if(vida>0){
+                vida+=5;
+            }
         }
     }
     
@@ -110,8 +124,8 @@ public class Dinosaurio implements Runnable{
     @Override
     public String toString(){
         StringBuffer cadena=new StringBuffer();
-        return cadena.append(nombre).append(" mi vida es ").append(vida).append(" y mi hambre es de ").append(hambre).append(" y la alegría es de ").append(alegria).append(". Estoy en ").append(getLugar()).toString();
-    }
+        return cadena.append(nombre).append(" mi edad es ").append(edad).append(" años y mi hambre es de ").append(hambre).append(" y la alegría es de ").append(alegria).append(". Estoy en ").append(getLugar()).append(". Mi sexo es ").append(sexo).toString();
+    }//.append("\tME RESTA=").append(vida)
 
     @Override
     public void run() {
@@ -123,6 +137,7 @@ public class Dinosaurio implements Runnable{
                     case BOSQUE:
                         break;
                     case PICADERO:
+                        habitat.entrarRedHouse(this);
                         break;
                     case RESTAURANTE:
                         habitat.entrarRestaurante(this);
@@ -135,6 +150,5 @@ public class Dinosaurio implements Runnable{
                 vida=0;
             }
         }
-        
     }
 }

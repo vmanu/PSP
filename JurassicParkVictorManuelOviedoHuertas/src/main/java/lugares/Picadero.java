@@ -19,6 +19,7 @@ import modelo.Dinosaurio;
 public class Picadero {
     private List <QuiquiRoom> salas;
     
+    
     public Picadero(Habitat hab){
         salas=Collections.synchronizedList(new ArrayList());
         for(int i=0;i<NUMERO_DE_SALAS_PICANTES;i++){
@@ -27,10 +28,17 @@ public class Picadero {
     }
     
     public void entrar(Dinosaurio dino){
-    for (QuiquiRoom sala: salas){
-        if(sala.entrar(dino)){
-            break;
+        for (QuiquiRoom sala: salas){
+            if(sala.entrar(dino)){
+                break;
+            }
         }
     }
-}
+    
+    public void coitusInterruptus(){
+        salas.clear();
+        for(QuiquiRoom r:salas){
+            r.coitusInterruptus();
+        }
+    }
 }

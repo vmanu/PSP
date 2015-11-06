@@ -62,7 +62,7 @@ public class Restaurante implements Runnable{
                 dino.setLugarActual(HABITAT);
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(Restaurante.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
     }
 }

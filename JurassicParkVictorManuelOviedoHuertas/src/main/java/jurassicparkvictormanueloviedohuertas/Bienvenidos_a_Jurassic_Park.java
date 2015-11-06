@@ -27,7 +27,7 @@ public class Bienvenidos_a_Jurassic_Park {
         Scanner keyb=new Scanner(System.in);
         int op=0;
         do{
-            System.out.println("Introduce una opcion:\n\t1.BigBang (Crea 10 dinosaurios)\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
+            System.out.println("Introduce una opcion:\n\t1.BigBang (Crea "+DINOSAURIOS_INICIALES+" dinosaurios)\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
                     +"\n\t"+MENU_SIZE+".Lanzar Meteorito");
             try{
                 op=keyb.nextInt();
@@ -54,6 +54,7 @@ public class Bienvenidos_a_Jurassic_Park {
             op=getOpcion();
             switch(op){
                 case 1:
+                    System.out.println(ESTADIO_SIZE);
                     habitat.bigBang();
                     break;
                 case 2:

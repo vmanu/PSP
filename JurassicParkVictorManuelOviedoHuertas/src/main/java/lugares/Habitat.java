@@ -18,94 +18,122 @@ import static lugares.Constantes.*;
  *
  * @author Victor Manuel Oviedo Huertas
  */
-public class Habitat implements Runnable{
+public class Habitat implements Runnable {
 
-    private List<Dinosaurio>dinosaurios;
-    private List<Dinosaurio>dinosMuertos;
+    private List<Dinosaurio> dinosaurios;
+    private List<Dinosaurio> dinosMuertos;
     //private Thread tiempo=null;
-    private boolean stop=false;
+    private boolean stop = false;
     private Thread habitat;
     private Picadero sexBoom;
-    private Estadio santiagoBernabeu=null;
+    private Estadio santiagoBernabeu = null;
     private Restaurante bulli;
-    
 
     public Habitat() {
         dinosaurios = Collections.synchronizedList(new ArrayList());
         dinosMuertos = Collections.synchronizedList(new ArrayList());
-        santiagoBernabeu=new Estadio();
-        bulli=new Restaurante();
-        sexBoom=new Picadero(this);
-        habitat=new Thread(this);
+        santiagoBernabeu = new Estadio();
+        bulli = new Restaurante();
+        sexBoom = new Picadero(this);
+        habitat = new Thread(this);
         habitat.start();
         habitat.setName("HABITAT");
     }
-    
-    public void bigBang(){
-        for(int i=0;i<DINOSAURIOS_INICIALES;i++){
-            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*100))+200,this));
+
+    public void bigBang() {
+        for (int i = 0; i < DINOSAURIOS_INICIALES; i++) {
+            dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * 100)) + 200, this));
         }
     }
-    
-    public void addDinosaurio(Dinosaurio dino){
-        dinosaurios.add(dino);
+
+    public void addDinosaurio(Dinosaurio dino) {
+        if (dinosaurios != null) {
+            synchronized (dinosaurios) {
+                dinosaurios.add(dino);
+            }
+        }
     }
-    
-    public String muestraDinosaurios(){
-        StringBuffer cadena=new StringBuffer();
-        for(Dinosaurio dino:dinosaurios){
-            cadena.append(dino.toString()).append("\n");
+
+    public void addDinosaurio() {
+        if (dinosaurios != null) {
+            synchronized (dinosaurios) {
+                dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * 100)) + 200, this));
+            }
+        }
+    }
+
+    public String muestraDinosaurios() {
+        StringBuffer cadena = new StringBuffer();
+        if (dinosaurios != null) {
+            for (Dinosaurio dino : dinosaurios) {
+                cadena.append(dino.toString()).append("\n");
+            }
+        } else {
+            cadena.append("ESTAN TODOS MUERTOS");
         }
         return cadena.toString();
     }
-    
-    public String muestraDinosauriosMuertos(){
-        StringBuffer cadena=new StringBuffer();
-        for(Dinosaurio dino:dinosMuertos){
-            cadena.append(dino.getNombre()).append("\n");
+
+    public String muestraDinosauriosMuertos() {
+        StringBuffer cadena = new StringBuffer();
+        for (Dinosaurio dino : dinosMuertos) {
+            cadena.append(dino.getNombre()).append(" murio con ").append(dino.getEdad()).append(" años, en ").append(dino.getLugar()).append(dino.getVida()).append(".").append("\n");
         }
         return cadena.toString();
     }
-    
-    public void lanzaMeteorito(){
+
+    public void lanzaMeteorito() {
         habitat.interrupt();
     }
-    
-    public void entrarEstadio(Dinosaurio dino){
+
+    public void entrarEstadio(Dinosaurio dino) {
         santiagoBernabeu.entra(dino);
     }
-    
-    public void entrarRestaurante(Dinosaurio dino){
+
+    public void entrarRestaurante(Dinosaurio dino) {
         bulli.entra(dino);
     }
-    
-    public int dimeCuantosVivos(){
+
+    public void entrarRedHouse(Dinosaurio dino) {
+        sexBoom.entrar(dino);
+    }
+
+    public int dimeCuantosVivos() {
         return dinosaurios.size();
     }
-    
+
+    public int dimeCuantosMuertos() {
+        return dinosMuertos.size();
+    }
+
     @Override
     public void run() {
-        while(!stop){
+        while (!stop) {
             try {
                 TimeUnit.MILLISECONDS.sleep(TIEMPO_HABITAT);
-                synchronized(dinosaurios){
-                    for(Dinosaurio dino:dinosaurios){
+                synchronized (dinosaurios) {
+                    for (Dinosaurio dino : dinosaurios) {
                         dino.aumentaHambre();
                         dino.restaVida();
-                        if(dino.getVida()<=0){
+                        if (dino.getVida() <= 0) {
                             dinosMuertos.add(dino);
                         }
                     }
                     dinosaurios.removeAll(dinosMuertos);
                 }
             } catch (InterruptedException e) {
-                stop=true;
+                stop = true;
             }
         }
-        for (Dinosaurio dino : dinosaurios) {
-            dino.mata();
-        }
+        sexBoom.coitusInterruptus();
+        santiagoBernabeu.interrumpe();
         bulli.para();
+        synchronized (dinosaurios) {
+            for (Dinosaurio dino : dinosaurios) {
+                dino.mata();
+            }
+            dinosMuertos.addAll(dinosaurios);
+            dinosaurios = null;
+        }
     }
-    
 }
