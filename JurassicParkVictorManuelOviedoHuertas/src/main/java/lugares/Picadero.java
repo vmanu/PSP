@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import static lugares.Constantes.*;
 import static lugares.Lugares.*;
+import modelo.Dinosaurio;
 
 /**
  *
@@ -18,10 +19,18 @@ import static lugares.Lugares.*;
 public class Picadero {
     private List <QuiquiRoom> salas;
     
-    public Picadero(){
+    public Picadero(Habitat hab){
         salas=Collections.synchronizedList(new ArrayList());
         for(int i=0;i<NUMERO_DE_SALAS_PICANTES;i++){
-            //CONSTRUIR Y AÑADIR LAS SALAS
+            salas.add(new QuiquiRoom(hab));
         }
     }
+    
+    public void entrar(Dinosaurio dino){
+    for (QuiquiRoom sala: salas){
+        if(sala.entrar(dino)){
+            break;
+        }
+    }
+}
 }

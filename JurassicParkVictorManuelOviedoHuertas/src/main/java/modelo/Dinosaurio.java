@@ -23,6 +23,7 @@ public class Dinosaurio implements Runnable{
     private String nombre;
     private Habitat habitat;
     private Thread dino;
+    private String sexo;
 
     
     public Dinosaurio(String nombre, int vida, Habitat habitat){
@@ -34,6 +35,7 @@ public class Dinosaurio implements Runnable{
         dino=new Thread(this);
         dino.start();
         dino.setName(nombre);
+        sexo=(Math.random()%2==0?MASCULINO:FEMENINO);
     }
     
     public void restaVida(){
@@ -68,6 +70,10 @@ public class Dinosaurio implements Runnable{
     public void mata(){
         vida=0;
     }
+
+    public String getSexo() {
+        return sexo;
+    }
     
     public Lugares irLugar(){
         Lugares lugar;
@@ -92,6 +98,12 @@ public class Dinosaurio implements Runnable{
         if(alegria==20){
             alegria=0;
             vida+=5;
+        }
+    }
+    
+    public void aumentaAlegria(int j) {
+        for(int i=0;i<j;i++){
+            aumentaAlegria();
         }
     }
     

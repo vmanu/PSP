@@ -35,7 +35,7 @@ public class Habitat implements Runnable{
         dinosMuertos = Collections.synchronizedList(new ArrayList());
         santiagoBernabeu=new Estadio();
         bulli=new Restaurante();
-        sexBoom=new Picadero();
+        sexBoom=new Picadero(this);
         habitat=new Thread(this);
         habitat.start();
         habitat.setName("HABITAT");
@@ -77,6 +77,10 @@ public class Habitat implements Runnable{
     
     public void entrarRestaurante(Dinosaurio dino){
         bulli.entra(dino);
+    }
+    
+    public int dimeCuantosVivos(){
+        return dinosaurios.size();
     }
     
     @Override
