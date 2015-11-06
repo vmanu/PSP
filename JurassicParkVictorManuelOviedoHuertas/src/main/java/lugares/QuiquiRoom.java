@@ -5,10 +5,14 @@
  */
 package lugares;
 
+import java.util.concurrent.CyclicBarrier;
+
 /**
  *
  * @author Victor
  */
 public class QuiquiRoom {
+    private CyclicBarrier barrera;
+    
     
 }

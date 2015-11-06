@@ -25,10 +25,12 @@ public class Restaurante implements Runnable{
     private boolean stop=false;
     private Thread bulli;
     
+    
     public Restaurante(){
         comensales=new ArrayBlockingQueue(RESTAURANT_SIZE,true);
         bulli=new Thread(this);
         bulli.start();
+        bulli.setName("RESTAURANTE");
     }
 
     @Override

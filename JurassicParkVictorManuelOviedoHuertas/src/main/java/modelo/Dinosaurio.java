@@ -33,6 +33,7 @@ public class Dinosaurio implements Runnable{
         alegria=0;
         dino=new Thread(this);
         dino.start();
+        dino.setName(nombre);
     }
     
     public void restaVida(){
@@ -122,5 +123,6 @@ public class Dinosaurio implements Runnable{
                 vida=0;
             }
         }
+        
     }
 }

@@ -38,11 +38,12 @@ public class Habitat implements Runnable{
         sexBoom=new Picadero();
         habitat=new Thread(this);
         habitat.start();
+        habitat.setName("HABITAT");
     }
     
     public void bigBang(){
         for(int i=0;i<DINOSAURIOS_INICIALES;i++){
-            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*1000))+1000,this));
+            dinosaurios.add(new Dinosaurio("dino"+i,((int)(Math.random()*100))+200,this));
         }
     }
     

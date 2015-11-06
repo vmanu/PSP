@@ -61,7 +61,7 @@ public class Estadio {
                 barrera.await();
             }
         } catch (InterruptedException | BrokenBarrierException ex) {
-
+            barrera.reset();
         }
     }
 }
