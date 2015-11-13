@@ -46,6 +46,7 @@ public class Arbol {
                 dino.luchar(esperando);
                 cond.signalAll();
             }
+            esperando=null;
             locker.unlock();
         }
         }catch(InterruptedException e){
