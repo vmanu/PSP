@@ -27,4 +27,5 @@ public class Constantes {
     public static final int TIEMPO_ESPERA_FORNICACION=500;
     public static final int TIEMPO_FORNICACION=1000;
     public static final int ALEGRIA_FORNICACION=5;
+    public static final int TAMANO_BOSQUE=500;
 }

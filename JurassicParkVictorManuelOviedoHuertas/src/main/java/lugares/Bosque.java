@@ -5,13 +5,28 @@
  */
 package lugares;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import static lugares.Constantes.*;
 import static lugares.Lugares.*;
+import modelo.Dinosaurio;
 
 /**
  *
  * @author Victor Manuel Oviedo Huertas
  */
 public class Bosque {
+    List <Arbol> arboles;
     
+    public Bosque(){
+        arboles=Collections.synchronizedList(new ArrayList());
+        for(int i=0;i<TAMANO_BOSQUE;i++){
+            arboles.add(new Arbol());
+        }
+    }
+    
+    public void entrar(Dinosaurio dino){
+        
+    }
 }

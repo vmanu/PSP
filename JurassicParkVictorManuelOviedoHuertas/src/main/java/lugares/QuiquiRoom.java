@@ -60,7 +60,7 @@ public class QuiquiRoom {
                     entrar = true;
                     dinos.add(dino);
                 } else {
-                    if (dinos.size() == 1 && !dino.getSexo().equals(dinos.get(0).getSexo())) {
+                    if (dinos.size() == 1 && !dino.getSexo().equals(dinos.get(0).getSexo())&&(dino.isCarnivoro()&&dinos.get(0).isCarnivoro())) {
                         entrar = true;
                         dinos.add(dino);
                     }

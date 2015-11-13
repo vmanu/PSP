@@ -25,6 +25,7 @@ public class Dinosaurio implements Runnable{
     private Habitat habitat;
     private Thread dino;
     private String sexo;
+    private boolean carnivoro;
 
     
     public Dinosaurio(String nombre, int vida, Habitat habitat){
@@ -38,6 +39,21 @@ public class Dinosaurio implements Runnable{
         dino.start();
         dino.setName(nombre);
         sexo=(((int)(Math.random()*10)%2)==0?MASCULINO:FEMENINO);
+        carnivoro=((int)(Math.random())*100)%2==2?true:false;
+    }
+    
+    public Dinosaurio(String nombre, int vida, Habitat habitat, boolean herencia){
+        this.vida=vida;
+        this.nombre=nombre;
+        this.habitat=habitat;
+        edad=0;
+        hambre=0;
+        alegria=0;
+        dino=new Thread(this);
+        dino.start();
+        dino.setName(nombre);
+        sexo=(((int)(Math.random()*10)%2)==0?MASCULINO:FEMENINO);
+        carnivoro=herencia;
     }
     
     public void restaVida(){
@@ -82,6 +98,10 @@ public class Dinosaurio implements Runnable{
         return sexo;
     }
     
+    public void luchar(Dinosaurio esperando) {
+        
+    }
+    
     public Lugares irLugar(){
         Lugares lugar;
         if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.5){
@@ -103,6 +123,10 @@ public class Dinosaurio implements Runnable{
     
     public void setLugarActual(Lugares lugares) {
         lugarActual=lugares;
+    }
+    
+    public boolean isCarnivoro(){
+        return carnivoro;
     }
     
     public void aumentaAlegria(){
@@ -151,4 +175,6 @@ public class Dinosaurio implements Runnable{
             }
         }
     }
+
+
 }
