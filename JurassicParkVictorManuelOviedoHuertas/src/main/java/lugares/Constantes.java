@@ -10,7 +10,7 @@ package lugares;
  * @author Victor Manuel Oviedo Huertas
  */
 public class Constantes {
-    public static final int MENU_SIZE=5;
+    public static final int MENU_SIZE=6;
     public static final int RESTAURANT_SIZE=5;
     public static final int ESTADIO_SIZE=(int)(Constantes.DINOSAURIOS_INICIALES*0.5);
     public static final int TIEMPO_ESPECTACULO_ESTADIO=500;
@@ -28,4 +28,7 @@ public class Constantes {
     public static final int TIEMPO_FORNICACION=1000;
     public static final int ALEGRIA_FORNICACION=5;
     public static final int TAMANO_BOSQUE=500;
+    public static final int MINIMO_VIDA_DINO=200;
+    public static final int RANGO_VIDA_DINO=100;
+    public static final String PREGUNTA_MODERNIZA_ESTADIO="Introduzca la nueva capacidad del estadio";
 }

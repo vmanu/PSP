@@ -28,6 +28,7 @@ public class Habitat implements Runnable {
     private Picadero sexBoom;
     private Estadio santiagoBernabeu = null;
     private Restaurante bulli;
+    private Bosque bosque;
 
     public Habitat() {
         dinosaurios = Collections.synchronizedList(new ArrayList());
@@ -35,6 +36,7 @@ public class Habitat implements Runnable {
         santiagoBernabeu = new Estadio();
         bulli = new Restaurante();
         sexBoom = new Picadero(this);
+        bosque=new Bosque();
         habitat = new Thread(this);
         habitat.start();
         habitat.setName("HABITAT");
@@ -42,7 +44,7 @@ public class Habitat implements Runnable {
 
     public void bigBang() {
         for (int i = 0; i < DINOSAURIOS_INICIALES; i++) {
-            dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * 100)) + 200, this));
+            dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * RANGO_VIDA_DINO)) + MINIMO_VIDA_DINO, this));
         }
     }
 
@@ -53,11 +55,11 @@ public class Habitat implements Runnable {
             }
         }
     }
-
-    public void addDinosaurio() {
+    
+    public void addDinosaurio(boolean carnivoro) {
         if (dinosaurios != null) {
             synchronized (dinosaurios) {
-                dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * 100)) + 200, this));
+                dinosaurios.add(new Dinosaurio("dino" + (dimeCuantosVivos() + dimeCuantosMuertos()), ((int) (Math.random() * 100)) + 200, this, carnivoro));
             }
         }
     }
@@ -98,12 +100,20 @@ public class Habitat implements Runnable {
         sexBoom.entrar(dino);
     }
 
+    public void entrarBosque(Dinosaurio dino){
+        bosque.entrar(dino);
+    }
+    
     public int dimeCuantosVivos() {
         return dinosaurios.size();
     }
 
     public int dimeCuantosMuertos() {
         return dinosMuertos.size();
+    }
+    
+    public void modernizaEstadio(int tamano){
+        santiagoBernabeu.setTamanoEstadio(tamano);
     }
 
     @Override

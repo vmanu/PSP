@@ -27,7 +27,7 @@ public class Bienvenidos_a_Jurassic_Park {
         Scanner keyb=new Scanner(System.in);
         int op=0;
         do{
-            System.out.println("Introduce una opcion:\n\t1.BigBang (Crea "+DINOSAURIOS_INICIALES+" dinosaurios)\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio"
+            System.out.println("Introduce una opcion:\n\t1.BigBang (Crea "+DINOSAURIOS_INICIALES+" dinosaurios)\n\t2.Ver Dinosaurios Vivos\n\t3.Ver Dinosaurios Muertos\n\t4.Crear Dinosaurio\n\t5.Moderniza Estadio (Cambia tamaño del mismo)"
                     +"\n\t"+MENU_SIZE+".Lanzar Meteorito");
             try{
                 op=keyb.nextInt();
@@ -40,6 +40,25 @@ public class Bienvenidos_a_Jurassic_Park {
                 System.out.print("El valor introducido no es de tipo numerico entero (acorde a las opciones). ");
             }
         }while(op<1||op>MENU_SIZE);
+        return op;
+    }
+    
+    public static int getNumero(String pregunta){
+        Scanner keyb=new Scanner(System.in);
+        int op=0;
+        do{
+            System.out.println(pregunta);
+            try{
+                op=keyb.nextInt();
+                if(op<1){
+                    System.out.print("El valor introducido es menor que 1. ");
+                    keyb.nextLine();
+                }
+            }catch(InputMismatchException e){
+                keyb.nextLine();
+                System.out.print("El valor introducido no es de tipo numerico entero (acorde a las opciones). ");
+            }
+        }while(op<1);
         return op;
     }
     
@@ -65,6 +84,9 @@ public class Bienvenidos_a_Jurassic_Park {
                     break;
                 case 4:
                     habitat.addDinosaurio(creaDinosaurio(habitat));
+                    break;
+                case 5:
+                    habitat.modernizaEstadio(getNumero(PREGUNTA_MODERNIZA_ESTADIO));
                     break;
                 case MENU_SIZE:
                     habitat.lanzaMeteorito();

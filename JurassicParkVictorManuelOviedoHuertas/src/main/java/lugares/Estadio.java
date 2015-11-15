@@ -26,11 +26,13 @@ public class Estadio {
     private List<Dinosaurio> dinos;
     private boolean stop;
     private CyclicBarrier barrera;
+    private int tamanoEstadio;
 
     public Estadio() {
         dinos = Collections.synchronizedList(new ArrayList());
         stop = false;
-        barrera = new CyclicBarrier(ESTADIO_SIZE, new Runnable() {
+        tamanoEstadio=ESTADIO_SIZE;
+        barrera = new CyclicBarrier(tamanoEstadio, new Runnable() {
 
             @Override
             public void run() {
@@ -40,8 +42,8 @@ public class Estadio {
                         dino.setLugarActual(HABITAT);
                         dino.aumentaAlegria();
                     }
-                    dinos.clear();
                     barrera.reset();
+                    dinos.clear();
                 } catch (InterruptedException ex) {
                     barrera.reset();
                 }
@@ -53,7 +55,7 @@ public class Estadio {
         try {
             boolean entrar=false;
             synchronized (dinos) {
-                if (dinos.size() < ESTADIO_SIZE) {
+                if (dinos.size() < tamanoEstadio) {
                     dinos.add(di);
                     di.setLugarActual(SANTIAGO_BERNABEU);
                     entrar=true;
@@ -69,5 +71,9 @@ public class Estadio {
     
     public void interrumpe(){
         barrera.reset();
+    }
+    
+    public void setTamanoEstadio(int tamano){
+        tamanoEstadio=tamano;
     }
 }

@@ -39,7 +39,7 @@ public class Dinosaurio implements Runnable{
         dino.start();
         dino.setName(nombre);
         sexo=(((int)(Math.random()*10)%2)==0?MASCULINO:FEMENINO);
-        carnivoro=((int)(Math.random())*100)%2==2?true:false;
+        carnivoro=((int)(Math.random())*100)%2==0;
     }
     
     public Dinosaurio(String nombre, int vida, Habitat habitat, boolean herencia){
@@ -104,14 +104,18 @@ public class Dinosaurio implements Runnable{
     
     public Lugares irLugar(){
         Lugares lugar;
-        if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.5){
+        int loteria=((int)(Math.random()*100))+1;
+        if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.6){
             lugar=RESTAURANTE;
-            //AQUI UN CONDICIONAL DE PROBABILIDAD(POSIBLE JUEGO CON LA VIDA
         }else{
-            if(edad>18&&edad<vida*0.8&&((int)(Math.random()*10))<7){
+            if(edad>18&&edad<MINIMO_VIDA_DINO*0.4&&loteria<50){
                 lugar=PICADERO;
             }else{
-                lugar=SANTIAGO_BERNABEU;
+                if(loteria%2==0){
+                    lugar=SANTIAGO_BERNABEU;
+                }else{
+                    lugar=BOSQUE;
+                }
             }
         }
         return lugar;
@@ -157,8 +161,10 @@ public class Dinosaurio implements Runnable{
             try {
                 TimeUnit.MILLISECONDS.sleep(10);
                 Lugares lugarIr=irLugar();
+                //System.out.println("Entra a cumplir "+nombre+" a "+lugarIr);
                 switch(lugarIr){
                     case BOSQUE:
+                        habitat.entrarBosque(this);
                         break;
                     case PICADERO:
                         habitat.entrarRedHouse(this);
@@ -170,6 +176,7 @@ public class Dinosaurio implements Runnable{
                         habitat.entrarEstadio(this);
                         break;
                 }
+                //System.out.println("Ha cumplido "+nombre);
             } catch (InterruptedException ex) {
                 vida=0;
             }

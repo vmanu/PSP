@@ -39,7 +39,7 @@ public class QuiquiRoom {
                         dinosaurio.aumentaAlegria(ALEGRIA_FORNICACION);
                         dinosaurio.setLugarActual(HABITAT);
                     }
-                    hab.addDinosaurio();
+                    hab.addDinosaurio(dinos.get(0).isCarnivoro());
                     dinos.clear();
                     barrera.reset();
                 } catch (InterruptedException ex) {
