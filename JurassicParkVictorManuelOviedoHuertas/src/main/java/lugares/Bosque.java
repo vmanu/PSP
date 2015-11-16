@@ -8,6 +8,8 @@ package lugares;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import static lugares.Constantes.*;
 import static lugares.Lugares.*;
 import modelo.Dinosaurio;
@@ -17,7 +19,7 @@ import modelo.Dinosaurio;
  * @author Victor Manuel Oviedo Huertas
  */
 public class Bosque {
-    List <Arbol> arboles;
+    private List <Arbol> arboles;
     
     public Bosque(){
         arboles=Collections.synchronizedList(new ArrayList());
@@ -27,6 +29,17 @@ public class Bosque {
     }
     
     public void entrar(Dinosaurio dino){
-        
+        dino.setLugarActual(BOSQUE);
+        for(Arbol arb:arboles){
+            if(arb.entrar(dino)){
+                break;
+            }
+        }
+    }
+
+    void para() {
+        for(Arbol arb:arboles){
+            arb=null;
+        }
     }
 }

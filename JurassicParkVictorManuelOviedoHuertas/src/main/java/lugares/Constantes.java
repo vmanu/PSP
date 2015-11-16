@@ -21,6 +21,7 @@ public class Constantes {
     public static final int TIEMPO_COCINA=500;
     public static final int TIEMPO_ESPERA_RESTAURANTE=500;
     public static final int EFECTO_COMIDA_RESTAURANTE=50;
+    public static final int EFECTO_COMIDA_DINO=30;
     public static final int NUMERO_DE_SALAS_PICANTES=3;
     public static final String MASCULINO="Masculino";
     public static final String FEMENINO="Femenino";
@@ -30,5 +31,8 @@ public class Constantes {
     public static final int TAMANO_BOSQUE=500;
     public static final int MINIMO_VIDA_DINO=200;
     public static final int RANGO_VIDA_DINO=100;
+    public static final int EFECTO_ALEGRIA_VENCER_PELEA=8;
+    public static final int TIEMPO_ESPERA_BOSQUE=2;
+    public static final int TIEMPO_ESPERA_ENTRADA_BOSQUE=1000;
     public static final String PREGUNTA_MODERNIZA_ESTADIO="Introduzca la nueva capacidad del estadio";
 }

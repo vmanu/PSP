@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import static lugares.Lugares.*;
+import static lugares.Constantes.*;
 import modelo.Dinosaurio;
 
 /**
@@ -19,38 +21,35 @@ public class Arbol {
     private Lock locker;
     private Dinosaurio esperando;
     private Condition cond;
-    /*
-    Lock (usamos tryLock)
-    condition
     
-    if(Lock.tryLock()){
-        if(soyprimero){
-            await(n segundos);
-        }   else{
-            luchar;
-        }
-        signalall()
-    }
-    */
     public Arbol(){
         locker=new ReentrantLock();
         cond=locker.newCondition();
     }
     
-    public void entrar(Dinosaurio dino){
-        try{if(locker.tryLock(1000, TimeUnit.MILLISECONDS)){
-            if(esperando==null){
-                esperando=dino;
-                cond.await();
-            }   else{
-                dino.luchar(esperando);
-                cond.signalAll();
+    public boolean entrar(Dinosaurio dino){
+        boolean entra=false;
+        try{
+            if(locker.tryLock(TIEMPO_ESPERA_ENTRADA_BOSQUE, TimeUnit.MILLISECONDS)){
+                if(esperando==null){
+                    esperando=dino;
+                    entra=true;
+                    cond.await(TIEMPO_ESPERA_BOSQUE, TimeUnit.SECONDS);
+                    esperando=null;
+                }   else{
+                    if(!(!esperando.isCarnivoro()&&!dino.isCarnivoro())){//SOLO NO ENTRA SI AMBOS SON HERVIVOROS, QUE NO PELEARIAN
+                        entra=true;
+                        dino.luchar(esperando);
+                        dino.setLugarActual(HABITAT);
+                        cond.signalAll();
+                        esperando=null;
+                    }
+                }
+                locker.unlock();
             }
-            esperando=null;
-            locker.unlock();
-        }
         }catch(InterruptedException e){
-    
+            cond.signalAll();
         }
+        return entra;
     }
 }

@@ -138,6 +138,7 @@ public class Habitat implements Runnable {
         sexBoom.coitusInterruptus();
         santiagoBernabeu.interrumpe();
         bulli.para();
+        bosque.para();
         synchronized (dinosaurios) {
             for (Dinosaurio dino : dinosaurios) {
                 dino.mata();
