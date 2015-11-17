@@ -73,7 +73,6 @@ public class Bienvenidos_a_Jurassic_Park {
             op=getOpcion();
             switch(op){
                 case 1:
-                    System.out.println(ESTADIO_SIZE);
                     habitat.bigBang();
                     break;
                 case 2:

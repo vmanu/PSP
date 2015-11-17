@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import modelo.Dinosaurio;
 import static lugares.Constantes.*;
 import static lugares.Lugares.*;
@@ -46,6 +44,7 @@ public class Estadio {
                     dinos.clear();
                 } catch (InterruptedException ex) {
                     barrera.reset();
+                    dinos.clear();
                 }
             }
         });
@@ -66,11 +65,13 @@ public class Estadio {
             }
         } catch (InterruptedException | BrokenBarrierException ex){
             barrera.reset();
+            dinos.clear();
         } 
     }
     
     public void interrumpe(){
         barrera.reset();
+        dinos.clear();
     }
     
     public void setTamanoEstadio(int tamano){

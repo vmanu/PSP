@@ -34,5 +34,6 @@ public class Constantes {
     public static final int EFECTO_ALEGRIA_VENCER_PELEA=8;
     public static final int TIEMPO_ESPERA_BOSQUE=2;
     public static final int TIEMPO_ESPERA_ENTRADA_BOSQUE=1000;
+    public static final int TIEMPO_LUCHA=300;
     public static final String PREGUNTA_MODERNIZA_ESTADIO="Introduzca la nueva capacidad del estadio";
 }

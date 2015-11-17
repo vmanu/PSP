@@ -6,6 +6,8 @@
 package modelo;
 
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lugares.Habitat;
 import static lugares.Lugares.*;
 import lugares.Lugares;
@@ -41,7 +43,7 @@ public class Dinosaurio implements Runnable{
         dino.setName(nombre);
         sexo=(((int)(Math.random()*10)%2)==0?MASCULINO:FEMENINO);
         pelea=0;
-        carnivoro=((int)(Math.random())*100)%2==0;
+        carnivoro=((int)(Math.random()*10)%2)==0;
     }
     
     public Dinosaurio(String nombre, int vida, Habitat habitat, boolean herencia){
@@ -124,22 +126,27 @@ public class Dinosaurio implements Runnable{
     }
     
     public void luchar(Dinosaurio esperando) {
-        if(pelea<esperando.getPuntosLucha()){
-            vida-=(esperando.getPuntosLucha()-pelea);
-            esperando.setPuntosLucha(pelea);
-            pelea=0;
-            if(vida<=0&&esperando.isCarnivoro()){
-                esperando.restaHambre(EFECTO_COMIDA_DINO);
+        try {
+            TimeUnit.MILLISECONDS.sleep(TIEMPO_LUCHA);
+            if(pelea<esperando.getPuntosLucha()){
+                vida-=(esperando.getPuntosLucha()-pelea);
+                esperando.setPuntosLucha(pelea);
+                pelea=0;
+                if(vida<=0&&esperando.isCarnivoro()){
+                    esperando.restaHambre(EFECTO_COMIDA_DINO);
+                }
+                esperando.aumentaAlegria(EFECTO_ALEGRIA_VENCER_PELEA);
+            }else{
+                esperando.setVida(pelea-esperando.getPuntosLucha());
+                this.setPuntosLucha(esperando.getPuntosLucha());
+                esperando.resetPuntosLucha();
+                if(esperando.getVida()<=0&&carnivoro){
+                    this.restaHambre(EFECTO_COMIDA_DINO);
+                }
+                this.aumentaAlegria(EFECTO_ALEGRIA_VENCER_PELEA);
             }
-            esperando.aumentaAlegria(EFECTO_ALEGRIA_VENCER_PELEA);
-        }else{
-            esperando.setVida(pelea-esperando.getPuntosLucha());
-            this.setPuntosLucha(esperando.getPuntosLucha());
-            esperando.resetPuntosLucha();
-            if(esperando.getVida()<=0&&carnivoro){
-                this.restaHambre(EFECTO_COMIDA_DINO);
-            }
-            this.aumentaAlegria(EFECTO_ALEGRIA_VENCER_PELEA);
+        } catch (InterruptedException ex) {
+            
         }
     }
     
@@ -149,7 +156,7 @@ public class Dinosaurio implements Runnable{
         if(hambre>DINOSAURIOS_HAMBRE_MAXIMA*0.6){
             lugar=RESTAURANTE;
         }else{
-            if(edad>18&&edad<MINIMO_VIDA_DINO*0.4&&loteria<50){
+            if(edad>18&&edad<MINIMO_VIDA_DINO*0.5){
                 lugar=PICADERO;
             }else{
                 if(loteria%2==0){
@@ -193,7 +200,7 @@ public class Dinosaurio implements Runnable{
     @Override
     public String toString(){
         StringBuffer cadena=new StringBuffer();
-        return cadena.append(nombre).append(" mi edad es ").append(edad).append(" años y mi hambre es de ").append(hambre).append(" y la alegría es de ").append(alegria).append(". Estoy en ").append(getLugar()).append(". Mi sexo es ").append(sexo).append(", soy ").append(carnivoro?"Carnivoro":"Hervivoro").append(" y tengo ").append(pelea).append(" puntos de ").append(carnivoro?"ataque":"defensa").toString();
+        return cadena.append(nombre).append(" mi edad es ").append(edad).append(" años y mi hambre es de ").append(hambre).append(" y la alegría es de ").append(alegria).append(". Estoy en ").append(getLugar()).append(". Mi sexo es ").append(sexo).append(", soy ").append(carnivoro?"Carnivoro":"Herbivoro").append(" y tengo ").append(pelea).append(" puntos de ").append(carnivoro?"ataque":"defensa").toString();
     }//.append("\tME RESTA=").append(vida)
 
     @Override
