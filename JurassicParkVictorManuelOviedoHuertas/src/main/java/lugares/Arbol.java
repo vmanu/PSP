@@ -23,7 +23,7 @@ public class Arbol {
     private Condition cond;
     
     public Arbol(){
-        locker=new ReentrantLock();
+        locker=new ReentrantLock(true);//El true indica que el que lleve mas tiempo esperando, sea el que ejecute el codigo del lock
         cond=locker.newCondition();
     }
     
@@ -49,6 +49,7 @@ public class Arbol {
             }
         }catch(InterruptedException e){
             cond.signalAll();
+            locker.unlock();
         }
         return entra;
     }
