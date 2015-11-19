@@ -6,10 +6,13 @@
 package proyecto_ninos;
 
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static proyecto_ninos.Constantes.*;
 
 /**
@@ -28,7 +31,7 @@ public class Pista {
         llave=new ReentrantLock();
         tamanoPista=TAMAÑO_PISTA;
         for(int i=0;i<NUMERO_DE_NIÑOS;i++){
-            ninos.add(new Nino());
+            new Nino((i+1),this);
             turnos.add(llave.newCondition());
         }
         barrera=new CyclicBarrier(NUMERO_DE_NIÑOS, new Runnable(){
@@ -38,13 +41,21 @@ public class Pista {
                 for(int i=0;i<NUMERO_DE_NIÑOS;i++){
                     ninos.get(i).setConditions(turnos.get(i), turnos.get(i+1%NUMERO_DE_NIÑOS));
                 }
+                turnos.get(0).signal();
             }
             
         });
     }
     
     public void entrar(Nino child){
-        synchronized(ninos){
+        try {
+            synchronized(ninos){
+                ninos.add(child);
+            }
+            barrera.await();
+        } catch (InterruptedException ex) {
+            
+        } catch (BrokenBarrierException ex) {
             
         }
     }
