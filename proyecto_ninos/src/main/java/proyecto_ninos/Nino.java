@@ -87,7 +87,6 @@ public class Nino implements Runnable {
                     miCondition.await();
                 }
                 tirarChapa();
-                nextCondition.signalAll();
                 if(distanciaRecorrida>=TAMAÑO_PISTA){
                     pista.interrumpir();
                 }else{
