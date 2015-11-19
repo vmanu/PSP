@@ -11,8 +11,6 @@ import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static proyecto_ninos.Constantes.*;
 
 /**
@@ -25,26 +23,38 @@ public class Pista {
     private ArrayList<Nino> ninos;
     private CyclicBarrier barrera;
     private int tamanoPista;
+    private boolean interrumpido;
     
     
     public Pista(){
         llave=new ReentrantLock();
+        interrumpido=false;
         tamanoPista=TAMAÑO_PISTA;
+        ninos=new ArrayList();
+        turnos=new ArrayList();
         for(int i=0;i<NUMERO_DE_NIÑOS;i++){
-            new Nino((i+1),this);
             turnos.add(llave.newCondition());
         }
         barrera=new CyclicBarrier(NUMERO_DE_NIÑOS, new Runnable(){
 
             @Override
             public void run() {
-                for(int i=0;i<NUMERO_DE_NIÑOS;i++){
-                    ninos.get(i).setConditions(turnos.get(i), turnos.get(i+1%NUMERO_DE_NIÑOS));
+                if(!interrumpido){
+                    for(int i=0;i<NUMERO_DE_NIÑOS;i++){
+                        ninos.get(i).setConditions(turnos.get(i), turnos.get((i+1)%NUMERO_DE_NIÑOS));
+                    }
+                    ninos.get(0).setPrimero();
                 }
-                turnos.get(0).signal();
             }
             
         });
+        for(int i=0;i<NUMERO_DE_NIÑOS;i++){
+            new Nino((i+1),this);
+        }
+    }
+    
+    public Lock getLock(){
+        return llave;
     }
     
     public void entrar(Nino child){
@@ -57,6 +67,22 @@ public class Pista {
             
         } catch (BrokenBarrierException ex) {
             
+        }
+    }
+    
+    public String muestraNiños(){
+        StringBuffer cadena=new StringBuffer();
+        cadena.append("Los niños están así:\n");
+        for(Nino child:ninos){
+            cadena.append(child.toString()).append("\n");
+        }
+        return cadena.toString();
+    }
+    
+    public void interrumpir(){
+        interrumpido=true;
+        for(Nino child:ninos){
+            child.interrumpir();
         }
     }
 }
