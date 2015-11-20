@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import static constantes.Constantes.*;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import lugares.Pista;
 
 /**
@@ -36,22 +38,24 @@ public class Arbitro implements Runnable{
     
     public void eligeNumero(){
         int pos=-1;
+        System.out.println("ARBITRO ELIGIENDO NUMERO...");
         do{
             pos=(int)(Math.random()*(NUMERO_NIÑOS/2));
         }while(numerosDichos.contains(pos));
         numerosDichos.add(pos);
         numeros.get(pos).signalAll();
-        System.out.println(numeros.get(pos).toString().substring(numeros.get(pos).toString().indexOf("@")+1));
+        System.out.println("El arbitro dice: "+numeros.get(pos).toString().substring(numeros.get(pos).toString().indexOf("@")+1));
     }
 
     @Override
     public void run() {
         while(!interrumpido&&numerosDichos.size()<(NUMERO_NIÑOS/2)){
             try {
-                if(numerosDichos.size()!=0){
+                if(!numerosDichos.isEmpty()){
                     TimeUnit.MILLISECONDS.sleep(1500);
                 }
                 pista.getLock().lock();
+                System.out.println("ARBITRO ENTRA A ESPERAR");
                 eligenumero.await();
                 eligeNumero();
             } catch (InterruptedException ex) {
@@ -59,6 +63,11 @@ public class Arbitro implements Runnable{
             } finally{
                 pista.getLock().unlock();
             }
+        }
+        try {
+            TimeUnit.SECONDS.sleep(15);
+        } catch (InterruptedException ex) {
+            
         }
         System.out.println(pista.dimeWinner());
     }

@@ -11,6 +11,8 @@ import lugares.Pista;
 import static constantes.Constantes.*;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -40,24 +42,45 @@ public class Nino implements Runnable {
         miCondition=get;
     }
     
-    public void correrCasa(){
+    public void correrCasa(boolean salido){
         int velocidadTemporal=velocidad;
-        try {
-            int distancia=0;
-            while(distancia<LONGITUD_CARRERA){
-                TimeUnit.MILLISECONDS.sleep(TIEMPO_EJECUCION_VELOCIDAD);
-                distancia+=velocidadTemporal;
-            }
-            synchronized(pista.getPlayers()){
-                pista.addPlayer(this);
-            }
-            if(pista.getPlayers().size()==2){
+        if(!salido){
+            try {
+                int distancia=0;
+                while(distancia<LONGITUD_CARRERA){
+                    TimeUnit.MILLISECONDS.sleep(TIEMPO_EJECUCION_VELOCIDAD);
+                    distancia+=velocidadTemporal;
+                    if(distancia<LONGITUD_CARRERA){
+                        if(velocidadTemporal>10){
+                            velocidadTemporal-=(int)(Math.random()*7);
+                            if(velocidadTemporal<10){
+                                velocidadTemporal=10;
+                            }
+                        }
+                    }
+                }
+                synchronized(pista.getPlayers()){
+                    pista.addPlayer(this);
+                }
+                if(pista.getPlayers().size()==2){
+                    pista.levantaArbitro();
+                }
+            } catch (InterruptedException ex) {
+                interrumpido=true;
+            } 
+        }else{
+            try {
+                TimeUnit.SECONDS.sleep(10);
+                synchronized(pista.getPlayers()){
+                    pista.addPlayer(this);
+                }
+                if(pista.getPlayers().size()==2){
+                    pista.levantaArbitro();
+                }
+            } catch (InterruptedException ex) {
                 
-                pista.levantaArbitro();
             }
-        } catch (InterruptedException ex) {
-            interrumpido=true;
-        } 
+        }
     }
     
     public boolean cogerTrapo(){
@@ -70,21 +93,29 @@ public class Nino implements Runnable {
                 distancia+=velocidadTemporal;
                 if(distancia>(LONGITUD_CARRERA+MARGEN_ERROR)){
                     cogido=false;
+                    System.out.println(nombre+" se ha pasado, pierde");
+                    correrCasa(true);
                 }else{
                     if(distancia<LONGITUD_CARRERA){
-                        velocidadTemporal-=(int)(Math.random()*7);
+                        if(velocidadTemporal>10){
+                            velocidadTemporal-=(int)(Math.random()*7);
+                            if(velocidadTemporal<10){
+                                velocidadTemporal=10;
+                            }
+                        }
                     }else{
                         pista.getTrapo().await(TIEMPO_ESPERA_TRAPO, TimeUnit.MILLISECONDS);
-                        correrCasa();
+                        System.out.println(nombre+" corre a casa");
+                        correrCasa(false);
                     }
                 }
             }
         } catch (InterruptedException ex) {
             interrumpido=true;
         } catch (BrokenBarrierException ex) {
-            correrCasa();
+            correrCasa(false);
         } catch (TimeoutException ex) {
-            correrCasa();
+            correrCasa(false);
         }
         return cogido;
     }

@@ -90,7 +90,7 @@ public class Pista {
         players.add(child);
         if(players.size()==2){
             quitarNiño(child);
-            noticias.append("Ha ganado ").append(players.get(0).toString());
+            noticias.append("Ha ganado ").append(players.get(0).toString()).append("\n");
             trapo.reset();
             players.clear();
         }
