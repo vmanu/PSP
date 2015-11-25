@@ -78,15 +78,15 @@ public class Nino implements Runnable {
                     pista.levantaArbitro();
                 }
             } catch (InterruptedException ex) {
-                
+                interrumpido=true;
             }
         }
     }
     
     public boolean cogerTrapo(){
         boolean cogido=true;
-        int velocidadTemporal=velocidad;
         try {
+            int velocidadTemporal=velocidad;
             int distancia=0;
             while(distancia<LONGITUD_CARRERA){
                 TimeUnit.MILLISECONDS.sleep(TIEMPO_EJECUCION_VELOCIDAD);

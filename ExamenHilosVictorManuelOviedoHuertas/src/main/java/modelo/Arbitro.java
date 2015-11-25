@@ -59,7 +59,7 @@ public class Arbitro implements Runnable{
                 eligenumero.await();
                 eligeNumero();
             } catch (InterruptedException ex) {
-                
+                numeros.clear();
             } finally{
                 pista.getLock().unlock();
             }
