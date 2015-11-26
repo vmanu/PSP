@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
  */ 
 public class Sala {
     private CyclicBarrier barrera;
-    private CountDownLatch aaaarranca;
+    private CountDownLatch arranca;
     private Lock locker;
     private ArrayList<Condition> sillas;
     private Condition dePie;
@@ -33,7 +33,7 @@ public class Sala {
     
     public Sala(){
         interrumpido=false;
-        aaaarranca=new CountDownLatch(NUMERO_DE_NIÑOS+1);
+        arranca=new CountDownLatch(NUMERO_DE_NIÑOS+1);
         locker=new ReentrantLock();
         sillas=new ArrayList();
         childs=new ArrayList();
@@ -43,7 +43,6 @@ public class Sala {
             }else{
                 dePie=locker.newCondition();
             }
-            new Nino("Niño "+(i+1));
         }
         arbi=new Arbitro(this,dePie);
         barrera=new CyclicBarrier(NUMERO_DE_NIÑOS, new Runnable(){
@@ -51,7 +50,7 @@ public class Sala {
             @Override
             public void run() {
                 if(!interrumpido){
-                    for(int i=0;i<(NUMERO_DE_NIÑOS-1);i++){
+                    for(int i=0;i<sillas.size();i++){
                         childs.get(i).setSilla(sillas.get(i));
                     }
                     childs.get(NUMERO_DE_NIÑOS-1).setSilla(dePie);
@@ -59,15 +58,47 @@ public class Sala {
             }
             
         });
+        for(int i=0;i<NUMERO_DE_NIÑOS;i++){
+            new Nino("Niño "+(i+1),this);
+        }
     }
     
-    public CountDownLatch despiertaArbitro(){
-        return aaaarranca;
+    public CountDownLatch getCountDownLatch(){
+        return arranca;
     }
     
     public Lock getLock(){
         return locker;
     }
+    
+    public void cambioSilla(Nino yo){
+        int siguiente=(childs.indexOf(yo)+1)%childs.size();
+        locker.lock();
+        childs.get(siguiente).getSilla().signalAll();
+        locker.unlock();
+        yo.setSilla(childs.get(siguiente).getSilla());
+        childs.get(siguiente).setSilla(null);
+        System.out.println(childs.get(siguiente).getName()+" se levanta y "+yo.getName()+" se sienta");
+    }
+    
+    public Condition getDePie(){
+        return dePie;
+    }
+    
+    public void pararMusica(){
+        for(Nino chiquillo:childs){
+            chiquillo.pararMusica();
+        }
+    }
+    
+    public void gameOver() {
+        locker.lock();
+        for(Condition chair:sillas){
+            chair.signalAll();
+        }
+        locker.unlock();
+    }
+
     
     /**
      * Metodo equivalente al "entrar" en dinosaurios
@@ -86,3 +117,4 @@ public class Sala {
         }
     }
 }
+    

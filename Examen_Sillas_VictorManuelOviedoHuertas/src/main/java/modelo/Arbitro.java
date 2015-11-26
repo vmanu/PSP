@@ -5,10 +5,12 @@
  */
 package modelo;
 
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lugar.Sala;
+import static constantes.Constantes.*;
 
 /**
  * Arbitro duerme en su run y esperar a que niños despierten a arbitro
@@ -22,17 +24,25 @@ public class Arbitro implements Runnable{
     public Arbitro(Sala sala, Condition levantaParaEmpezar) {
         this.sala=sala;
         this.levantaParaEmpezar=levantaParaEmpezar;
-        yo=new Thread();
+        yo=new Thread(this);
         yo.start();
+        yo.setName("Arbitro");
     }
 
     @Override
     public void run() {
         try {
-            sala.despiertaArbitro().countDown();
-            sala.despiertaArbitro().await();
+            sala.getCountDownLatch().countDown();
+            sala.getCountDownLatch().await();
+            sala.getLock().lock();
+            levantaParaEmpezar.signalAll();
+            sala.getLock().unlock();
+            TimeUnit.SECONDS.sleep((NUMERO_DE_NIÑOS/2)+((int)(Math.random()*50)));
+            sala.pararMusica();
         } catch (InterruptedException ex) {
-            Logger.getLogger(Arbitro.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } finally{
+            
         }
     }
 
