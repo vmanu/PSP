@@ -13,7 +13,7 @@ import lugar.Sala;
 import static constantes.Constantes.*;
 
 /**
- * Arbitro duerme en su run y esperar a que niños despierten a arbitro
+ * Arbitro duerme en su run y esperar a que niÃ±os despierten a arbitro
  * una vez levantado: suena musica aleatorio (determina cuando debe de analizarse quien pierde
  */
 public class Arbitro implements Runnable{
