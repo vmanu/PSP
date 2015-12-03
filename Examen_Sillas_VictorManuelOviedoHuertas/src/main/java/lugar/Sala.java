@@ -98,6 +98,10 @@ public class Sala {
         }
         locker.unlock();
     }
+    
+    public void interrumpir(){
+        arbi.interrumpir();
+    }
 
     
     /**

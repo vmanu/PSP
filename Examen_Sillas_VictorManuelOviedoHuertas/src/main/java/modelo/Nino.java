@@ -60,7 +60,7 @@ public class Nino implements Runnable{
                 if(sala.getCountDownLatch().getCount()!=0){
                     sala.getCountDownLatch().countDown();
                 }
-                if(silla!=null){
+                if(silla!=null&&musica){
                     silla.await();
                 }
                 if(silla!=null&&silla.equals(sala.getDePie())){

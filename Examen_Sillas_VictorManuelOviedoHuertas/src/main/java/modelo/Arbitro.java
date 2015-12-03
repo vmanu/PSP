@@ -37,13 +37,16 @@ public class Arbitro implements Runnable{
             sala.getLock().lock();
             levantaParaEmpezar.signalAll();
             sala.getLock().unlock();
-            TimeUnit.SECONDS.sleep((NUMERO_DE_NIÑOS/2)+((int)(Math.random()*50)));
+            TimeUnit.SECONDS.sleep((NUMERO_DE_NIÑOS)+((int)(Math.random()*10)));
             sala.pararMusica();
         } catch (InterruptedException ex) {
-            
+            sala.pararMusica();
         } finally{
             
         }
     }
 
+    public void interrumpir() {
+        yo.interrupt();
+    }
 }
