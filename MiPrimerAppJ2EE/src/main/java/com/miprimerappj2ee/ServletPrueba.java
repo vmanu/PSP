@@ -8,6 +8,9 @@ package com.miprimerappj2ee;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dam2
  */
-@WebServlet(urlPatterns = {"prueba"})
+@WebServlet(urlPatterns = {"/prueba"})
 public class ServletPrueba extends HttpServlet {
 
     /**
@@ -32,19 +35,52 @@ public class ServletPrueba extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        // <editor-fold defaultstate="collapsed" desc="PARTE BORRADA">
+        /*response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {*/
+        //</editor-fold>
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
+        
+        // <editor-fold defaultstate="collapsed" desc="PARTE BORRADA">
+            /*out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet ServletPrueba Victor</title>");            
             out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ServletPrueba at " + request.getContextPath() + "</h1>");
+            out.println("<body>");*/
+            //</editor-fold>  
+            //RECORRO PARAMETROS (NO SE SUELE HACER)
+            Map <String, String[]> param=request.getParameterMap();
+            for(Entry<String,String []> e:param.entrySet()){
+                // <editor-fold defaultstate="collapsed" desc="PARTE BORRADA">
+                /*out.println("<h1> nombre "+e.getKey()+" </h1>");
+                out.println("<h1> valor "+e.getValue()[0]+" </h1>");*/
+                //</editor-fold>
+            }
+            //saco valor 
+            String code=request.getParameter("code");
+            if(code==null){
+                code="";
+            }
+            
+            switch(code){
+                case "UNO":
+                    request.getRequestDispatcher("/uno.jsp").forward(request, response);
+                    break;
+                case "DOS":
+                    request.getRequestDispatcher("/dos.jsp").forward(request, response);
+                    break;
+                default:
+                    request.getRequestDispatcher("/error.jsp").forward(request, response);
+            }
+            // <editor-fold defaultstate="collapsed" desc="PARTE BORRADA">
+        /*
+            out.println("<h1> valor operacion"+request.getParameter("operacion")+" </h1>");
+            out.println("<h1>Servlet ServletPrueba at </h1>");
             out.println("</body>");
             out.println("</html>");
-        }
+        }*/
+            //</editor-fold>
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
