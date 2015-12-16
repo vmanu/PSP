@@ -13,5 +13,9 @@
     </head>
     <body>
         <h1 style="background: blue">Hello World! 2</h1>
+        <%
+            response.getWriter().println(request.getSession().getAttribute("numero"));
+            
+            %>
     </body>
 </html>
