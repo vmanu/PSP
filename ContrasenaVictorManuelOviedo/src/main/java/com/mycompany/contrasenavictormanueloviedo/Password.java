@@ -8,7 +8,7 @@ package com.mycompany.contrasenavictormanueloviedo;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.*;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,9 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author dam2
  */
-@WebServlet(name = "TestInitParan", urlPatterns = {"/TestInitParan"},initParams = {
-        @WebInitParam(name="secretValue1",value="test"),@WebInitParam(name="secretValue2",value="testa"),@WebInitParam(name="secretValue3",value="testar")})
-public class TestInitParan extends HttpServlet {
+@WebServlet(name = "Password", urlPatterns = {"/password"})
+public class Password extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,38 +32,24 @@ public class TestInitParan extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestInitParan</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            boolean adivinatodo=true;
-            if(request.getParameter("v1").equals(getServletConfig().getInitParameter("secretValue1"))){
-                out.println("<h1>Primer secretValue esta adivinado: \""+getServletConfig().getInitParameter("secretValue1")+"\"</h1>");
-            }else{
-                out.println("<h1>Primer secretValue no esta adivinado, \""+request.getParameter("v1")+"\" es incorrecto</h1>");
-                adivinatodo=false;
+        boolean cajaAbierta = false;
+        String pass = "paquete";
+        Boolean numerosAdivinados = (Boolean) request.getSession().getAttribute("cajaAbierta");
+        if (numerosAdivinados == null) {
+            numerosAdivinados = false;
+        }
+        if (numerosAdivinados) {
+            if (request.getParameter("pass").equals(pass)) {
+                cajaAbierta = true;
+                request.getSession().setAttribute("passOk", cajaAbierta);
+            } else {
+                request.getSession().setAttribute("cajaAbierta", false);
             }
-            if(request.getParameter("v2").equals(getServletConfig().getInitParameter("secretValue2"))){
-                out.println("<h1>Segundo secretValue esta adivinado: \""+getServletConfig().getInitParameter("secretValue2")+"\"</h1>");
-            }else{
-                out.println("<h1>Segundo secretValue no esta adivinado, \""+request.getParameter("v2")+"\" es incorrecto</h1>");
-                adivinatodo=false;
-            }
-            if(request.getParameter("v3").equals(getServletConfig().getInitParameter("secretValue3"))){
-                out.println("<h1>Tercer secretValue esta adivinado: \""+getServletConfig().getInitParameter("secretValue3")+"\"</h1>");
-            }else{
-                out.println("<h1>Tercer secretValue no esta adivinado, \""+request.getParameter("v3")+"\" es incorrecto</h1>");
-                adivinatodo=false;
-            }
-            if(adivinatodo){
-                out.println("<h1>TODO ADIVINADO!!!</h1>");
-            }
-            out.println("</body>");
-            out.println("</html>");
+        }
+        if (!cajaAbierta) {
+            request.getRequestDispatcher("/SigueBuscando.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/CajaAbierta.jsp").forward(request, response);
         }
     }
 
