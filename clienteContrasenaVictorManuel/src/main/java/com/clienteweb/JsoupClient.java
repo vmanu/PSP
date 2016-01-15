@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.jsoup.Connection.Response;
@@ -23,30 +24,24 @@ import org.jsoup.nodes.Document;
 public class JsoupClient {
 
     public static void main(String[] args) {
-        Document homePage = null;
         Response response = null;
-
+        Map<String, String> cookies = null;
         try {
-            response = Jsoup.connect("http://localhost:8080/ServletSession")
+            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=1")
                     .execute();
-            response.body();
-            
-            
-            homePage = Jsoup.connect("http://localhost:8080/ServletSession")
-                    //.data("optionsProfesores", "null")
-                    .cookies(response.cookies())
-                    .post();
-            
-            response = Jsoup.connect("http://localhost:8080/ServletSession")
-                    .cookies(response.cookies())
+            System.out.println(response.parse().body().text());
+            cookies = response.cookies();
+            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=2")
+                    .cookies(cookies)
                     .execute();
-            response.body();
-
-        } catch (IOException ex) {
-            Logger.getLogger(JsoupClient.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.out.println(homePage.body().text());
-        try {
+            System.out.println(response.parse().body().text());
+            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=3")
+                    .cookies(cookies)
+                    .execute();
+            System.out.println(response.parse().body().text());
+            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/password?pass=paquete")
+                    .cookies(cookies)
+                    .execute();
             System.out.println(response.parse().body().text());
         } catch (IOException ex) {
             Logger.getLogger(JsoupClient.class.getName()).log(Level.SEVERE, null, ex);
