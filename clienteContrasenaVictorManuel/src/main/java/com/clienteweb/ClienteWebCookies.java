@@ -57,15 +57,13 @@ public class ClienteWebCookies {
                 response1.close();
             }
         } catch (IOException ex) {
-            Logger.getLogger(ClientWeb.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ClienteWebCookies.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 httpclient.close();
             } catch (IOException ex) {
-                Logger.getLogger(ClientWeb.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ClienteWebCookies.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        //http://localhost:8080/ContrasenaVictorManuelOviedo/password?pass=paquete
     }
 }
