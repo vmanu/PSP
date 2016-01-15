@@ -13,7 +13,7 @@
     </head>
     <body>
         <form method="GET" action="cajaFuerte">
-            Value: <input type="text" name="num" required/>
+            Value (<%=request.getSession().getAttribute("posicion")%>): <input type="text" name="num" required/>
             <input type="submit" id="submit"/>
         </form>
     </body>
