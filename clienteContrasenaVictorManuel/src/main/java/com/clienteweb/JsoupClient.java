@@ -5,6 +5,7 @@
  */
 package com.clienteweb;
 
+import configuracion.Configuracion;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -27,19 +28,19 @@ public class JsoupClient {
         Response response = null;
         Map<String, String> cookies = null;
         try {
-            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=1")
+            response = Jsoup.connect(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=1")
                     .execute();
             System.out.println(response.parse().body().text());
             cookies = response.cookies();
-            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=2")
+            response = Jsoup.connect(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=2")
                     .cookies(cookies)
                     .execute();
             System.out.println(response.parse().body().text());
-            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=3")
+            response = Jsoup.connect(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=3")
                     .cookies(cookies)
                     .execute();
             System.out.println(response.parse().body().text());
-            response = Jsoup.connect("http://localhost:8080/ContrasenaVictorManuelOviedo/password?pass=paquete")
+            response = Jsoup.connect(Configuracion.getInstance().getUrlbase()+"/password?pass=paquete")
                     .cookies(cookies)
                     .execute();
             System.out.println(response.parse().body().text());

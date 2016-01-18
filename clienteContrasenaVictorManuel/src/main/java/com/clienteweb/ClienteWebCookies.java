@@ -8,6 +8,7 @@ package com.clienteweb;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import configuracion.Configuracion;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,24 +33,24 @@ public class ClienteWebCookies {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             //PRIMER NUMERO
-            HttpGet httpGet = new HttpGet("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=1");
+            HttpGet httpGet = new HttpGet(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=1");
             HttpClientContext context = HttpClientContext.create();
             CloseableHttpResponse response1 = httpclient.execute(httpGet, context);
             try {
                 HttpEntity entity1 = response1.getEntity();
                 System.out.println(EntityUtils.toString(entity1, "UTF-8"));
                 //SEGUNDO NUMERO
-                httpGet = new HttpGet("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=2");
+                httpGet = new HttpGet(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=2");
                 response1 = httpclient.execute(httpGet, context);
                 entity1 = response1.getEntity();
                 System.out.println(EntityUtils.toString(entity1, "UTF-8"));
                 //TERCER NUMERO
-                httpGet = new HttpGet("http://localhost:8080/ContrasenaVictorManuelOviedo/cajaFuerte?num=3");
+                httpGet = new HttpGet(Configuracion.getInstance().getUrlbase()+"/cajaFuerte?num=3");
                 response1 = httpclient.execute(httpGet, context);
                 entity1 = response1.getEntity();
                 System.out.println(EntityUtils.toString(entity1, "UTF-8"));
                 //CONTRASEÑA
-                httpGet = new HttpGet("http://localhost:8080/ContrasenaVictorManuelOviedo/password?pass=paquete");
+                httpGet = new HttpGet(Configuracion.getInstance().getUrlbase()+"/password?pass=paquete");
                 response1 = httpclient.execute(httpGet, context);
                 entity1 = response1.getEntity();
                 System.out.println(EntityUtils.toString(entity1, "UTF-8"));

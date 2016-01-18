@@ -1,3 +1,3 @@
 ## YAML Template.
 ---
-- urlbase: http://localhost:8080/ContrasenaVictorManuelOviedo
+urlbase: http://localhost:8080/ContrasenaVictorManuelOviedo
