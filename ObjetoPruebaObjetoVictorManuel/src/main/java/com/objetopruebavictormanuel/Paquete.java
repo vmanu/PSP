@@ -16,6 +16,10 @@ public class Paquete {
         
     }
     
+    public Paquete(String nombre){
+        this.nombre=nombre;
+    }
+    
     public String getNombre(){
         return nombre;
     }
