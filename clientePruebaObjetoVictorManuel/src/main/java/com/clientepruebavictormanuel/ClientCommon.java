@@ -33,7 +33,7 @@ public class ClientCommon {
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
-            HttpGet httpGet = new HttpGet("http://localhost:8080/ControllerPeliculas?op=ADD");
+            HttpGet httpGet = new HttpGet("http://localhost:8080/ServidorPruebaObjetoVictorManuel/ControllerPaquete");
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
             try {
                 System.out.println(response1.getStatusLine());
@@ -49,29 +49,6 @@ public class ClientCommon {
             } finally {
                 response1.close();
             }
-            ResponseHandler<Paquete> rh = new ResponseHandler<Paquete>() {
-                @Override
-                public Paquete handleResponse(final HttpResponse response) throws IOException {
-                    Paquete j = null;
-                    StatusLine statusLine = response.getStatusLine();
-                    HttpEntity entity = response.getEntity();
-                    if (statusLine.getStatusCode() >= 300) {
-                        throw new HttpResponseException(statusLine.getStatusCode(), statusLine.getReasonPhrase());
-                    }
-                    if (entity == null) {
-                        throw new ClientProtocolException("Response contains no content");
-                    }
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                        j = mapper.readValue(entity.getContent(), new TypeReference<Paquete>() {});
-                    } catch (IOException ex) {
-                    }
-                    return j;
-                }
-            };
-            Paquete jjj = httpclient.execute(httpGet, rh);
-            System.out.println(jjj.getNombre());
         } catch (IOException ex) {
             Logger.getLogger(ClientCommon.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
