@@ -5,7 +5,6 @@
  */
 package com.servidorpruebavictormanuel;
 
-
 import com.objetopruebavictormanuel.Paquete;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
@@ -23,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author oscar
  */
-@WebServlet(name = "ControllerPeliculas", urlPatterns = {"/ControllerPeliculas"})
-public class ControllerPeliculas extends HttpServlet {
+@WebServlet(name = "ControllerPaquete", urlPatterns = {"/ControllerPaquete"})
+public class ControllerPaquete extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,29 +36,12 @@ public class ControllerPeliculas extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String op = request.getParameter("op");
-        if (op != null) {
-            Juego j = new Juego("gow", 1);
-            switch (op) {
-                case "ADD":
-                    break;
-                case "LISTA":
-                    break;
-                case "DEL":
-                    break;
-
-            }
-
-            try {
-                ObjectMapper mapper = new ObjectMapper();
-                mapper.writeValue(response.getOutputStream(), j);
-            } catch (IOException ex) {
-
-            }
-
+        Paquete j = new Paquete("paqueton");
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(response.getOutputStream(), j);
+        } catch (IOException ex) {
         }
-
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
