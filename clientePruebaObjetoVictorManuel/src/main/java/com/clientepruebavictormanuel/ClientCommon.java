@@ -5,7 +5,7 @@
  */
 package com.clientepruebavictormanuel;
 
-import com.objetopruebavictormanuel.Paquete;
+import com.objetopruebavictormanuel.Juego;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ public class ClientCommon {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    Paquete j = mapper.readValue(entity1.getContent(), new TypeReference<Paquete>() {
+                    Juego j = mapper.readValue(entity1.getContent(), new TypeReference<Juego>() {
                     });
                     System.out.println(j.getNombre());
                 } catch (IOException ex) {
