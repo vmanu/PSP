@@ -5,7 +5,7 @@
  */
 package com.servidorpruebavictormanuel;
 
-import com.objetopruebavictormanuel.Paquete;
+import com.objetopruebavictormanuel.Juego;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class ControllerPaquete extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        Paquete j = new Paquete("paqueton");
+//        Juego j = new Juego();
         try {
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), j);
