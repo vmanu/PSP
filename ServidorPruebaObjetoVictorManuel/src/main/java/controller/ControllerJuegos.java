@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.servidorpruebavictormanuel;
+package controller;
 
 import com.objetopruebavictormanuel.Juego;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,13 +18,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.ControllerServiceJuegos;
 
 /**
  *
  * @author oscar
  */
-@WebServlet(name = "ControllerPaquete", urlPatterns = {"/ControllerPaquete"})
-public class ControllerPaquete extends HttpServlet {
+@WebServlet(name = "ControllerJuegos", urlPatterns = {"/ControllerJuegos"})
+public class ControllerJuegos extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,10 +39,33 @@ public class ControllerPaquete extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        Juego j = new Juego();
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getOutputStream(), j);
-        } catch (IOException ex) {
+        ControllerServiceJuegos sj=new ControllerServiceJuegos();
+        String nombre=null;
+       
+        int creador,tipo,ventas;
+        Date fecha;
+        Juego j;
+        String op = request.getParameter("opcion");
+        switch(op){
+            case "insert":
+                nombre= request.getParameter("name");
+                tipo=Integer.parseInt(request.getParameter("type"));
+                fecha=new Date(request.getParameter("date"));
+                creador=Integer.parseInt((request.getParameter("creator")));
+                ventas=Integer.parseInt((request.getParameter("sales")));
+                j=new Juego(nombre, fecha, ventas, tipo, creador);
+                sj.insertJuego(j);
+                break;
+            case "remove":
+                //id=Integer.parseInt(request.getParameter("id"));
+                //sp.updateJuego(sp.getPeliPorId(id));
+                break;
+            case "update":
+                
+                break;
+            case "get":
+                request.setAttribute("juegos", sj.getAllJuegos());
+                break;
         }
     }
 
