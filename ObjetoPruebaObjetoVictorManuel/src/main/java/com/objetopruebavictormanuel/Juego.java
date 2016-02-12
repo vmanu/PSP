@@ -28,6 +28,14 @@ public class Juego {
         this.tipo=tipo;
         this.creador=creador;
     }
+    
+    public Juego(String nombre,Date fecha_creacion,int ventas, int tipo,int creador) {
+        this.nombre = nombre;
+        this.fecha_creacion=fecha_creacion;
+        this.ventas=ventas;
+        this.tipo=tipo;
+        this.creador=creador;
+    }
 
     public int getId() {
         return id;
