@@ -35,9 +35,4 @@ public class ControllerServiceJuegos {
     public boolean removeJuego(int j){
         return new JuegosDAO().deleteJuego(j);
     }
-
-    public LinkedHashMap<Integer,String> getAllTipos() {
-        JuegosDAO juegosDAO = new JuegosDAO();
-        return juegosDAO.getAllTiposJuegos();
-    }
 }

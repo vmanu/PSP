@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.objetopruebavictormanuel.Juego;
+import java.util.Arrays;
 
 /**
  *
@@ -55,6 +56,10 @@ public class JuegosDAO {
             if(connection!=null){
                 con.cerrarConexion(connection);
             }
+        }
+        System.out.println("LISTA DE JUEGOS");
+        for(Juego j:juegos){
+            System.out.println(j);
         }
         return juegos;
     }

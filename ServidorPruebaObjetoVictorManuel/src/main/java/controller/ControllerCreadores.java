@@ -18,14 +18,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import services.ControllerServiceCreadores;
 import services.ControllerServiceJuegos;
+import services.ControllerServiceTipos;
 
 /**
  *
  * @author oscar
  */
-@WebServlet(name = "ControllerJuegos", urlPatterns = {"/ControllerJuegos"})
-public class ControllerJuegos extends HttpServlet {
+@WebServlet(name = "ControllerCreadores", urlPatterns = {"/ControllerCreadores"})
+public class ControllerCreadores extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,35 +41,9 @@ public class ControllerJuegos extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 //        Juego j = new Juego();
-        ControllerServiceJuegos sj=new ControllerServiceJuegos();
-        String nombre=null;
-       
-        int creador,tipo,ventas;
-        Date fecha;
-        Juego j;
-        String op = request.getParameter("opcion");
-        switch(op){
-            case "insert":
-                nombre= request.getParameter("name");
-                tipo=Integer.parseInt(request.getParameter("type"));
-                fecha=new Date(request.getParameter("date"));
-                creador=Integer.parseInt((request.getParameter("creator")));
-                ventas=Integer.parseInt((request.getParameter("sales")));
-                j=new Juego(nombre, fecha, ventas, tipo, creador);
-                sj.insertJuego(j);
-                break;
-            case "remove":
-                //id=Integer.parseInt(request.getParameter("id"));
-                //sp.updateJuego(sp.getPeliPorId(id));
-                break;
-            case "update":
-                
-                break;
-            case "get":
-                request.setAttribute("juegos", sj.getAllJuegos());
-                break;
-        }
-        request.setAttribute("msg", "JUEGOS");
+        ControllerServiceCreadores sj=new ControllerServiceCreadores();
+        request.setAttribute("creadores", sj.getAllCreators());
+        request.setAttribute("msg", "CREADORES");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

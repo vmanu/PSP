@@ -17,12 +17,13 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author dam2
  */
-@WebFilter(filterName = "NewFilter", urlPatterns = {"/ControllerJuegos"})
+@WebFilter(filterName = "FiltroJSON", urlPatterns = {"/ControllerJuegos", "/ControllerTipos","/ControllerCreadores"})
 public class FiltroJSON implements Filter {
     
     private static final boolean debug = false;
@@ -105,7 +106,20 @@ public class FiltroJSON implements Filter {
         try {
             chain.doFilter(request, response);
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
+            switch(request.getAttribute("msg").toString()){
+                case "JUEGOS":
+                    mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
+                    System.out.println("Entro controllerJuegos");
+                    break;
+                case "TIPOS":
+                    mapper.writeValue(response.getOutputStream(), request.getAttribute("tipos"));
+                    System.out.println("Entro controllerTipos");
+                    break;
+                case "CREADORES":
+                    mapper.writeValue(response.getOutputStream(), request.getAttribute("creadores"));
+                    System.out.println("Entro controllerCreadores");
+                    break;
+            }
         } catch (Throwable t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
