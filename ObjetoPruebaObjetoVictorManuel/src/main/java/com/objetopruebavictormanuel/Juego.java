@@ -84,4 +84,9 @@ public class Juego {
     public void setCreador(int creador) {
         this.creador = creador;
     }
+
+    @Override
+    public String toString() {
+        return "Juego{" + "id=" + id + ", nombre=" + nombre + ", fecha_creacion=" + fecha_creacion + ", ventas=" + ventas + ", tipo=" + tipo + ", creador=" + creador + '}';
+    }
 }
