@@ -20,6 +20,8 @@ public class Juego {
     private int tipo;
     private int creador;
 
+    public Juego(){};
+    
     public Juego(int id, String nombre,Date fecha_creacion,int ventas, int tipo,int creador) {
         this.id = id;
         this.nombre = nombre;
