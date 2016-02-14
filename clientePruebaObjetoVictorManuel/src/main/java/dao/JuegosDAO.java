@@ -28,6 +28,7 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 /**
  *
@@ -54,7 +55,7 @@ public class JuegosDAO {
                 juegos.add(j);
             }
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,16 +75,17 @@ public class JuegosDAO {
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
             
             try {
-                System.out.println(response1.getStatusLine());
+                //System.out.println(response1.getStatusLine());
                 HttpEntity entity1 = response1.getEntity();
+                String ent=EntityUtils.toString(entity1);
                 // do something useful with the response body
                 // and ensure it is fully consumed
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                System.out.println("entity1: "+entity1.getContent());
+                //System.out.println("entity1: "+entity1.getContent());
                 juegos=mapper.readValue(entity1.getContent(),
                         new TypeReference<ArrayList<Juego>>() {});
-                
+                //System.out.println("ent: "+ent);
             } finally {
                 response1.close();
             }
@@ -96,7 +98,7 @@ public class JuegosDAO {
                 //Logger.getLogger(ClientWebWithObjects.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("JUEGOS: "+juegos.toString()+", tamaño: "+juegos.size());
+        System.out.println("JUEGOS: "+juegos.toString()+", tamano: "+juegos.size());
         return juegos;
     }
 
@@ -114,7 +116,7 @@ public class JuegosDAO {
             stmt.setInt(6, j.getId());
             stmt.executeUpdate();
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -141,7 +143,7 @@ public class JuegosDAO {
             ResultSet rs = stmt2.executeQuery(SQL_SENTENCIA_ULTIMO_ID);
             j.setId(rs.getInt(1));
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -162,7 +164,7 @@ public class JuegosDAO {
             stmt.setInt(1,idJuego);
             rs=stmt.executeUpdate();
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,7 +190,7 @@ public class JuegosDAO {
                 tipos.put(id,tipo);
             }
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -246,7 +248,7 @@ public class JuegosDAO {
                 tipos.put(id,new String[]{nombre,ape});
             }
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexiÃƒÂ³n a la base de datos. Linea 27 JuegosDAO");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
