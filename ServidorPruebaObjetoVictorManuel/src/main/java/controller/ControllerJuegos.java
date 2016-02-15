@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpEntity;
 import services.ControllerServiceJuegos;
 
 /**
@@ -49,6 +50,10 @@ public class ControllerJuegos extends HttpServlet {
         switch(op){
             case "insert":
                 System.out.println("ENTRA EN INSERT");
+                //
+                
+                
+                //
                 mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 j = mapper.readValue(request.getHeader("juego"),
@@ -73,9 +78,15 @@ public class ControllerJuegos extends HttpServlet {
                 System.out.println("ENTRA EN UPDATE");
                 mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                j = mapper.readValue(request.getHeader("juego"),
-                        new TypeReference<Juego>() {
-                        });
+                //j = mapper.readValue(request.getHeader("juego"), new TypeReference<Juego>() {});
+                //
+                
+                
+                String val=request.getParameter("juego");
+                j=mapper.readValue(val, new TypeReference<Juego>(){});
+                
+                
+                //
                 System.out.println("Juego: "+j);
                 sj.updateJuego(j);
                 break;
