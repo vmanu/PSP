@@ -15,12 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.objetopruebavictormanuel.Juego;
 import java.io.IOException;
+import java.util.List;
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  *
@@ -62,9 +66,16 @@ public class JuegosDAO {
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=update");
+            
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(j);
-            httpPost.setHeader("juego", juegoJson);
+            //
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            nvps.add(new BasicNameValuePair("juego",juegoJson));
+            
+            //
+            //httpPost.setHeader("juego", juegoJson);
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             httpclient.execute(httpPost);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
