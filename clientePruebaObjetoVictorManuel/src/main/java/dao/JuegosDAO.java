@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.objetopruebavictormanuel.Juego;
+import com.objetopruebavictormanuel.*;
 import java.io.IOException;
 import java.util.List;
 import org.apache.http.HttpEntity;
@@ -66,20 +66,18 @@ public class JuegosDAO {
         try {
             CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=update");
-            
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(j);
-            //
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("juego",juegoJson));
-            
-            //
-            //httpPost.setHeader("juego", juegoJson);
+            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
+            nvps.add(new BasicNameValuePair("juego",new String(PasswordHash.cifra(juegoJson))));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             httpclient.execute(httpPost);
         } catch (JsonProcessingException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -90,7 +88,10 @@ public class JuegosDAO {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=insert");
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(j);
-            httpPost.setHeader("juego", juegoJson);
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
+            nvps.add(new BasicNameValuePair("juego",new String(PasswordHash.cifra(juegoJson))));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response1 = httpclient.execute(httpPost);
             try {
                 HttpEntity entity1 = response1.getEntity();
@@ -109,6 +110,8 @@ public class JuegosDAO {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -119,7 +122,10 @@ public class JuegosDAO {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=remove");
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(idJuego);
-            httpPost.setHeader("juego", juegoJson);
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
+            nvps.add(new BasicNameValuePair("juego",new String(PasswordHash.cifra(juegoJson))));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response1 = httpclient.execute(httpPost);
             try {
                 HttpEntity entity1 = response1.getEntity();
@@ -135,6 +141,8 @@ public class JuegosDAO {
         } catch (JsonProcessingException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return response;
