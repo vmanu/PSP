@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.objetopruebavictormanuel.Juego;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.objetopruebavictormanuel.PasswordHash;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,6 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import services.ControllerServiceJuegos;
 
@@ -42,59 +44,63 @@ public class ControllerJuegos extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        Juego j = new Juego();
-        ControllerServiceJuegos sj=new ControllerServiceJuegos();
+        ControllerServiceJuegos sj = new ControllerServiceJuegos();
         Juego j;
         String op = request.getParameter("opcion");
         ObjectMapper mapper;
-        switch(op){
+        String json, encrip;
+        switch (op) {
             case "insert":
-                System.out.println("ENTRA EN INSERT");
-                //
-                
-                
-                //
-                mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                j = mapper.readValue(request.getHeader("juego"),
-                        new TypeReference<Juego>() {
-                        });
-                System.out.println("Juego: "+j);
-                sj.insertJuego(j);
-                request.setAttribute("juegos", j.getId());
+                try {
+                    System.out.println("ENTRA EN INSERT");
+                    mapper = new ObjectMapper();
+                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    j = mapper.readValue(json, new TypeReference<Juego>() {});
+                    System.out.println("Juego: " + j);
+                    sj.insertJuego(j);
+                    request.setAttribute("juegos", j.getId());
+                } catch (Exception ex) {
+                    Logger.getLogger(ControllerJuegos.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 break;
             case "remove":
-                System.out.println("ENTRA EN REMOVE");
-                mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                int id = mapper.readValue(request.getHeader("juego"),
-                        new TypeReference<Integer>() {
-                        });
-                System.out.println("id a borrar: "+id);
-                boolean returnment=sj.removeJuego(id);
-                request.setAttribute("juegos", returnment);
+                try {
+                    System.out.println("ENTRA EN REMOVE");
+                    mapper = new ObjectMapper();
+                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    int id = mapper.readValue(json, new TypeReference<Integer>() {});
+                    System.out.println("id a borrar: " + id);
+                    boolean returnment = sj.removeJuego(id);
+                    request.setAttribute("juegos", returnment);
+                } catch (Exception ex) {
+                    Logger.getLogger(ControllerJuegos.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 break;
             case "update":
-                System.out.println("ENTRA EN UPDATE");
-                mapper = new ObjectMapper();
-                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                //j = mapper.readValue(request.getHeader("juego"), new TypeReference<Juego>() {});
-                //
-                
-                
-                String val=request.getParameter("juego");
-                j=mapper.readValue(val, new TypeReference<Juego>(){});
-                
-                
-                //
-                System.out.println("Juego: "+j);
-                sj.updateJuego(j);
+                try {
+                    System.out.println("ENTRA EN UPDATE");
+                    mapper = new ObjectMapper();
+                    mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    j = mapper.readValue(json, new TypeReference<Juego>() {
+                    });
+                    System.out.println("Juego: " + j);
+                    sj.updateJuego(j);
+                } catch (Exception ex) {
+                    Logger.getLogger(ControllerJuegos.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 break;
             case "get":
                 request.setAttribute("juegos", sj.getAllJuegos());
                 break;
         }
         request.setAttribute("msg", "JUEGOS");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
