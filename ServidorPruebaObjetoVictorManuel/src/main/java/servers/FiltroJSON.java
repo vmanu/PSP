@@ -101,8 +101,6 @@ public class FiltroJSON implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
-        Throwable problem = null;
         try {
             chain.doFilter(request, response);
             ObjectMapper mapper = new ObjectMapper();
@@ -124,7 +122,6 @@ public class FiltroJSON implements Filter {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
-            problem = t;
             t.printStackTrace();
         }
         
