@@ -6,10 +6,13 @@
 package servers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.objetopruebavictormanuel.PasswordHash;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -18,6 +21,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.message.BasicNameValuePair;
 
 /**
  *
@@ -104,6 +110,8 @@ public class FiltroJSON implements Filter {
         try {
             chain.doFilter(request, response);
             ObjectMapper mapper = new ObjectMapper();
+            String json;
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             switch(request.getAttribute("msg").toString()){
                 case "JUEGOS":
                     mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
