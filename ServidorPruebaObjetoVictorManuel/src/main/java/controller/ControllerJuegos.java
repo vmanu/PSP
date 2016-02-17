@@ -96,6 +96,7 @@ public class ControllerJuegos extends HttpServlet {
                 }
                 break;
             case "get":
+                System.out.println("ENTRA EN GET");
                 request.setAttribute("juegos", sj.getAllJuegos());
                 break;
         }

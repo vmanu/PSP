@@ -6,7 +6,7 @@
 package servers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.objetopruebavictormanuel.PasswordHash;
+import com.objetopruebavictormanuel.*;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -21,6 +21,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
@@ -104,20 +105,24 @@ public class FiltroJSON implements Filter {
      * @exception IOException if an input/output error occurs
      * @exception ServletException if a servlet error occurs
      */
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
         try {
             chain.doFilter(request, response);
             ObjectMapper mapper = new ObjectMapper();
-            String json;
-            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            String obj;
             switch(request.getAttribute("msg").toString()){
                 case "JUEGOS":
-                    mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
+                    obj = mapper.writeValueAsString(request.getAttribute("juegos"));
+                    response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));
+                    //mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
                     System.out.println("Entro controllerJuegos");
                     break;
                 case "TIPOS":
+                    /*obj = mapper.writeValueAsString(request.getAttribute("tipos"));
+                    response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));*/
                     mapper.writeValue(response.getOutputStream(), request.getAttribute("tipos"));
                     System.out.println("Entro controllerTipos");
                     break;
