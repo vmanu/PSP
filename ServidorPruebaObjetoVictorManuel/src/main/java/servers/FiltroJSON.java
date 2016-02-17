@@ -117,17 +117,16 @@ public class FiltroJSON implements Filter {
                 case "JUEGOS":
                     obj = mapper.writeValueAsString(request.getAttribute("juegos"));
                     response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));
-                    //mapper.writeValue(response.getOutputStream(), request.getAttribute("juegos"));
                     System.out.println("Entro controllerJuegos");
                     break;
                 case "TIPOS":
-                    /*obj = mapper.writeValueAsString(request.getAttribute("tipos"));
-                    response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));*/
-                    mapper.writeValue(response.getOutputStream(), request.getAttribute("tipos"));
+                    obj = mapper.writeValueAsString(request.getAttribute("tipos"));
+                    response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));
                     System.out.println("Entro controllerTipos");
                     break;
                 case "CREADORES":
-                    mapper.writeValue(response.getOutputStream(), request.getAttribute("creadores"));
+                    obj = mapper.writeValueAsString(request.getAttribute("creadores"));
+                    response.getWriter().print(new String(Base64.encodeBase64(PasswordHash.cifra(obj))));
                     System.out.println("Entro controllerCreadores");
                     break;
             }
