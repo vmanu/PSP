@@ -30,6 +30,8 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import com.objetopruebavictormanuel.Juego;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import view.model.TablaModeloJuego;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
 
@@ -47,6 +49,20 @@ public class view extends javax.swing.JFrame {
      */
     public view() {
         initComponents();
+        //defaultState();
+    }
+    
+    public void defaultState(){
+        getContentPane().add(jPanelSignUpContainer);
+        jPanelSignUpContainer.setVisible(false);
+        getContentPane().add(jPanelLoginContainer);
+        jPanelLoginContainer.setVisible(false);
+        getContentPane().add(jPanelTabla);
+        jPanelTabla.setVisible(false);
+        getContentPane().add(jPanelChooseOption);
+    }
+
+    public void ponTablaEnMarcha(){
         control = new ControlJuegos();
         TablaModeloJuego model = new TablaModeloJuego();
         model.addTableModelListener(new TableModelListener() {
@@ -110,18 +126,12 @@ public class view extends javax.swing.JFrame {
                 }
             }
         });
-        //<editor-fold defaultstate="collapsed" desc="PARA REFRESCAR">        
-//        int numeroColumnas=model.getColumnCount();
-//        for(int i=0;i<numeroColumnas;i++){
-//            model.removeRow(0);
-//        }
-        //</editor-fold>
         
         //<editor-fold defaultstate="collapsed" desc="OCULTAR COLUMNA">
-//        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
-//        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
-//        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
-//        jTable1.getColumnModel().getColumn(0).setResizable(false);
+        jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+        jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+        jTable1.getColumnModel().getColumn(0).setResizable(false);
         //</editor-fold>
         
         tipos=control.getAllTipos();
@@ -143,7 +153,7 @@ public class view extends javax.swing.JFrame {
         col.setCellEditor(new TextEditor());
         col.setCellRenderer(new TextRender());
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -152,14 +162,57 @@ public class view extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
+        jPanelTabla = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelBotonesTabla = new javax.swing.JPanel();
         jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
+        jPanelChooseOption = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabelTittleAppMenu = new javax.swing.JLabel();
+        jLabelWhatYouHaveToDo = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jButtonChooseSign = new javax.swing.JButton();
+        jButtonChooseLog = new javax.swing.JButton();
+        jPanelSignUpContainer = new javax.swing.JPanel();
+        jPanelSignUpData = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabelSignUser = new javax.swing.JLabel();
+        jTextFieldSignUser = new javax.swing.JTextField();
+        jPanel4 = new javax.swing.JPanel();
+        jLabelSignPass1 = new javax.swing.JLabel();
+        jTextFieldSignPass1 = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jLabelSignPass2 = new javax.swing.JLabel();
+        jTextFieldSignPass2 = new javax.swing.JTextField();
+        jPanel6 = new javax.swing.JPanel();
+        jLabelSignMail = new javax.swing.JLabel();
+        jTextFieldSignMail = new javax.swing.JTextField();
+        jPanel7 = new javax.swing.JPanel();
+        jLabelSignProblem = new javax.swing.JLabel();
+        jPanelSignUpButtons = new javax.swing.JPanel();
+        jButtonSignIn = new javax.swing.JButton();
+        jButtonClearFieldSign = new javax.swing.JButton();
+        jButtonAtrasSign = new javax.swing.JButton();
+        jPanelLoginContainer = new javax.swing.JPanel();
+        jPanelLoginData = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jLabelLogUser = new javax.swing.JLabel();
+        jTextFieldLoginUser = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        jLabelLogPass = new javax.swing.JLabel();
+        jTextFieldLoginPass = new javax.swing.JTextField();
+        jLabelLoginProblem = new javax.swing.JLabel();
+        jPanelLoginButtons = new javax.swing.JPanel();
+        jButtonLogIn = new javax.swing.JButton();
+        jButtonClearFieldLog = new javax.swing.JButton();
+        jButtonAtrasLog = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanelTabla.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanelTabla.setLayout(new java.awt.BorderLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,7 +227,7 @@ public class view extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        getContentPane().add(jScrollPane2, java.awt.BorderLayout.CENTER);
+        jPanelTabla.add(jScrollPane2, java.awt.BorderLayout.CENTER);
 
         jButtonInsert.setText("ADD");
         jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
@@ -182,7 +235,7 @@ public class view extends javax.swing.JFrame {
                 jButtonInsertActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonInsert);
+        jPanelBotonesTabla.add(jButtonInsert);
 
         jButtonDelete.setText("DELETE");
         jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
@@ -190,9 +243,174 @@ public class view extends javax.swing.JFrame {
                 jButtonDeleteActionPerformed(evt);
             }
         });
-        jPanel1.add(jButtonDelete);
+        jPanelBotonesTabla.add(jButtonDelete);
 
-        getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
+        jPanelTabla.add(jPanelBotonesTabla, java.awt.BorderLayout.SOUTH);
+
+        jPanelChooseOption.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanelChooseOption.setLayout(new javax.swing.BoxLayout(jPanelChooseOption, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel1.setLayout(new java.awt.BorderLayout(0, 20));
+
+        jLabelTittleAppMenu.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTittleAppMenu.setText("VICTOR MANUEL OVIEDO APP");
+        jLabelTittleAppMenu.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabelTittleAppMenu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabelTittleAppMenu.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(jLabelTittleAppMenu, java.awt.BorderLayout.PAGE_START);
+
+        jLabelWhatYouHaveToDo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelWhatYouHaveToDo.setText("Choose one option: Log in if You have an account or Sign In if You don't");
+        jLabelWhatYouHaveToDo.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        jLabelWhatYouHaveToDo.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+        jPanel1.add(jLabelWhatYouHaveToDo, java.awt.BorderLayout.CENTER);
+
+        java.awt.FlowLayout flowLayout1 = new java.awt.FlowLayout();
+        flowLayout1.setAlignOnBaseline(true);
+        jPanel2.setLayout(flowLayout1);
+
+        jButtonChooseSign.setText("Sign In");
+        jButtonChooseSign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChooseSignActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonChooseSign);
+
+        jButtonChooseLog.setText("Log In");
+        jButtonChooseLog.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonChooseLogActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButtonChooseLog);
+
+        jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_END);
+
+        jPanelChooseOption.add(jPanel1);
+
+        jPanelSignUpContainer.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanelSignUpContainer.setLayout(new javax.swing.BoxLayout(jPanelSignUpContainer, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanelSignUpData.setLayout(new javax.swing.BoxLayout(jPanelSignUpData, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabelSignUser.setText("User");
+        jPanel3.add(jLabelSignUser);
+
+        jTextFieldSignUser.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldSignUser.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel3.add(jTextFieldSignUser);
+
+        jPanelSignUpData.add(jPanel3);
+
+        jLabelSignPass1.setText("Pass");
+        jPanel4.add(jLabelSignPass1);
+
+        jTextFieldSignPass1.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldSignPass1.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel4.add(jTextFieldSignPass1);
+
+        jPanelSignUpData.add(jPanel4);
+
+        jLabelSignPass2.setText("Pass");
+        jPanel5.add(jLabelSignPass2);
+
+        jTextFieldSignPass2.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldSignPass2.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel5.add(jTextFieldSignPass2);
+
+        jPanelSignUpData.add(jPanel5);
+
+        jLabelSignMail.setText("E-Mail");
+        jPanel6.add(jLabelSignMail);
+
+        jTextFieldSignMail.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldSignMail.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel6.add(jTextFieldSignMail);
+
+        jPanelSignUpData.add(jPanel6);
+
+        jLabelSignProblem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelSignProblem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jLabelSignProblem.setMaximumSize(new java.awt.Dimension(150, 20));
+        jLabelSignProblem.setMinimumSize(new java.awt.Dimension(150, 20));
+        jLabelSignProblem.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel7.add(jLabelSignProblem);
+
+        jPanelSignUpData.add(jPanel7);
+
+        jPanelSignUpContainer.add(jPanelSignUpData);
+
+        jButtonSignIn.setText("Sign In");
+        jButtonSignIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSignInActionPerformed(evt);
+            }
+        });
+        jPanelSignUpButtons.add(jButtonSignIn);
+
+        jButtonClearFieldSign.setText("Clear Fields");
+        jButtonClearFieldSign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonClearFieldSignActionPerformed(evt);
+            }
+        });
+        jPanelSignUpButtons.add(jButtonClearFieldSign);
+
+        jButtonAtrasSign.setText("Back");
+        jButtonAtrasSign.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAtrasSignActionPerformed(evt);
+            }
+        });
+        jPanelSignUpButtons.add(jButtonAtrasSign);
+
+        jPanelSignUpContainer.add(jPanelSignUpButtons);
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Victor Manuel Oviedo Huertas App");
+        setMinimumSize(new java.awt.Dimension(453, 438));
+        setPreferredSize(new java.awt.Dimension(453, 438));
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.X_AXIS));
+
+        jPanelLoginContainer.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanelLoginContainer.setLayout(new javax.swing.BoxLayout(jPanelLoginContainer, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanelLoginData.setLayout(new javax.swing.BoxLayout(jPanelLoginData, javax.swing.BoxLayout.Y_AXIS));
+
+        jLabelLogUser.setText("User");
+        jPanel9.add(jLabelLogUser);
+
+        jTextFieldLoginUser.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldLoginUser.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel9.add(jTextFieldLoginUser);
+
+        jPanelLoginData.add(jPanel9);
+
+        jLabelLogPass.setText("Pass");
+        jPanel8.add(jLabelLogPass);
+
+        jTextFieldLoginPass.setMinimumSize(new java.awt.Dimension(150, 20));
+        jTextFieldLoginPass.setPreferredSize(new java.awt.Dimension(150, 20));
+        jPanel8.add(jTextFieldLoginPass);
+
+        jPanelLoginData.add(jPanel8);
+        jPanelLoginData.add(jLabelLoginProblem);
+
+        jPanelLoginContainer.add(jPanelLoginData);
+
+        jButtonLogIn.setText("Log In");
+        jPanelLoginButtons.add(jButtonLogIn);
+
+        jButtonClearFieldLog.setText("Clear Fields");
+        jPanelLoginButtons.add(jButtonClearFieldLog);
+
+        jButtonAtrasLog.setText("Back");
+        jPanelLoginButtons.add(jButtonAtrasLog);
+
+        jPanelLoginContainer.add(jPanelLoginButtons);
+
+        getContentPane().add(jPanelLoginContainer);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,6 +427,34 @@ public class view extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
+    private void jButtonChooseSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChooseSignActionPerformed
+        jPanelChooseOption.setVisible(false);
+        jPanelSignUpContainer.setVisible(true);
+    }//GEN-LAST:event_jButtonChooseSignActionPerformed
+
+    private void jButtonChooseLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonChooseLogActionPerformed
+        jPanelChooseOption.setVisible(false);
+        jPanelLoginContainer.setVisible(true);
+    }//GEN-LAST:event_jButtonChooseLogActionPerformed
+
+    private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSignInActionPerformed
+
+    private void jButtonClearFieldSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldSignActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonClearFieldSignActionPerformed
+
+    private void jButtonAtrasSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasSignActionPerformed
+        jPanelSignUpContainer.setVisible(false);
+        jPanelChooseOption.setVisible(true);
+    }//GEN-LAST:event_jButtonAtrasSignActionPerformed
+
+    
+    public void removePanel(JPanel jpanel){
+        getContentPane().remove(jpanel);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -245,10 +491,51 @@ public class view extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAtrasLog;
+    private javax.swing.JButton jButtonAtrasSign;
+    private javax.swing.JButton jButtonChooseLog;
+    private javax.swing.JButton jButtonChooseSign;
+    private javax.swing.JButton jButtonClearFieldLog;
+    private javax.swing.JButton jButtonClearFieldSign;
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonInsert;
+    private javax.swing.JButton jButtonLogIn;
+    private javax.swing.JButton jButtonSignIn;
+    private javax.swing.JLabel jLabelLogPass;
+    private javax.swing.JLabel jLabelLogUser;
+    private javax.swing.JLabel jLabelLoginProblem;
+    private javax.swing.JLabel jLabelSignMail;
+    private javax.swing.JLabel jLabelSignPass1;
+    private javax.swing.JLabel jLabelSignPass2;
+    private javax.swing.JLabel jLabelSignProblem;
+    private javax.swing.JLabel jLabelSignUser;
+    private javax.swing.JLabel jLabelTittleAppMenu;
+    private javax.swing.JLabel jLabelWhatYouHaveToDo;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanelBotonesTabla;
+    private javax.swing.JPanel jPanelChooseOption;
+    private javax.swing.JPanel jPanelLoginButtons;
+    private javax.swing.JPanel jPanelLoginContainer;
+    private javax.swing.JPanel jPanelLoginData;
+    private javax.swing.JPanel jPanelSignUpButtons;
+    private javax.swing.JPanel jPanelSignUpContainer;
+    private javax.swing.JPanel jPanelSignUpData;
+    private javax.swing.JPanel jPanelTabla;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldLoginPass;
+    private javax.swing.JTextField jTextFieldLoginUser;
+    private javax.swing.JTextField jTextFieldSignMail;
+    private javax.swing.JTextField jTextFieldSignPass1;
+    private javax.swing.JTextField jTextFieldSignPass2;
+    private javax.swing.JTextField jTextFieldSignUser;
     // End of variables declaration//GEN-END:variables
 }
