@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 import com.objetopruebavictormanuel.*;
 import java.io.IOException;
 import java.util.List;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -43,6 +44,13 @@ public class JuegosDAO {
                 //String ent=EntityUtils.toString(entity1);
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                //ZONA DE OBRA
+//                String encrip = mapper.readValue(entity1.getContent(),
+//                        new TypeReference<String>() {
+//                        });
+//                String json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+//                juegos = mapper.readValue(json, new TypeReference<ArrayList<Juego>>() {});
+                //ZONA DE OBRA
                 juegos = mapper.readValue(entity1.getContent(),
                         new TypeReference<ArrayList<Juego>>() {
                         });
@@ -50,6 +58,8 @@ public class JuegosDAO {
                 response1.close();
             }
         } catch (IOException ex) {
+            Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
