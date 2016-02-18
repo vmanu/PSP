@@ -450,48 +450,60 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonChooseLogActionPerformed
 
     private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
-        // TODO add your handling code here:
+        String user=jTextFieldSignUser.getText();
+        String pass1=jTextFieldSignPass1.getText();
+        String pass2=jTextFieldSignPass2.getText();
+        String mail=jTextFieldSignMail.getText();
+        if(!pass1.isEmpty()&&!pass2.isEmpty()&&!user.isEmpty()&&!mail.isEmpty()&&pass1.equals(pass2)){
+            //System.out.println("TODO BIEN");
+        }else{
+            //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
+        }
     }//GEN-LAST:event_jButtonSignInActionPerformed
 
     private void jButtonClearFieldSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldSignActionPerformed
-        jTextFieldSignUser.setText("");
-        jTextFieldSignPass1.setText("");
-        jTextFieldSignPass2.setText("");
-        jTextFieldSignMail.setText("");
-        jLabelSignProblem.setText("");
+        cleanFieldsSign();
     }//GEN-LAST:event_jButtonClearFieldSignActionPerformed
 
     private void jButtonAtrasSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasSignActionPerformed
-        jTextFieldSignUser.setText("");
-        jTextFieldSignPass1.setText("");
-        jTextFieldSignPass2.setText("");
-        jTextFieldSignMail.setText("");
-        jLabelSignProblem.setText("");
+        cleanFieldsSign();
         jPanelSignUpContainer.setVisible(false);
         jPanelChooseOption.setVisible(true);
     }//GEN-LAST:event_jButtonAtrasSignActionPerformed
 
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
-        // TODO add your handling code here:
+        String user=jTextFieldLoginUser.getText();
+        String pass=jTextFieldLoginPass.getText();
+        if(!pass.isEmpty()&&!user.isEmpty()){
+            //System.out.println("TODO BIEN");
+        }else{
+            //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
+        }
     }//GEN-LAST:event_jButtonLogInActionPerformed
 
     private void jButtonClearFieldLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldLogActionPerformed
-        jTextFieldLoginUser.setText("");
-        jTextFieldLoginPass.setText("");
-        jLabelLoginProblem.setText("");
+        cleanFieldsLog();
     }//GEN-LAST:event_jButtonClearFieldLogActionPerformed
 
     private void jButtonAtrasLogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAtrasLogActionPerformed
-        jTextFieldLoginUser.setText("");
-        jTextFieldLoginPass.setText("");
-        jLabelLoginProblem.setText("");
+        cleanFieldsLog();
         jPanelLoginContainer.setVisible(false);
         jPanelChooseOption.setVisible(true);
     }//GEN-LAST:event_jButtonAtrasLogActionPerformed
 
     
-    public void removePanel(JPanel jpanel){
-        getContentPane().remove(jpanel);
+    public void cleanFieldsSign(){
+        jTextFieldSignUser.setText("");
+        jTextFieldSignPass1.setText("");
+        jTextFieldSignPass2.setText("");
+        jTextFieldSignMail.setText("");
+        jLabelSignProblem.setText("");
+    }
+    
+    public void cleanFieldsLog(){
+        jTextFieldLoginUser.setText("");
+        jTextFieldLoginPass.setText("");
+        jLabelLoginProblem.setText("");
     }
     
     /**
