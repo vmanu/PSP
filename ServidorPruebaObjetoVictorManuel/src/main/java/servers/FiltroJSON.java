@@ -50,8 +50,10 @@ public class FiltroJSON implements Filter {
             throws IOException, ServletException {
         try {
             String encrip = request.getParameter("data");
-            String json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
-            request.setAttribute("data", json);
+            if(encrip!=null){
+                String json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                request.setAttribute("data", json);
+            }
         } catch (Exception ex) {
             Logger.getLogger(FiltroJSON.class.getName()).log(Level.SEVERE, null, ex);
         } 

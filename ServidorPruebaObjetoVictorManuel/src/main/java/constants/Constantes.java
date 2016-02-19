@@ -21,7 +21,4 @@ public class Constantes {
     public static final String SQL_SENTENCIA_DELETE = "DELETE FROM GAME WHERE id=?";
     public static final String SQL_SENTENCIA_DAME_TODO_TIPOS = "SELECT * FROM GAMETYPE";
     public static final String SQL_SENTENCIA_DAME_TODO_CREADORES = "SELECT * FROM GAMECREATOR";
-    public static final int NUMERO_COLUMNAS=6;
-    public static final int NUMERO_COLUMNA_TIPO=4;
-    public static final int NUMERO_COLUMNA_CREADOR=5;
 }
