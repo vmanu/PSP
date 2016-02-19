@@ -30,6 +30,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import com.objetopruebavictormanuel.Juego;
+import controller.ControlLogin;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -42,9 +43,10 @@ import org.jdesktop.swingx.table.DatePickerCellEditor;
  * @author dam2
  */
 public class view extends javax.swing.JFrame {
+
     private CloseableHttpClient httpclient;
     private ControlJuegos control;
-    private LinkedHashMap<Integer,String> tipos;
+    private LinkedHashMap<Integer, String> tipos;
 
     /**
      * Creates new form view
@@ -54,8 +56,8 @@ public class view extends javax.swing.JFrame {
         httpclient = HttpClients.createDefault();
         defaultState();
     }
-    
-    public void defaultState(){
+
+    public void defaultState() {
         getContentPane().add(jPanelSignUpContainer);
         jPanelSignUpContainer.setVisible(false);
         getContentPane().add(jPanelLoginContainer);
@@ -65,7 +67,7 @@ public class view extends javax.swing.JFrame {
         getContentPane().add(jPanelChooseOption);
     }
 
-    public void ponTablaEnMarcha(){
+    public void ponTablaEnMarcha() {
         control = new ControlJuegos();
         TablaModeloJuego model = new TablaModeloJuego(httpclient);
         model.addTableModelListener(new TableModelListener() {
@@ -77,12 +79,12 @@ public class view extends javax.swing.JFrame {
                         break;
                     case TableModelEvent.UPDATE:
                         if (!((TablaModeloJuego) jTable1.getModel()).isInsertando()) {
-                            control.UpdateJuego(new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5)),httpclient);
+                            control.UpdateJuego(new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 5)), httpclient);
                         } else {
-                            ((TablaModeloJuego) jTable1.getModel()).insertRow((String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5));
+                            ((TablaModeloJuego) jTable1.getModel()).insertRow((String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 5));
                             if (!((TablaModeloJuego) jTable1.getModel()).isInsertando()) {
-                                Juego j = new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5));
-                                control.InsertJuego(j,httpclient);
+                                Juego j = new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int) jTable1.getModel().getValueAt(e.getFirstRow(), 5));
+                                control.InsertJuego(j, httpclient);
                                 ((TablaModeloJuego) jTable1.getModel()).setJuegoWithRightId(j);
                                 jButtonInsert.setEnabled(true);
                             }
@@ -97,18 +99,19 @@ public class view extends javax.swing.JFrame {
         jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-                if (((TablaModeloJuego) jTable1.getModel()).isInsertando()&&jTable1.getSelectedRow()!=(((TablaModeloJuego)jTable1.getModel()).getRowCount()-1)) {
-                    int val=JOptionPane.showConfirmDialog(view.this, "Debe completar todos los campos, ¿Que desea salir? (SE BORRARÁ LA FILA)","CAMBIO DE FILA DURANTE AGREGACION",YES_NO_OPTION,WARNING_MESSAGE);
-                    switch(val){
-                        case 0:case -1:
+                if (((TablaModeloJuego) jTable1.getModel()).isInsertando() && jTable1.getSelectedRow() != (((TablaModeloJuego) jTable1.getModel()).getRowCount() - 1)) {
+                    int val = JOptionPane.showConfirmDialog(view.this, "Debe completar todos los campos, ¿Que desea salir? (SE BORRARÁ LA FILA)", "CAMBIO DE FILA DURANTE AGREGACION", YES_NO_OPTION, WARNING_MESSAGE);
+                    switch (val) {
+                        case 0:
+                        case -1:
                             //ENTRA SI O CERRAR RESPECTIVAMENTE
-                            ((TablaModeloJuego)jTable1.getModel()).deleteLastRow();
-                            ((TablaModeloJuego)jTable1.getModel()).fireTableDataChanged();
+                            ((TablaModeloJuego) jTable1.getModel()).deleteLastRow();
+                            ((TablaModeloJuego) jTable1.getModel()).fireTableDataChanged();
                             jButtonInsert.setEnabled(true);
                             break;
                         case 1:
                             //ENTRA NO
-                            jTable1.setRowSelectionInterval((((TablaModeloJuego)jTable1.getModel()).getRowCount()-1), (((TablaModeloJuego)jTable1.getModel()).getRowCount()-1));
+                            jTable1.setRowSelectionInterval((((TablaModeloJuego) jTable1.getModel()).getRowCount() - 1), (((TablaModeloJuego) jTable1.getModel()).getRowCount() - 1));
                             break;
                     }
                 }
@@ -129,34 +132,34 @@ public class view extends javax.swing.JFrame {
                 }
             }
         });
-        
+
         //<editor-fold defaultstate="collapsed" desc="OCULTAR COLUMNA">
         jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         jTable1.getColumnModel().getColumn(0).setMinWidth(0);
         jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
         jTable1.getColumnModel().getColumn(0).setResizable(false);
         //</editor-fold>
-        
-        tipos=control.getAllTipos(httpclient);
-        JComboBox combo=new JComboBox();
-        for(int k:tipos.keySet()){
+
+        tipos = control.getAllTipos(httpclient);
+        JComboBox combo = new JComboBox();
+        for (int k : tipos.keySet()) {
             combo.addItem(tipos.get(k));
         }
-        TableColumn col=jTable1.getColumnModel().getColumn(NUMERO_COLUMNA_TIPO);
+        TableColumn col = jTable1.getColumnModel().getColumn(NUMERO_COLUMNA_TIPO);
         col.setCellEditor(new DefaultCellEditor(combo));
-        col.setCellRenderer(new DefaultTableCellRenderer(){
-            
+        col.setCellRenderer(new DefaultTableCellRenderer() {
+
             @Override
             protected void setValue(Object o) {
-                setText(String.valueOf(tipos.get((int)o)));
+                setText(String.valueOf(tipos.get((int) o)));
             }
         });
-        
-        col=jTable1.getColumnModel().getColumn(NUMERO_COLUMNA_CREADOR);
+
+        col = jTable1.getColumnModel().getColumn(NUMERO_COLUMNA_CREADOR);
         col.setCellEditor(new TextEditor(httpclient));
         col.setCellRenderer(new TextRender(httpclient));
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -186,6 +189,12 @@ public class view extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jButtonChooseSign = new javax.swing.JButton();
         jButtonChooseLog = new javax.swing.JButton();
+        jPanelTabla = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanelBotonesTabla = new javax.swing.JPanel();
+        jButtonInsert = new javax.swing.JButton();
+        jButtonDelete = new javax.swing.JButton();
         jPanelSignUpContainer = new javax.swing.JPanel();
         jPanelSignUpData = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -206,12 +215,6 @@ public class view extends javax.swing.JFrame {
         jButtonSignIn = new javax.swing.JButton();
         jButtonClearFieldSign = new javax.swing.JButton();
         jButtonAtrasSign = new javax.swing.JButton();
-        jPanelTabla = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanelBotonesTabla = new javax.swing.JPanel();
-        jButtonInsert = new javax.swing.JButton();
-        jButtonDelete = new javax.swing.JButton();
 
         jPanelLoginContainer.setMinimumSize(new java.awt.Dimension(0, 0));
         jPanelLoginContainer.setLayout(new java.awt.BorderLayout());
@@ -235,6 +238,10 @@ public class view extends javax.swing.JFrame {
         jPanel8.add(jTextFieldLoginPass);
 
         jPanelLoginData.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jLabelLoginProblem.setMaximumSize(new java.awt.Dimension(400, 20));
+        jLabelLoginProblem.setMinimumSize(new java.awt.Dimension(400, 20));
+        jLabelLoginProblem.setPreferredSize(new java.awt.Dimension(400, 20));
         jPanelLoginData.add(jLabelLoginProblem, java.awt.BorderLayout.PAGE_END);
 
         jPanelLoginContainer.add(jPanelLoginData, java.awt.BorderLayout.CENTER);
@@ -307,6 +314,42 @@ public class view extends javax.swing.JFrame {
 
         jPanelChooseOption.add(jPanel1);
 
+        jPanelTabla.setMinimumSize(new java.awt.Dimension(0, 0));
+        jPanelTabla.setLayout(new java.awt.BorderLayout());
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable1);
+
+        jPanelTabla.add(jScrollPane2, java.awt.BorderLayout.CENTER);
+
+        jButtonInsert.setText("ADD");
+        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonInsertActionPerformed(evt);
+            }
+        });
+        jPanelBotonesTabla.add(jButtonInsert);
+
+        jButtonDelete.setText("DELETE");
+        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeleteActionPerformed(evt);
+            }
+        });
+        jPanelBotonesTabla.add(jButtonDelete);
+
+        jPanelTabla.add(jPanelBotonesTabla, java.awt.BorderLayout.SOUTH);
+
         jPanelSignUpContainer.setMinimumSize(new java.awt.Dimension(0, 0));
         jPanelSignUpContainer.setLayout(new javax.swing.BoxLayout(jPanelSignUpContainer, javax.swing.BoxLayout.Y_AXIS));
 
@@ -350,9 +393,9 @@ public class view extends javax.swing.JFrame {
 
         jLabelSignProblem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSignProblem.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jLabelSignProblem.setMaximumSize(new java.awt.Dimension(150, 20));
-        jLabelSignProblem.setMinimumSize(new java.awt.Dimension(150, 20));
-        jLabelSignProblem.setPreferredSize(new java.awt.Dimension(150, 20));
+        jLabelSignProblem.setMaximumSize(new java.awt.Dimension(400, 20));
+        jLabelSignProblem.setMinimumSize(new java.awt.Dimension(400, 20));
+        jLabelSignProblem.setPreferredSize(new java.awt.Dimension(400, 20));
         jPanel7.add(jLabelSignProblem);
 
         jPanelSignUpData.add(jPanel7);
@@ -385,42 +428,6 @@ public class view extends javax.swing.JFrame {
 
         jPanelSignUpContainer.add(jPanelSignUpButtons);
 
-        jPanelTabla.setMinimumSize(new java.awt.Dimension(0, 0));
-        jPanelTabla.setLayout(new java.awt.BorderLayout());
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable1);
-
-        jPanelTabla.add(jScrollPane2, java.awt.BorderLayout.CENTER);
-
-        jButtonInsert.setText("ADD");
-        jButtonInsert.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonInsertActionPerformed(evt);
-            }
-        });
-        jPanelBotonesTabla.add(jButtonInsert);
-
-        jButtonDelete.setText("DELETE");
-        jButtonDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonDeleteActionPerformed(evt);
-            }
-        });
-        jPanelBotonesTabla.add(jButtonDelete);
-
-        jPanelTabla.add(jPanelBotonesTabla, java.awt.BorderLayout.SOUTH);
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Victor Manuel Oviedo Huertas App");
         setMinimumSize(new java.awt.Dimension(453, 438));
@@ -437,8 +444,8 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        if(control.removeJuego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0),httpclient)){
-            ((TablaModeloJuego)jTable1.getModel()).deleteRow(new Juego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1), (Date) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2),(int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3), (int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4), (int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5)));
+        if (control.removeJuego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), httpclient)) {
+            ((TablaModeloJuego) jTable1.getModel()).deleteRow(new Juego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1), (Date) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2), (int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3), (int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4), (int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5)));
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
 
@@ -453,18 +460,57 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonChooseLogActionPerformed
 
     private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
-        String user=jTextFieldSignUser.getText();
-        String pass1=jTextFieldSignPass1.getText();
-        String pass2=jTextFieldSignPass2.getText();
-        String mail=jTextFieldSignMail.getText();
-        if(!pass1.isEmpty()&&!pass2.isEmpty()&&!user.isEmpty()&&!mail.isEmpty()&&pass1.equals(pass2)){
+        ControlLogin controlLog = new ControlLogin();
+        jLabelSignProblem.setText("");
+        String user = jTextFieldSignUser.getText();
+        String pass1 = jTextFieldSignPass1.getText();
+        String pass2 = jTextFieldSignPass2.getText();
+        String mail = jTextFieldSignMail.getText();
+        boolean bien = false;
+        String mensaje;
+        if (!pass1.isEmpty() && !pass2.isEmpty() && !user.isEmpty() && !mail.isEmpty() && pass1.equals(pass2)) {
             //System.out.println("TODO BIEN");
-            
-            //SHOW A DIALOG INFORMING YOU EVERYTHING IS ALL RIGHT
-            jPanelSignUpContainer.setVisible(false);
-            jPanelChooseOption.setVisible(true);
-        }else{
+            switch (controlLog.registra(user, pass1, httpclient)) {
+                case "TRUE":
+                    mensaje = MENSAJE_REGISTRO_CORRECTO;
+                    jPanelSignUpContainer.setVisible(false);
+                    jPanelChooseOption.setVisible(true);
+                    bien = true;
+                    break;
+                case "FALSE REPETICION":
+                    //PROBLEMA POR LOGIN:USER COGIDO
+                    mensaje = MENSAJE_REGISTRO_FALLIDO_REPETICION;
+                    break;
+                case "FALSE REGISTRO":
+                    //PROBLEMA POR REGISTRO (FALLO EN SERVER)
+                    mensaje = MENSAJE_REGISTRO_FALLIDO_REGISTRO;
+                    break;
+                default:
+                    //CASOS IMPROBABLES-> FALLO DE COMUNICACION CON SERVER
+                    mensaje = MENSAJE_REGISTRO_FALLIDO_CONEXION;
+                    break;
+            }
+        } else {
             //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
+            if (!pass1.isEmpty() && !pass2.isEmpty() && !user.isEmpty() && !mail.isEmpty()) {
+                //PASS NO COINCIDEN
+                mensaje = MENSAJE_PASS_NO_COINCIDEN;
+            } else {
+                //VACIO
+                if (!pass1.isEmpty() && !pass2.isEmpty() && !pass1.equals(pass2)) {
+                    //VACIO Y ADEMAS PASS NO COINCIDEN
+                    mensaje = MENSAJE_PASS_NO_COINCIDEN_Y_VACIO;
+                } else {
+                    //SOLO ALGO VACIO
+                    mensaje = MENSAJE_CAMPOS_VACIOS;
+                }
+            }
+        }
+        if (bien) {
+            //SHOW A DIALOG INFORMING YOU EVERYTHING IS ALL RIGHT
+            JOptionPane.showConfirmDialog(view.this, mensaje, "INFORMACION", PLAIN_MESSAGE, INFORMATION_MESSAGE);
+        } else {
+            jLabelSignProblem.setText(mensaje);
         }
     }//GEN-LAST:event_jButtonSignInActionPerformed
 
@@ -479,15 +525,26 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonAtrasSignActionPerformed
 
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
-        String user=jTextFieldLoginUser.getText();
-        String pass=jTextFieldLoginPass.getText();
-        if(!pass.isEmpty()&&!user.isEmpty()){
+        ControlLogin controlLog = new ControlLogin();
+        String user = jTextFieldLoginUser.getText();
+        String pass = jTextFieldLoginPass.getText();
+        if (!pass.isEmpty() && !user.isEmpty() && controlLog.login(user, pass, httpclient)) {
             //System.out.println("TODO BIEN");
             jPanelLoginContainer.setVisible(false);
             jPanelTabla.setVisible(true);
             ponTablaEnMarcha();
-        }else{
+        } else {
             //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
+            String mensaje;
+            if (!pass.isEmpty() && !user.isEmpty()) {
+                //USER NO COINCIDEN CON PASS O USER NO EXISTE
+                mensaje = MENSAJE_PASS_NO_COINCIDEN;
+            } else {
+                //VACIO
+                    mensaje = MENSAJE_CAMPOS_VACIOS;
+                
+            }
+            jLabelSignProblem.setText(mensaje);
         }
     }//GEN-LAST:event_jButtonLogInActionPerformed
 
@@ -501,21 +558,20 @@ public class view extends javax.swing.JFrame {
         jPanelChooseOption.setVisible(true);
     }//GEN-LAST:event_jButtonAtrasLogActionPerformed
 
-    
-    public void cleanFieldsSign(){
+    public void cleanFieldsSign() {
         jTextFieldSignUser.setText("");
         jTextFieldSignPass1.setText("");
         jTextFieldSignPass2.setText("");
         jTextFieldSignMail.setText("");
         jLabelSignProblem.setText("");
     }
-    
-    public void cleanFieldsLog(){
+
+    public void cleanFieldsLog() {
         jTextFieldLoginUser.setText("");
         jTextFieldLoginPass.setText("");
         jLabelLoginProblem.setText("");
     }
-    
+
     /**
      * @param args the command line arguments
      */
