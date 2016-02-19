@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
 import com.objetopruebavictormanuel.Juego;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
  *
@@ -24,12 +25,14 @@ public class TablaModeloJuego extends AbstractTableModel {
 
     private ArrayList<Juego> juegos;
     private boolean insertando;
+    private CloseableHttpClient httpclient;
 
-    public TablaModeloJuego() {
+    public TablaModeloJuego(CloseableHttpClient httpclient) {
         super();
         insertando = false;
         ControlJuegos control = new ControlJuegos();
-        juegos = control.getAllJuegos();
+        juegos = control.getAllJuegos(httpclient);
+        this.httpclient=httpclient;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class TablaModeloJuego extends AbstractTableModel {
                     game.setVentas(Integer.parseInt((String)o));
                     break;
                 case 4:
-                    LinkedHashMap<Integer,String> map=new ControlJuegos().getAllTipos();
+                    LinkedHashMap<Integer,String> map=new ControlJuegos().getAllTipos(httpclient);
                     for(Integer k:map.keySet()){
                         if(map.get(k).equals((String)o)){
                             game.setTipo(k);
@@ -111,7 +114,7 @@ public class TablaModeloJuego extends AbstractTableModel {
                     }
                     break;
                 case 5:
-                    LinkedHashMap<Integer,String> creadores=new ControlCreator().getAllCreators();
+                    LinkedHashMap<Integer,String> creadores=new ControlCreator().getAllCreators(httpclient);
                     for(Integer k:creadores.keySet()){
                         if(creadores.get(k).equals((String)o)){
                             game.setCreador(k);

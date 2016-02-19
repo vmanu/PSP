@@ -9,6 +9,7 @@ import dao.JuegosDAO;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import com.objetopruebavictormanuel.Juego;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
  *
@@ -16,27 +17,23 @@ import com.objetopruebavictormanuel.Juego;
  */
 public class ControlJuegos {
 
-    public ArrayList<Juego> getAllJuegos() {
-        ArrayList<Juego> juegos = null;
-        JuegosDAO juegosDAO = new JuegosDAO();
-        juegos = juegosDAO.getAllJuegos();
-        return juegos;
+    public ArrayList<Juego> getAllJuegos(CloseableHttpClient httpclient) {
+        return new JuegosDAO().getAllJuegos(httpclient);
     }
     
-    public void UpdateJuego(Juego j){
-        new JuegosDAO().updateJuegos(j);
+    public void UpdateJuego(Juego j,CloseableHttpClient httpclient){
+        new JuegosDAO().updateJuegos(j,httpclient);
     }
 
-    public void InsertJuego(Juego juego) {
-        new JuegosDAO().insertJuego(juego);
+    public void InsertJuego(Juego juego,CloseableHttpClient httpclient) {
+        new JuegosDAO().insertJuego(juego,httpclient);
     }
     
-    public boolean removeJuego(int j){
-        return new JuegosDAO().deleteJuego(j);
+    public boolean removeJuego(int j,CloseableHttpClient httpclient){
+        return new JuegosDAO().deleteJuego(j,httpclient);
     }
 
-    public LinkedHashMap<Integer,String> getAllTipos() {
-        JuegosDAO juegosDAO = new JuegosDAO();
-        return juegosDAO.getAllTiposJuegos();
+    public LinkedHashMap<Integer,String> getAllTipos(CloseableHttpClient httpclient) {
+        return new JuegosDAO().getAllTiposJuegos(httpclient);
     }
 }

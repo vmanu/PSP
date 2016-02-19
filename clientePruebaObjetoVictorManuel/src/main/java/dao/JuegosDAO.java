@@ -34,9 +34,8 @@ import org.apache.http.util.EntityUtils;
  */
 public class JuegosDAO {
 
-    public ArrayList<Juego> getAllJuegos() {
+    public ArrayList<Juego> getAllJuegos(CloseableHttpClient httpclient) {
         ArrayList<Juego> juegos = new ArrayList();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpGet httpGet = new HttpGet("http://localhost:8080/ControllerJuegos?opcion=get");
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
@@ -54,25 +53,24 @@ public class JuegosDAO {
         } catch (Exception ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
+            /*try {
                 httpclient.close();
             } catch (IOException ex) {
                 Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         System.out.println("JUEGOS: " + juegos.toString() + ", tamano: " + juegos.size());
         return juegos;
     }
 
-    public void updateJuegos(Juego j) {
+    public void updateJuegos(Juego j,CloseableHttpClient httpclient) {
         try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=update");
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(j);
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
-            nvps.add(new BasicNameValuePair("juego",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
+            nvps.add(new BasicNameValuePair("data",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             httpclient.execute(httpPost);
         } catch (JsonProcessingException ex) {
@@ -84,15 +82,14 @@ public class JuegosDAO {
         }
     }
 
-    public void insertJuego(Juego j) {
+    public void insertJuego(Juego j,CloseableHttpClient httpclient) {
         try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=insert");
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(j);
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
-            nvps.add(new BasicNameValuePair("juego",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
+            nvps.add(new BasicNameValuePair("data",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response1 = httpclient.execute(httpPost);
             try {
@@ -113,16 +110,15 @@ public class JuegosDAO {
         }
     }
 
-    public boolean deleteJuego(int idJuego) {
+    public boolean deleteJuego(int idJuego,CloseableHttpClient httpclient) {
         boolean response=false;
         try {
-            CloseableHttpClient httpclient = HttpClients.createDefault();
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerJuegos?opcion=remove");
             ObjectMapper mapper = new ObjectMapper();
             String juegoJson = mapper.writeValueAsString(idJuego);
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
             //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
-            nvps.add(new BasicNameValuePair("juego",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
+            nvps.add(new BasicNameValuePair("data",new String(Base64.encodeBase64(PasswordHash.cifra(juegoJson)))));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response1 = httpclient.execute(httpPost);
             try {
@@ -143,9 +139,8 @@ public class JuegosDAO {
         return response;
     }
 
-    public LinkedHashMap<Integer, String> getAllTiposJuegos() {
+    public LinkedHashMap<Integer, String> getAllTiposJuegos(CloseableHttpClient httpclient) {
         LinkedHashMap<Integer, String> tipos = new LinkedHashMap<>();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpGet httpGet = new HttpGet("http://localhost:8080/ControllerTipos");
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
@@ -164,11 +159,11 @@ public class JuegosDAO {
         } catch (IOException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
+            /*try {
                 httpclient.close();
             } catch (IOException ex) {
                 Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         System.out.println("TIPOS: " + tipos.toString());
         return tipos;

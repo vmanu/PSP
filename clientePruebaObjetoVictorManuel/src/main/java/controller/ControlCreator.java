@@ -7,6 +7,7 @@ package controller;
 
 import dao.CreatorsDAO;
 import java.util.LinkedHashMap;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
  *
@@ -14,8 +15,8 @@ import java.util.LinkedHashMap;
  */
 public class ControlCreator {
 
-    public LinkedHashMap<Integer, String> getAllCreators() {
-        return new CreatorsDAO().getAllCreators();
+    public LinkedHashMap<Integer, String> getAllCreators(CloseableHttpClient httpclient) {
+        return new CreatorsDAO().getAllCreators(httpclient);
     }
     
 }

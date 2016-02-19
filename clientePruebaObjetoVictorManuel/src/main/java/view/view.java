@@ -32,6 +32,8 @@ import javax.swing.table.TableRowSorter;
 import com.objetopruebavictormanuel.Juego;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import view.model.TablaModeloJuego;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
 
@@ -40,7 +42,7 @@ import org.jdesktop.swingx.table.DatePickerCellEditor;
  * @author dam2
  */
 public class view extends javax.swing.JFrame {
-
+    private CloseableHttpClient httpclient;
     private ControlJuegos control;
     private LinkedHashMap<Integer,String> tipos;
 
@@ -49,6 +51,7 @@ public class view extends javax.swing.JFrame {
      */
     public view() {
         initComponents();
+        httpclient = HttpClients.createDefault();
         defaultState();
     }
     
@@ -64,7 +67,7 @@ public class view extends javax.swing.JFrame {
 
     public void ponTablaEnMarcha(){
         control = new ControlJuegos();
-        TablaModeloJuego model = new TablaModeloJuego();
+        TablaModeloJuego model = new TablaModeloJuego(httpclient);
         model.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -74,12 +77,12 @@ public class view extends javax.swing.JFrame {
                         break;
                     case TableModelEvent.UPDATE:
                         if (!((TablaModeloJuego) jTable1.getModel()).isInsertando()) {
-                            control.UpdateJuego(new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5)));
+                            control.UpdateJuego(new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5)),httpclient);
                         } else {
                             ((TablaModeloJuego) jTable1.getModel()).insertRow((String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5));
                             if (!((TablaModeloJuego) jTable1.getModel()).isInsertando()) {
                                 Juego j = new Juego((int) jTable1.getModel().getValueAt(e.getFirstRow(), 0), (String) jTable1.getModel().getValueAt(e.getFirstRow(), 1), (Date) jTable1.getModel().getValueAt(e.getFirstRow(), 2), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 3), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 4), (int)jTable1.getModel().getValueAt(e.getFirstRow(), 5));
-                                control.InsertJuego(j);
+                                control.InsertJuego(j,httpclient);
                                 ((TablaModeloJuego) jTable1.getModel()).setJuegoWithRightId(j);
                                 jButtonInsert.setEnabled(true);
                             }
@@ -134,7 +137,7 @@ public class view extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(0).setResizable(false);
         //</editor-fold>
         
-        tipos=control.getAllTipos();
+        tipos=control.getAllTipos(httpclient);
         JComboBox combo=new JComboBox();
         for(int k:tipos.keySet()){
             combo.addItem(tipos.get(k));
@@ -150,8 +153,8 @@ public class view extends javax.swing.JFrame {
         });
         
         col=jTable1.getColumnModel().getColumn(NUMERO_COLUMNA_CREADOR);
-        col.setCellEditor(new TextEditor());
-        col.setCellRenderer(new TextRender());
+        col.setCellEditor(new TextEditor(httpclient));
+        col.setCellRenderer(new TextRender(httpclient));
     }
     
     /**
@@ -434,7 +437,7 @@ public class view extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonInsertActionPerformed
 
     private void jButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeleteActionPerformed
-        if(control.removeJuego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0))){
+        if(control.removeJuego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0),httpclient)){
             ((TablaModeloJuego)jTable1.getModel()).deleteRow(new Juego((int) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0), (String) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1), (Date) jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2),(int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 3), (int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 4), (int)jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 5)));
         }
     }//GEN-LAST:event_jButtonDeleteActionPerformed
@@ -476,6 +479,9 @@ public class view extends javax.swing.JFrame {
         String pass=jTextFieldLoginPass.getText();
         if(!pass.isEmpty()&&!user.isEmpty()){
             //System.out.println("TODO BIEN");
+            jPanelLoginContainer.setVisible(false);
+            jPanelTabla.setVisible(true);
+            ponTablaEnMarcha();
         }else{
             //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
         }

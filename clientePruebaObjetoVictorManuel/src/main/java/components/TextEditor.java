@@ -16,6 +16,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
+import org.apache.http.impl.client.CloseableHttpClient;
 
 /**
  *
@@ -30,7 +31,7 @@ public class TextEditor extends AbstractCellEditor
     protected static final String EDIT = "edit";
     
     
-     public TextEditor() {
+     public TextEditor(CloseableHttpClient httpclient) {
         //Set up the editor (from the table's point of view),
         //which is a button.
         //This button brings up the color chooser dialog,
@@ -59,7 +60,7 @@ public class TextEditor extends AbstractCellEditor
 
         //Set up the dialog that the button brings up.
         
-        dialog = new NewJDialog(null, true);
+        dialog = new NewJDialog(null, true,httpclient);
     }
     
     @Override

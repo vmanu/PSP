@@ -32,9 +32,8 @@ import org.apache.http.util.EntityUtils;
  */
 public class CreatorsDAO {
 
-    public LinkedHashMap<Integer, String> getAllCreators() {
+    public LinkedHashMap<Integer, String> getAllCreators(CloseableHttpClient httpclient) {
         LinkedHashMap<Integer, String> creadores = new LinkedHashMap();
-        CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             HttpGet httpGet = new HttpGet("http://localhost:8080/ControllerCreadores");
             CloseableHttpResponse response1 = httpclient.execute(httpGet);
@@ -54,11 +53,11 @@ public class CreatorsDAO {
         } catch (IOException ex) {
             Logger.getLogger(CreatorsDAO.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
+            /*try {
                 httpclient.close();
             } catch (IOException ex) {
                 Logger.getLogger(CreatorsDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            }*/
         }
         return creadores;
     }
