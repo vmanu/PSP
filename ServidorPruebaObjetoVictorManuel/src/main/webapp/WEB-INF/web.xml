@@ -9,4 +9,16 @@
             30
         </session-timeout>
     </session-config>
+    <filter-mapping>
+        <filter-name>FiltroLogin</filter-name>
+        <url-pattern>/ControllerCreadores</url-pattern>
+        <url-pattern>/ControllerJuegos</url-pattern>
+        <url-pattern>/ControllerTipos</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>FiltroJSON</filter-name>
+        <url-pattern>/ControllerCreadores</url-pattern>
+        <url-pattern>/ControllerJuegos</url-pattern>
+        <url-pattern>/ControllerTipos</url-pattern>
+    </filter-mapping>
 </web-app>

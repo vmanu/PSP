@@ -46,7 +46,7 @@ public class JuegosDAO {
                 juegos.add(j);
             }
         } catch (ClassNotFoundException ex) {
-            System.err.println("Error al obtener la conexión a la base de datos. Linea 27 JuegosDAO");
+            System.err.println("Error al obtener la conexión a la base de datos.");
         } catch (SQLException ex) {
             System.err.println("Error al ejecutar sql");
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);

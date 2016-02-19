@@ -48,15 +48,16 @@ public class ControllerJuegos extends HttpServlet {
         Juego j;
         String op = request.getParameter("opcion");
         ObjectMapper mapper;
-        String json, encrip;
+        String json=(String)request.getAttribute("data");
         switch (op) {
             case "insert":
                 try {
                     System.out.println("ENTRA EN INSERT");
                     mapper = new ObjectMapper();
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    encrip = request.getParameter("juego");
-                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    /*encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));*/
+                    
                     j = mapper.readValue(json, new TypeReference<Juego>() {});
                     System.out.println("Juego: " + j);
                     sj.insertJuego(j);
@@ -70,8 +71,8 @@ public class ControllerJuegos extends HttpServlet {
                     System.out.println("ENTRA EN REMOVE");
                     mapper = new ObjectMapper();
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    encrip = request.getParameter("juego");
-                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    /*encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));*/
                     int id = mapper.readValue(json, new TypeReference<Integer>() {});
                     System.out.println("id a borrar: " + id);
                     boolean returnment = sj.removeJuego(id);
@@ -85,8 +86,8 @@ public class ControllerJuegos extends HttpServlet {
                     System.out.println("ENTRA EN UPDATE");
                     mapper = new ObjectMapper();
                     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    encrip = request.getParameter("juego");
-                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));
+                    /*encrip = request.getParameter("juego");
+                    json = PasswordHash.descifra(Base64.decodeBase64(encrip.getBytes("UTF-8")));*/
                     j = mapper.readValue(json, new TypeReference<Juego>() {
                     });
                     System.out.println("Juego: " + j);
