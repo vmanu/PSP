@@ -459,6 +459,10 @@ public class view extends javax.swing.JFrame {
         String mail=jTextFieldSignMail.getText();
         if(!pass1.isEmpty()&&!pass2.isEmpty()&&!user.isEmpty()&&!mail.isEmpty()&&pass1.equals(pass2)){
             //System.out.println("TODO BIEN");
+            
+            //SHOW A DIALOG INFORMING YOU EVERYTHING IS ALL RIGHT
+            jPanelSignUpContainer.setVisible(false);
+            jPanelChooseOption.setVisible(true);
         }else{
             //System.out.println("ALGO HAY VACIO O LA CONTRASEÑA NO COINCIDE");
         }
