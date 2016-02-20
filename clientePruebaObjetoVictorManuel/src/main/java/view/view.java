@@ -172,7 +172,7 @@ public class view extends javax.swing.JFrame {
         jTextFieldLoginUser = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabelLogPass = new javax.swing.JLabel();
-        jTextFieldLoginPass = new javax.swing.JTextField();
+        jPasswordFieldLog = new javax.swing.JPasswordField();
         jLabelLoginProblem = new javax.swing.JLabel();
         jPanelLoginButtons = new javax.swing.JPanel();
         jButtonLogIn = new javax.swing.JButton();
@@ -199,17 +199,17 @@ public class view extends javax.swing.JFrame {
         jTextFieldSignUser = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabelSignPass1 = new javax.swing.JLabel();
-        jTextFieldSignPass1 = new javax.swing.JTextField();
+        jPasswordFieldSign1 = new javax.swing.JPasswordField();
         jPanel5 = new javax.swing.JPanel();
         jLabelSignPass2 = new javax.swing.JLabel();
-        jTextFieldSignPass2 = new javax.swing.JTextField();
+        jPasswordFieldSign2 = new javax.swing.JPasswordField();
         jPanel6 = new javax.swing.JPanel();
         jLabelSignMail = new javax.swing.JLabel();
         jTextFieldSignMail = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jLabelSignProblem = new javax.swing.JLabel();
         jPanelSignUpButtons = new javax.swing.JPanel();
-        jButtonSignIn = new javax.swing.JButton();
+        jButtonSignUp = new javax.swing.JButton();
         jButtonClearFieldSign = new javax.swing.JButton();
         jButtonAtrasSign = new javax.swing.JButton();
 
@@ -230,9 +230,9 @@ public class view extends javax.swing.JFrame {
         jLabelLogPass.setText("Pass");
         jPanel8.add(jLabelLogPass);
 
-        jTextFieldLoginPass.setMinimumSize(new java.awt.Dimension(150, 30));
-        jTextFieldLoginPass.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel8.add(jTextFieldLoginPass);
+        jPasswordFieldLog.setMinimumSize(new java.awt.Dimension(150, 30));
+        jPasswordFieldLog.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel8.add(jPasswordFieldLog);
 
         jPanelLoginData.add(jPanel8, java.awt.BorderLayout.CENTER);
 
@@ -292,7 +292,7 @@ public class view extends javax.swing.JFrame {
         flowLayout1.setAlignOnBaseline(true);
         jPanel2.setLayout(flowLayout1);
 
-        jButtonChooseSign.setText("Sign In");
+        jButtonChooseSign.setText("Sign Up");
         jButtonChooseSign.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonChooseSignActionPerformed(evt);
@@ -373,18 +373,18 @@ public class view extends javax.swing.JFrame {
         jLabelSignPass1.setText("Pass");
         jPanel4.add(jLabelSignPass1);
 
-        jTextFieldSignPass1.setMinimumSize(new java.awt.Dimension(150, 30));
-        jTextFieldSignPass1.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel4.add(jTextFieldSignPass1);
+        jPasswordFieldSign1.setMinimumSize(new java.awt.Dimension(150, 30));
+        jPasswordFieldSign1.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel4.add(jPasswordFieldSign1);
 
         jPanelSignUpData.add(jPanel4);
 
         jLabelSignPass2.setText("Pass");
         jPanel5.add(jLabelSignPass2);
 
-        jTextFieldSignPass2.setMinimumSize(new java.awt.Dimension(150, 30));
-        jTextFieldSignPass2.setPreferredSize(new java.awt.Dimension(150, 30));
-        jPanel5.add(jTextFieldSignPass2);
+        jPasswordFieldSign2.setMinimumSize(new java.awt.Dimension(150, 30));
+        jPasswordFieldSign2.setPreferredSize(new java.awt.Dimension(150, 30));
+        jPanel5.add(jPasswordFieldSign2);
 
         jPanelSignUpData.add(jPanel5);
 
@@ -408,13 +408,13 @@ public class view extends javax.swing.JFrame {
 
         jPanelSignUpContainer.add(jPanelSignUpData);
 
-        jButtonSignIn.setText("Sign In");
-        jButtonSignIn.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSignUp.setText("Sign Up");
+        jButtonSignUp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSignInActionPerformed(evt);
+                jButtonSignUpActionPerformed(evt);
             }
         });
-        jPanelSignUpButtons.add(jButtonSignIn);
+        jPanelSignUpButtons.add(jButtonSignUp);
 
         jButtonClearFieldSign.setText("Clear Fields");
         jButtonClearFieldSign.addActionListener(new java.awt.event.ActionListener() {
@@ -465,12 +465,12 @@ public class view extends javax.swing.JFrame {
         jPanelLoginContainer.setVisible(true);
     }//GEN-LAST:event_jButtonChooseLogActionPerformed
 
-    private void jButtonSignInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignInActionPerformed
+    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
         ControlLogin controlLog = new ControlLogin();
         jLabelSignProblem.setText("");
         String user = jTextFieldSignUser.getText();
-        String pass1 = jTextFieldSignPass1.getText();
-        String pass2 = jTextFieldSignPass2.getText();
+        String pass1 = new String(jPasswordFieldSign1.getPassword());
+        String pass2 = new String(jPasswordFieldSign2.getPassword());
         String mail = jTextFieldSignMail.getText();
         boolean bien = false;
         String mensaje;
@@ -526,7 +526,7 @@ public class view extends javax.swing.JFrame {
         } else {
             jLabelSignProblem.setText(mensaje);
         }
-    }//GEN-LAST:event_jButtonSignInActionPerformed
+    }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     private void jButtonClearFieldSignActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClearFieldSignActionPerformed
         cleanFieldsSign();
@@ -542,7 +542,7 @@ public class view extends javax.swing.JFrame {
         ControlLogin controlLog = new ControlLogin();
         jLabelLoginProblem.setText("");
         String user = jTextFieldLoginUser.getText();
-        String pass = jTextFieldLoginPass.getText();
+        String pass = new String(jPasswordFieldLog.getPassword());
         if (!pass.isEmpty() && !user.isEmpty() && controlLog.login(user, pass, httpclient)) {
             //System.out.println("TODO BIEN");
             cleanFieldsLog();
@@ -601,15 +601,15 @@ public class view extends javax.swing.JFrame {
     
     public void cleanFieldsSign() {
         jTextFieldSignUser.setText("");
-        jTextFieldSignPass1.setText("");
-        jTextFieldSignPass2.setText("");
+        jPasswordFieldSign1.setText("");
+        jPasswordFieldSign2.setText("");
         jTextFieldSignMail.setText("");
         jLabelSignProblem.setText("");
     }
 
     public void cleanFieldsLog() {
         jTextFieldLoginUser.setText("");
-        jTextFieldLoginPass.setText("");
+        jPasswordFieldLog.setText("");
         jLabelLoginProblem.setText("");
     }
 
@@ -659,7 +659,7 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JButton jButtonDelete;
     private javax.swing.JButton jButtonInsert;
     private javax.swing.JButton jButtonLogIn;
-    private javax.swing.JButton jButtonSignIn;
+    private javax.swing.JButton jButtonSignUp;
     private javax.swing.JLabel jLabelLogPass;
     private javax.swing.JLabel jLabelLogUser;
     private javax.swing.JLabel jLabelLoginProblem;
@@ -688,13 +688,13 @@ public class view extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelSignUpContainer;
     private javax.swing.JPanel jPanelSignUpData;
     private javax.swing.JPanel jPanelTabla;
+    private javax.swing.JPasswordField jPasswordFieldLog;
+    private javax.swing.JPasswordField jPasswordFieldSign1;
+    private javax.swing.JPasswordField jPasswordFieldSign2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextFieldLoginPass;
     private javax.swing.JTextField jTextFieldLoginUser;
     private javax.swing.JTextField jTextFieldSignMail;
-    private javax.swing.JTextField jTextFieldSignPass1;
-    private javax.swing.JTextField jTextFieldSignPass2;
     private javax.swing.JTextField jTextFieldSignUser;
     // End of variables declaration//GEN-END:variables
 }

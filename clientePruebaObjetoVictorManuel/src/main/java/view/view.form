@@ -60,7 +60,7 @@
                     <Property name="text" type="java.lang.String" value="Pass"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextFieldLoginPass">
+                <Component class="javax.swing.JPasswordField" name="jPasswordFieldLog">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[150, 30]"/>
@@ -181,7 +181,7 @@
               <SubComponents>
                 <Component class="javax.swing.JButton" name="jButtonChooseSign">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Sign In"/>
+                    <Property name="text" type="java.lang.String" value="Sign Up"/>
                   </Properties>
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonChooseSignActionPerformed"/>
@@ -364,7 +364,7 @@
                     <Property name="text" type="java.lang.String" value="Pass"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextFieldSignPass1">
+                <Component class="javax.swing.JPasswordField" name="jPasswordFieldSign1">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[150, 30]"/>
@@ -385,7 +385,7 @@
                     <Property name="text" type="java.lang.String" value="Pass"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JTextField" name="jTextFieldSignPass2">
+                <Component class="javax.swing.JPasswordField" name="jPasswordFieldSign2">
                   <Properties>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[150, 30]"/>
@@ -445,12 +445,12 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="jButtonSignIn">
+            <Component class="javax.swing.JButton" name="jButtonSignUp">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Sign In"/>
+                <Property name="text" type="java.lang.String" value="Sign Up"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSignInActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonSignUpActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="jButtonClearFieldSign">
