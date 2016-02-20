@@ -5,6 +5,9 @@
  */
 package dao;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.objetopruebavictormanuel.PasswordHash;
+import com.objetopruebavictormanuel.Usuario;
 import static constantes.Constantes.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -12,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -32,8 +36,10 @@ public class LoginDAO {
         try {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerLogin");
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("user",user));
-            nvps.add(new BasicNameValuePair("pass",pass));
+            Usuario usuario=new Usuario(user,pass);
+            ObjectMapper mapper=new ObjectMapper();
+            String usuarioJSON=mapper.writeValueAsString(usuario);
+            nvps.add(new BasicNameValuePair("user",new String(Base64.encodeBase64(PasswordHash.cifra(usuarioJSON)))));
             nvps.add(new BasicNameValuePair("operacion",OPERACION_REGISTRO));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response=httpclient.execute(httpPost);
@@ -46,6 +52,8 @@ public class LoginDAO {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return msg;
     }
@@ -55,9 +63,10 @@ public class LoginDAO {
         try {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerLogin");
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
-            nvps.add(new BasicNameValuePair("user",user));
-            nvps.add(new BasicNameValuePair("pass",pass));
+            Usuario usuario=new Usuario(user,pass);
+            ObjectMapper mapper=new ObjectMapper();
+            String usuarioJSON=mapper.writeValueAsString(usuario);
+            nvps.add(new BasicNameValuePair("user",new String(Base64.encodeBase64(PasswordHash.cifra(usuarioJSON)))));
             nvps.add(new BasicNameValuePair("operacion",OPERACION_LOGIN));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response=httpclient.execute(httpPost);
@@ -72,6 +81,8 @@ public class LoginDAO {
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return correcto;

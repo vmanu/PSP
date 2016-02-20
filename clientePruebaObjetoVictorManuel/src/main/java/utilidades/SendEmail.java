@@ -5,6 +5,7 @@
  */
 package utilidades;
 
+import com.objetopruebavictormanuel.PasswordHash;
 import static constantes.Constantes.OPERACION_REGISTRO;
 import dao.LoginDAO;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import static constantes.Constantes.*;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -34,7 +36,7 @@ public class SendEmail {
         try {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerSendEmail");
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            nvps.add(new BasicNameValuePair("user",user));
+            nvps.add(new BasicNameValuePair("user",new String(Base64.encodeBase64(PasswordHash.cifra(user)))));
             nvps.add(new BasicNameValuePair("email",emailTo));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response=httpclient.execute(httpPost);
@@ -45,6 +47,8 @@ public class SendEmail {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(SendEmail.class.getName()).log(Level.SEVERE, null, ex);
         } 
         return correcto;
     }

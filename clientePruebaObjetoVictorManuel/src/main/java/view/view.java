@@ -25,6 +25,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import com.objetopruebavictormanuel.Juego;
 import controller.ControlLogin;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import view.model.TablaModeloJuego;
@@ -188,6 +191,7 @@ public class view extends javax.swing.JFrame {
         jPanelBotonesTabla = new javax.swing.JPanel();
         jButtonInsert = new javax.swing.JButton();
         jButtonDelete = new javax.swing.JButton();
+        jButtonCerrarSesion = new javax.swing.JButton();
         jPanelSignUpContainer = new javax.swing.JPanel();
         jPanelSignUpData = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
@@ -342,6 +346,14 @@ public class view extends javax.swing.JFrame {
         });
         jPanelBotonesTabla.add(jButtonDelete);
 
+        jButtonCerrarSesion.setText("Cerrar Sesion");
+        jButtonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarSesionActionPerformed(evt);
+            }
+        });
+        jPanelBotonesTabla.add(jButtonCerrarSesion);
+
         jPanelTabla.add(jPanelBotonesTabla, java.awt.BorderLayout.SOUTH);
 
         jPanelSignUpContainer.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -466,7 +478,6 @@ public class view extends javax.swing.JFrame {
             //System.out.println("TODO BIEN");
             switch (controlLog.registra(user, pass1, httpclient)) {
                 case MENSAJE_TRUE:
-                    //AQUI GESTION EMAIL->Si lo hay
                     System.out.println("VOY A ENVIAR EMAIL");
                     if (sendEmail(mail, user,httpclient)) {
                         System.out.println("EMAIL ENVIADO");
@@ -562,6 +573,32 @@ public class view extends javax.swing.JFrame {
         jPanelChooseOption.setVisible(true);
     }//GEN-LAST:event_jButtonAtrasLogActionPerformed
 
+    private void jButtonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarSesionActionPerformed
+        try {
+            httpclient.close();
+        } catch (IOException ex) {
+            Logger.getLogger(view.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        httpclient=HttpClients.createDefault();
+        limpiarTabla();
+        jPanelTabla.setVisible(false);
+        jPanelChooseOption.setVisible(true);
+    }//GEN-LAST:event_jButtonCerrarSesionActionPerformed
+
+    public void limpiarTabla(){
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+    }
+    
     public void cleanFieldsSign() {
         jTextFieldSignUser.setText("");
         jTextFieldSignPass1.setText("");
@@ -614,6 +651,7 @@ public class view extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAtrasLog;
     private javax.swing.JButton jButtonAtrasSign;
+    private javax.swing.JButton jButtonCerrarSesion;
     private javax.swing.JButton jButtonChooseLog;
     private javax.swing.JButton jButtonChooseSign;
     private javax.swing.JButton jButtonClearFieldLog;
