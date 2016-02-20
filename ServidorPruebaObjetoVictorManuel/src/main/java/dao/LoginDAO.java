@@ -86,9 +86,7 @@ public class LoginDAO {
             stmt.setString(1, user);
             ResultSet rs = stmt.executeQuery();
             String passBD=rs.getString("Pass");
-            if(PasswordHash.validatePassword(pass, passBD)){
-                correcto=true;
-            }
+            correcto=PasswordHash.validatePassword(pass, passBD);
         } catch (ClassNotFoundException ex) {
             System.err.println("Error al obtener la conexión a la base de datos.");
         } catch (SQLException ex) {

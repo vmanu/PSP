@@ -5,7 +5,8 @@
  */
 package controller;
 
-import com.objetopruebavictormanuel.PasswordHash;
+import com.objetopruebavictormanuel.*;
+import static constantes.Constantes.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -41,29 +42,35 @@ public class ControllerLogin extends HttpServlet {
             ControllerServiceLogin cs=new ControllerServiceLogin();
             String user=request.getParameter("user");
             String pass=request.getParameter("pass");
-            String definitivaPass=PasswordHash.createHash(pass);
-            if(request.getParameter("operacion").equals("registro")){
+            System.out.println("user: "+user+", pass: "+pass);
+            if(request.getParameter("operacion").equals(OPERACION_REGISTRO)){
+                String definitivaPass=PasswordHash.createHash(pass);
                 if(cs.compruebaLoginUnico(user)){
                     //REGISTRA (INSERT)
                     //String mail=request.getParameter("mail"); NO DEBERIA ESTAR AQUI, SINO EN CLIENTE, NO?
                     if(cs.registra(user,definitivaPass)){
                         //DEVUELVE TRUE
                         System.out.println("RESULT REGISTRO: DEVUELVE TRUE");
+                        response.getWriter().print(MENSAJE_TRUE);
                     }else{
                         //DEVUELVE FALSE REGISTRO
                         System.out.println("RESULT REGISTRO: DEVUELVE FALSE REGISTRO");
+                        response.getWriter().print(MENSAJE_FALSE_REGISTRO);
                     }
                 }else{
                     //DEVUELVE FALSE REPETICION
                     System.out.println("RESULT REGISTRO: DEVUELVE FALSE REPETICION");
+                    response.getWriter().print(MENSAJE_FALSE_REPETICION);
                 }
             }else{
-                if(cs.login(user,definitivaPass)){
+                if(cs.login(user,pass)){
                     request.getSession().setAttribute("Login", "OK");
                     System.out.println("RESULT LOGIN: DEVUELVE OK");
+                    response.getWriter().print(MENSAJE_OK);
                 }else{
                     request.getSession().setAttribute("Login", "WRONG");
                     System.out.println("RESULT LOGIN: DEVUELVE WRONG");
+                    response.getWriter().print(MENSAJE_WRONG);
                 }
             }
         } catch (NoSuchAlgorithmException ex) {
