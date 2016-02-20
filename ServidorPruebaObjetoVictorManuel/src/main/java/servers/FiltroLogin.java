@@ -5,6 +5,7 @@
  */
 package servers;
 
+import static constantes.Constantes.MENSAJE_OK;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -39,7 +41,6 @@ public class FiltroLogin implements Filter {
         if (debug) {
             log("NewFilter:DoBeforeProcessing");
         }
-        System.out.println("ENTRAMOS EN FILTRO LOGIN");
         // Write code here to process the request and/or response before
         // the rest of the filter chain is invoked.
         // For example, a logging filter might log items on the request object,
@@ -99,36 +100,16 @@ public class FiltroLogin implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
-        
-        if (debug) {
-            log("NewFilter:doFilter()");
-        }
-        
-        doBeforeProcessing(request, response);
-        
         Throwable problem = null;
-        try {
-            chain.doFilter(request, response);
+        try {String logeado=(String)((HttpServletRequest)request).getSession().getAttribute("Login");
+            if(logeado!=null&&logeado.equals(MENSAJE_OK)){
+                chain.doFilter(request, response);
+            }else{
+                ((HttpServletRequest) request).getRequestDispatcher("/noLogeado.jsp").forward(request, response);
+            }
         } catch (Throwable t) {
-            // If an exception is thrown somewhere down the filter chain,
-            // we still want to execute our after processing, and then
-            // rethrow the problem after that.
             problem = t;
             t.printStackTrace();
-        }
-        
-        doAfterProcessing(request, response);
-
-        // If there was a problem, we want to rethrow it if it is
-        // a known type, otherwise log it.
-        if (problem != null) {
-            if (problem instanceof ServletException) {
-                throw (ServletException) problem;
-            }
-            if (problem instanceof IOException) {
-                throw (IOException) problem;
-            }
-            sendProcessingError(problem, response);
         }
     }
 

@@ -38,4 +38,12 @@ public class ControllerServiceLogin {
     public boolean login(String user, String pass) {
         return new LoginDAO().login(user,pass);
     }
+
+    public boolean activaUser(String user) {
+        return new LoginDAO().activaUser(user);
+    }
+
+    public void darBaja(String user) {
+        new LoginDAO().darBaja(user);
+    }
 }

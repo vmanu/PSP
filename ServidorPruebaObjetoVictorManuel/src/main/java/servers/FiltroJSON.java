@@ -8,6 +8,7 @@ package servers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objetopruebavictormanuel.*;
+import constantes.Constantes;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -28,6 +29,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
+import static constantes.Constantes.*;
 
 /**
  *

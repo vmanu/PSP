@@ -64,11 +64,11 @@ public class ControllerLogin extends HttpServlet {
                 }
             }else{
                 if(cs.login(user,pass)){
-                    request.getSession().setAttribute("Login", "OK");
+                    request.getSession().setAttribute("Login", MENSAJE_OK);
                     System.out.println("RESULT LOGIN: DEVUELVE OK");
                     response.getWriter().print(MENSAJE_OK);
                 }else{
-                    request.getSession().setAttribute("Login", "WRONG");
+                    request.getSession().setAttribute("Login", MENSAJE_WRONG);
                     System.out.println("RESULT LOGIN: DEVUELVE WRONG");
                     response.getWriter().print(MENSAJE_WRONG);
                 }

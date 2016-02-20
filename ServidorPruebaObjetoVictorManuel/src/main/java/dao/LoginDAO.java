@@ -105,5 +105,48 @@ public class LoginDAO {
         }
         return correcto;
     }
+
+    public boolean activaUser(String user) {
+        boolean correcto=false;
+        Connection connection = null;
+        DBConnector con = new DBConnector();
+        try {
+            connection = con.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(SQL_SENTENCIA_ACTIVA_LOGIN);
+            stmt.setString(1, user);
+            stmt.executeUpdate();
+            correcto=true;
+            System.out.println("SE SUPONE QUE LO HA CAMBIADO");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(connection!=null){
+                con.cerrarConexion(connection);
+            }
+        }
+        return correcto;
+    }
+
+    public void darBaja(String user) {
+        Connection connection = null;
+        DBConnector con = new DBConnector();
+        try {
+            connection = con.getConnection();
+            PreparedStatement stmt = connection.prepareStatement(SQL_SENTENCIA_DELETE_LOGIN);
+            stmt.setString(1,user);
+            stmt.executeUpdate();
+        } catch (ClassNotFoundException ex) {
+            System.err.println("Error al obtener la conexión a la base de datos.");
+        } catch (SQLException ex) {
+            System.err.println("Error al ejecutar sql");
+            Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if(connection!=null){
+                con.cerrarConexion(connection);
+            }
+        }
+    }
     
 }
