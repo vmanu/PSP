@@ -8,36 +8,28 @@ package view;
 import components.TextEditor;
 import components.TextRender;
 import static constantes.Constantes.*;
-import constants.Constantes;
 import static constants.Constantes.*;
 import controller.ControlJuegos;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
-import static javafx.beans.binding.Bindings.or;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.*;
-import javax.swing.RowFilter;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import com.objetopruebavictormanuel.Juego;
 import controller.ControlLogin;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import view.model.TablaModeloJuego;
 import org.jdesktop.swingx.table.DatePickerCellEditor;
+import static utilidades.SendEmail.*;
 
 /**
  *
@@ -475,11 +467,18 @@ public class view extends javax.swing.JFrame {
             switch (controlLog.registra(user, pass1, httpclient)) {
                 case MENSAJE_TRUE:
                     //AQUI GESTION EMAIL->Si lo hay
-                    mensaje = MENSAJE_REGISTRO_CORRECTO;
-                    cleanFieldsSign();
-                    jPanelSignUpContainer.setVisible(false);
-                    jPanelChooseOption.setVisible(true);
-                    bien = true;
+                    System.out.println("VOY A ENVIAR EMAIL");
+                    if (sendEmail(mail, user,httpclient)) {
+                        System.out.println("EMAIL ENVIADO");
+                        mensaje = MENSAJE_REGISTRO_CORRECTO;
+                        cleanFieldsSign();
+                        jPanelSignUpContainer.setVisible(false);
+                        jPanelChooseOption.setVisible(true);
+                        bien = true;
+                    } else {
+                        mensaje = MENSAJE_FALLO_EMAIL;
+                        //AQUI FALTARIA ELIMINAR DEL REGISTRO DE LA BD EL USUARIO AGREGADO... PARA QUE NO SATURE LA BD CON REGISTROS NO UTILIZABLES
+                    }
                     break;
                 case MENSAJE_FALSE_REPETICION:
                     //PROBLEMA POR LOGIN:USER COGIDO
@@ -547,7 +546,7 @@ public class view extends javax.swing.JFrame {
                 mensaje = MENSAJE_LOGIN_FALLIDO;
             } else {
                 //VACIO
-                    mensaje = MENSAJE_CAMPOS_VACIOS;
+                mensaje = MENSAJE_CAMPOS_VACIOS;
             }
             jLabelLoginProblem.setText(mensaje);
         }

@@ -52,12 +52,6 @@ public class JuegosDAO {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            /*try {
-                httpclient.close();
-            } catch (IOException ex) {
-                Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
         }
         System.out.println("JUEGOS: " + juegos.toString() + ", tamano: " + juegos.size());
         return juegos;
@@ -158,12 +152,6 @@ public class JuegosDAO {
             }
         } catch (IOException ex) {
             Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            /*try {
-                httpclient.close();
-            } catch (IOException ex) {
-                Logger.getLogger(JuegosDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
         }
         System.out.println("TIPOS: " + tipos.toString());
         return tipos;

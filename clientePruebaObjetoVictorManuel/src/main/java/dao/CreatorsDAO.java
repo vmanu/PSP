@@ -52,12 +52,6 @@ public class CreatorsDAO {
             }
         } catch (IOException ex) {
             Logger.getLogger(CreatorsDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            /*try {
-                httpclient.close();
-            } catch (IOException ex) {
-                Logger.getLogger(CreatorsDAO.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
         }
         return creadores;
     }

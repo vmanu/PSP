@@ -22,4 +22,6 @@ public class Constantes {
     public static final String MENSAJE_PASS_NO_COINCIDEN_Y_VACIO="Las Pass no coinciden y hay algun campo sin rellenar";
     public static final String MENSAJE_PASS_NO_COINCIDEN="Las Pass no coinciden";
     public static final String MENSAJE_CAMPOS_VACIOS="Hay algun campo sin rellenar";
+    public static final String MENSAJE_FALLO_EMAIL="Registro Fallido, ya que no se ha podido enviar el e-mail";
+    
 }

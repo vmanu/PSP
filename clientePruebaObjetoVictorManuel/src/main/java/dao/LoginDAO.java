@@ -32,7 +32,6 @@ public class LoginDAO {
         try {
             HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerLogin");
             List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
             nvps.add(new BasicNameValuePair("user",user));
             nvps.add(new BasicNameValuePair("pass",pass));
             nvps.add(new BasicNameValuePair("operacion",OPERACION_REGISTRO));
