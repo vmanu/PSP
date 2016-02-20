@@ -7,6 +7,7 @@ package view;
 
 import components.TextEditor;
 import components.TextRender;
+import static constantes.Constantes.*;
 import constants.Constantes;
 import static constants.Constantes.*;
 import controller.ControlJuegos;
@@ -239,6 +240,7 @@ public class view extends javax.swing.JFrame {
 
         jPanelLoginData.add(jPanel8, java.awt.BorderLayout.CENTER);
 
+        jLabelLoginProblem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelLoginProblem.setMaximumSize(new java.awt.Dimension(400, 20));
         jLabelLoginProblem.setMinimumSize(new java.awt.Dimension(400, 20));
         jLabelLoginProblem.setPreferredSize(new java.awt.Dimension(400, 20));
@@ -471,17 +473,19 @@ public class view extends javax.swing.JFrame {
         if (!pass1.isEmpty() && !pass2.isEmpty() && !user.isEmpty() && !mail.isEmpty() && pass1.equals(pass2)) {
             //System.out.println("TODO BIEN");
             switch (controlLog.registra(user, pass1, httpclient)) {
-                case "TRUE":
+                case MENSAJE_TRUE:
+                    //AQUI GESTION EMAIL->Si lo hay
                     mensaje = MENSAJE_REGISTRO_CORRECTO;
+                    cleanFieldsSign();
                     jPanelSignUpContainer.setVisible(false);
                     jPanelChooseOption.setVisible(true);
                     bien = true;
                     break;
-                case "FALSE REPETICION":
+                case MENSAJE_FALSE_REPETICION:
                     //PROBLEMA POR LOGIN:USER COGIDO
                     mensaje = MENSAJE_REGISTRO_FALLIDO_REPETICION;
                     break;
-                case "FALSE REGISTRO":
+                case MENSAJE_FALSE_REGISTRO:
                     //PROBLEMA POR REGISTRO (FALLO EN SERVER)
                     mensaje = MENSAJE_REGISTRO_FALLIDO_REGISTRO;
                     break;
@@ -526,10 +530,12 @@ public class view extends javax.swing.JFrame {
 
     private void jButtonLogInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogInActionPerformed
         ControlLogin controlLog = new ControlLogin();
+        jLabelLoginProblem.setText("");
         String user = jTextFieldLoginUser.getText();
         String pass = jTextFieldLoginPass.getText();
         if (!pass.isEmpty() && !user.isEmpty() && controlLog.login(user, pass, httpclient)) {
             //System.out.println("TODO BIEN");
+            cleanFieldsLog();
             jPanelLoginContainer.setVisible(false);
             jPanelTabla.setVisible(true);
             ponTablaEnMarcha();
@@ -538,13 +544,12 @@ public class view extends javax.swing.JFrame {
             String mensaje;
             if (!pass.isEmpty() && !user.isEmpty()) {
                 //USER NO COINCIDEN CON PASS O USER NO EXISTE
-                mensaje = MENSAJE_PASS_NO_COINCIDEN;
+                mensaje = MENSAJE_LOGIN_FALLIDO;
             } else {
                 //VACIO
                     mensaje = MENSAJE_CAMPOS_VACIOS;
-                
             }
-            jLabelSignProblem.setText(mensaje);
+            jLabelLoginProblem.setText(mensaje);
         }
     }//GEN-LAST:event_jButtonLogInActionPerformed
 

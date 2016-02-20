@@ -5,6 +5,7 @@
  */
 package dao;
 
+import static constantes.Constantes.*;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ public class LoginDAO {
             //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
             nvps.add(new BasicNameValuePair("user",user));
             nvps.add(new BasicNameValuePair("pass",pass));
+            nvps.add(new BasicNameValuePair("operacion",OPERACION_REGISTRO));
             httpPost.setEntity(new UrlEncodedFormEntity(nvps));
             CloseableHttpResponse response=httpclient.execute(httpPost);
             HttpEntity entity = response.getEntity();
@@ -50,7 +52,30 @@ public class LoginDAO {
     }
 
     public boolean login(String user, String pass, CloseableHttpClient httpclient) {
-        return false;
+        boolean correcto=false;
+        try {
+            HttpPost httpPost = new HttpPost("http://localhost:8080/ControllerLogin");
+            List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+            //EN ESTA LINEA QUE VIENE, PASAMOS UN JUEGO CIFRADO (PasswordHash.cifra(juegoJson))
+            nvps.add(new BasicNameValuePair("user",user));
+            nvps.add(new BasicNameValuePair("pass",pass));
+            nvps.add(new BasicNameValuePair("operacion",OPERACION_LOGIN));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+            CloseableHttpResponse response=httpclient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            String msg=EntityUtils.toString(entity);
+            if(msg==null){
+                msg=MENSAJE_WRONG;
+            }
+            if(msg.equals(MENSAJE_OK)){
+                correcto=true;
+            }
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return correcto;
     }
     
 }
