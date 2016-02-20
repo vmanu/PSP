@@ -25,7 +25,7 @@ public class Constantes {
     public static final String SQL_SENTENCIA_DELETE_LOGIN="DELETE FROM LOGIN WHERE Log=?";
     
     
-    public static final String EMAIL_FROM="vmanuoveuh@hotmail.com";
+    public static final String EMAIL_FROM="victormanuel.oviedohuertas@gmail.com";//"vmanuoveuh@hotmail.com";
     public static final String EMAIL_LOCALHOST="smtp01.educa.madrid.org";
     public static final int EMAIL_PORT=25;
     public static final String EMAIL_SUBJECT="Registro TABLA VICTOR";

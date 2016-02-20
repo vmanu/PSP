@@ -5,6 +5,7 @@
  */
 package controller;
 
+import com.objetopruebavictormanuel.PasswordHash;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import services.ControllerServiceLogin;
 import static constants.Constantes.*;
 import static constantes.Constantes.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
 
 /**
  *
@@ -34,14 +38,19 @@ public class ControllerConfirmRegister extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user=request.getParameter("user");
-        System.out.println("ME PIDE "+user+" QUE LE DE DE ALTA... QUE ILUSO...");
-        ControllerServiceLogin cs=new ControllerServiceLogin();
-        if(!cs.activaUser(user)){
-            response.getWriter().print(MENSAJE_WRONG);
-            cs.darBaja(user);
-        }else{
-            response.getWriter().print(MENSAJE_OK);
+        try {
+            String user=request.getParameter("user");
+            System.out.println("ME PIDE "+user+" QUE LE DE DE ALTA... QUE ILUSO...");
+            ControllerServiceLogin cs=new ControllerServiceLogin();
+            if(!cs.activaUser(PasswordHash.descifra(Base64.decodeBase64(user.getBytes("UTF-8"))))){
+                response.getWriter().print(MENSAJE_WRONG);
+                cs.darBaja(user);
+            }else{
+                response.getWriter().print(MENSAJE_OK);
+            }
+        } catch (Exception ex) {
+            //Logger.getLogger(ControllerConfirmRegister.class.getName()).log(Level.SEVERE, null, ex);
+            response.getWriter().print(MENSAJE_WRONG + " Link");
         }
     }
 

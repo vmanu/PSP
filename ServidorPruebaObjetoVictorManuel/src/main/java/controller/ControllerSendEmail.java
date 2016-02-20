@@ -5,6 +5,7 @@
  */
 package controller;
 
+import com.objetopruebavictormanuel.PasswordHash;
 import static constantes.Constantes.MENSAJE_OK;
 import static constantes.Constantes.MENSAJE_WRONG;
 import java.io.IOException;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import services.ControllerServiceLogin;
 import services.ControllerServiceSendEmail;
 import static constants.Constantes.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
 import static utilidades.GeneraMensajeEmail.*;
 
 /**
@@ -37,17 +41,21 @@ public class ControllerSendEmail extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user=request.getParameter("user");
-        String email=request.getParameter("email");
-        System.out.println("USER EN CONTROLLER ES: "+user);
-        ControllerServiceSendEmail cs=new ControllerServiceSendEmail();
-        if(cs.sendEmail(email, EMAIL_FROM, EMAIL_LOCALHOST, EMAIL_PORT, EMAIL_SUBJECT, generaMensaje(new String[]{EMAIL_MSG,PARTE_ESTANDAR_ENLACE,user}))){
-            response.getWriter().print(MENSAJE_OK);
-            System.out.println("ENTRAMOS EN QUE HA ENVIADO MAIL EN CONTROLLERSENDEMAIL");
-        }else{
-            cs.darBaja(user);
-            System.out.println("ENTRAMOS EN QUE NO HA ENVIADO MAIL EN CONTROLLERSENDEMAIL, SE SUPONE DADO DE BAJA");
-            response.getWriter().print(MENSAJE_WRONG);
+        try {
+            String user=request.getParameter("user");
+            String email=request.getParameter("email");
+            System.out.println("USER EN CONTROLLER ES: "+user);
+            ControllerServiceSendEmail cs=new ControllerServiceSendEmail();
+            if(cs.sendEmail(email, EMAIL_FROM, EMAIL_LOCALHOST, EMAIL_PORT, EMAIL_SUBJECT, generaMensaje(new String[]{EMAIL_MSG,PARTE_ESTANDAR_ENLACE,user}))){
+                response.getWriter().print(MENSAJE_OK);
+                System.out.println("ENTRAMOS EN QUE HA ENVIADO MAIL EN CONTROLLERSENDEMAIL");
+            }else{
+                cs.darBaja(user);
+                System.out.println("ENTRAMOS EN QUE NO HA ENVIADO MAIL EN CONTROLLERSENDEMAIL, SE SUPONE DADO DE BAJA");
+                response.getWriter().print(MENSAJE_WRONG);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(ControllerSendEmail.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

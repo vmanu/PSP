@@ -5,6 +5,9 @@
  */
 package controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.objetopruebavictormanuel.*;
 import static constantes.Constantes.*;
 import java.io.IOException;
@@ -18,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.codec.binary.Base64;
 import services.ControllerServiceLogin;
 
 /**
@@ -40,15 +44,17 @@ public class ControllerLogin extends HttpServlet {
             throws ServletException, IOException {
         try {
             ControllerServiceLogin cs=new ControllerServiceLogin();
-            String user=request.getParameter("user");
-            String pass=request.getParameter("pass");
-            System.out.println("user: "+user+", pass: "+pass);
+            String userCifrado=request.getParameter("user");
+            //OBJECTMAPPER... etc
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            Usuario usuario = mapper.readValue(PasswordHash.descifra(Base64.decodeBase64(userCifrado.getBytes("UTF-8"))), new TypeReference<Usuario>() {});
             if(request.getParameter("operacion").equals(OPERACION_REGISTRO)){
-                String definitivaPass=PasswordHash.createHash(pass);
-                if(cs.compruebaLoginUnico(user)){
+                String definitivaPass=PasswordHash.createHash(usuario.getPass());
+                if(cs.compruebaLoginUnico(usuario.getLogin())){
                     //REGISTRA (INSERT)
                     //String mail=request.getParameter("mail"); NO DEBERIA ESTAR AQUI, SINO EN CLIENTE, NO?
-                    if(cs.registra(user,definitivaPass)){
+                    if(cs.registra(usuario.getLogin(),definitivaPass)){
                         //DEVUELVE TRUE
                         System.out.println("RESULT REGISTRO: DEVUELVE TRUE");
                         response.getWriter().print(MENSAJE_TRUE);
@@ -63,7 +69,7 @@ public class ControllerLogin extends HttpServlet {
                     response.getWriter().print(MENSAJE_FALSE_REPETICION);
                 }
             }else{
-                if(cs.login(user,pass)){
+                if(cs.login(usuario.getLogin(),usuario.getPass())){
                     request.getSession().setAttribute("Login", MENSAJE_OK);
                     System.out.println("RESULT LOGIN: DEVUELVE OK");
                     response.getWriter().print(MENSAJE_OK);
@@ -78,6 +84,8 @@ public class ControllerLogin extends HttpServlet {
             Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InvalidKeySpecException ex) {
             System.err.println("Error en la generacion de hash");
+            Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
             Logger.getLogger(ControllerLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
