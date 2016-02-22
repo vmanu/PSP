@@ -57,36 +57,45 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 import static com.mycompany.objetoendpointvictormanueloviedo.TipoMensaje.*;
+import javax.websocket.DeploymentException;
 
 /**
  * @author Arun Gupta
  */
 @ClientEndpoint
 public class MyClient {
+
     private Session userSession;
     private MessageHandler messageHandler;
-    
-    public MyClient( URI endpointURI) {
-         try {
-            final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
 
+    public MyClient(URI endpointURI) {
+        try {
             ClientManager client = ClientManager.createClient();
             client.connectToServer(this, endpointURI);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        
     }
-        
+
     @OnOpen
     public void onOpen(Session session) {
         this.userSession = session;
         System.out.println("Connected to endpoint: " + session.getBasicRemote());
-       
+
     }
-    
+
     public void addMessageHandler(final MessageHandler msgHandler) {
         messageHandler = msgHandler;
+    }
+
+    @OnClose
+    public void disconnect() {
+        try {
+            messageHandler = null;
+            userSession.close();
+        } catch (IOException ex) {
+            Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void sendMessage(Mensaje message) {
@@ -102,33 +111,54 @@ public class MyClient {
         }
     }
 
-    
-    @OnMessage
-    public void processMessage(String message) {
-       if (messageHandler != null) {
-           try {
-               ObjectMapper mapper = new ObjectMapper();
-               mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-               Mensaje mensaje = mapper.readValue(message,
-                       new TypeReference<Mensaje>() {
-                       });
-               
-               messageHandler.handleMessage(mensaje);
-           } catch (IOException ex) {
-               Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
-           }
+    public void sendPrivateMessage(Mensaje message) {
+        try {
+            MetaMensajeWS ms = new MetaMensajeWS();
+            ms.setTipo(PRIVADO);
+            ms.setContenido(message);
+            ObjectMapper mapper = new ObjectMapper();
+            String men = mapper.writeValueAsString(ms);
+            userSession.getAsyncRemote().sendText(men);
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    @OnMessage
+    public void processMessage(String message) {
+        if (messageHandler != null) {
+            try {
+                ObjectMapper mapper = new ObjectMapper();
+                mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                Mensaje mensaje = null;
+                if (!message.startsWith("SALIDO ")) {
+                    mensaje = mapper.readValue(message, new TypeReference<Mensaje>() {
+                    });
+                } else {
+                    mensaje = new Mensaje();
+                    /*int posicion = message.indexOf("::");
+                    String msg = message.substring(0, posicion);
+                    String room = message.substring(posicion + 2, message.length());*/
+                    mensaje.setMensaje(message);
+                    //mensaje.setRoom(room);
+                }
+                if (mensaje != null) {
+                    messageHandler.handleMessage(mensaje);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     @OnError
     public void processError(Throwable t) {
-        t.printStackTrace();
+        //t.printStackTrace();
     }
-    
-    
+
     public static interface MessageHandler {
 
         public void handleMessage(Mensaje message);
     }
-    
+
 }

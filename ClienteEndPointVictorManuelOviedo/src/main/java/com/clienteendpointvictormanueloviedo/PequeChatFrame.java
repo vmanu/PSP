@@ -8,6 +8,7 @@ package com.clienteendpointvictormanueloviedo;
 import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -18,13 +19,38 @@ import javax.swing.JOptionPane;
  */
 public class PequeChatFrame extends javax.swing.JFrame {
 
-    MyClient client = null;
-     
+    private HashMap<String, javax.swing.JTextArea> mapTextArea;
+    private MyClient client = null;
+    private boolean conectado;
+
     /**
      * Creates new form PequeChatFrame
      */
     public PequeChatFrame() {
         initComponents();
+        conectado = false;
+        mapTextArea = new HashMap();
+        /*jTabbedPane1.setTitleAt(0, "room 1");
+        jTabbedPane1.getComponent(0).setName("tabla1");*/
+        // <editor-fold defaultstate="collapsed" desc="addTab">                          
+        javax.swing.JTextArea jTextAreaChat = new javax.swing.JTextArea();
+        jTextAreaChat.setColumns(20);
+        jTextAreaChat.setRows(5);
+        javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setViewportView(jTextAreaChat);
+        String nombreRoom = "room " + (1 + jTabbedPaneRooms.getComponentCount());
+        jTabbedPaneRooms.addTab(nombreRoom, jScrollPane1);
+        //</editor-fold>
+        mapTextArea.put(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getComponentZOrder(jScrollPane1)), jTextAreaChat);
+        jTextAreaChat = new javax.swing.JTextArea();
+        jTextAreaChat.setColumns(20);
+        jTextAreaChat.setRows(5);
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setViewportView(jTextAreaChat);
+        nombreRoom = "room " + (1 + jTabbedPaneRooms.getComponentCount());
+        jTabbedPaneRooms.addTab(nombreRoom, jScrollPane1);
+        //</editor-fold>
+        mapTextArea.put(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getComponentZOrder(jScrollPane1)), jTextAreaChat);
 
     }
 
@@ -37,32 +63,38 @@ public class PequeChatFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
+        jButtonConectar = new javax.swing.JButton();
+        jTextFieldMensaje = new javax.swing.JTextField();
+        jButtonEnviar = new javax.swing.JButton();
         jTextFieldNombre = new javax.swing.JTextField();
+        jTabbedPanePrincipal = new javax.swing.JTabbedPane();
+        jTabbedPaneRooms = new javax.swing.JTabbedPane();
+        jTabbedPanePrivados = new javax.swing.JTabbedPane();
+        jButtonAgregarPrivado = new javax.swing.JButton();
+        jButtonBorraPrivado = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Conectar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonConectar.setText("Conectar");
+        jButtonConectar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonConectarActionPerformed(evt);
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
-
-        jButton2.setText("mandar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonEnviar.setText("mandar");
+        jButtonEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonEnviarActionPerformed(evt);
             }
         });
+
+        jTabbedPanePrincipal.addTab("ROOMS", jTabbedPaneRooms);
+        jTabbedPanePrincipal.addTab("PRIVADOS", jTabbedPanePrivados);
+
+        jButtonAgregarPrivado.setText("Add");
+
+        jButtonBorraPrivado.setText("Remove");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,64 +103,75 @@ public class PequeChatFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTextField1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPanePrincipal)
+                    .addComponent(jTextFieldMensaje)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(jButtonConectar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addComponent(jButtonBorraPrivado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonAgregarPrivado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButtonEnviar)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE)
+                .addComponent(jTabbedPanePrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextFieldMensaje, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonConectar)
+                    .addComponent(jButtonEnviar)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregarPrivado)
+                    .addComponent(jButtonBorraPrivado))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            // TODO add your handling code here:
-            String nombre=jTextFieldNombre.getText();
-            client = new MyClient(new URI("ws://localhost:8080/websocket?usuario="+nombre));
-            client.addMessageHandler(new AtiendeMensajes());
-        } catch (URISyntaxException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage());
+    private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
+        if (!conectado) {
+            try {
+                String nombre = jTextFieldNombre.getText();
+                client=new MyClient(new URI("ws://localhost:8080/websocket?usuario=" + nombre));
+                client.addMessageHandler(new AtiendeMensajes());
+                conectado = true;
+                jButtonConectar.setText("Desconectar");
+            } catch (URISyntaxException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage());
+            }
+        } else {
+            client.disconnect();
+            conectado=false;
+            jButtonConectar.setText("Conectar");
         }
+    }//GEN-LAST:event_jButtonConectarActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButtonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarActionPerformed
+        if (conectado) {
+            jTabbedPaneRooms.getComponent(jTabbedPaneRooms.getSelectedIndex()).getName();
+            String message = jTextFieldMensaje.getText();
+            String nombre = jTextFieldNombre.getText();
+            Mensaje m = new Mensaje();
+            m.setMensaje(message);
+            m.setFrom(nombre);
+            m.setRoom(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getSelectedIndex()));
+            client.sendMessage(m);
+        }
+    }//GEN-LAST:event_jButtonEnviarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        String message = jTextField1.getText();
-        String nombre=jTextFieldNombre.getText();
-        Mensaje m = new Mensaje();
-        m.setMensaje(message);
-        m.setFrom(nombre);
-        client.sendMessage(m);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    
-    
-    
     private class AtiendeMensajes implements MyClient.MessageHandler {
 
         @Override
         public void handleMessage(Mensaje message) {
-            jTextArea1.append(message.getFrom() + "::" + message.getMensaje()+"\n");
+            mapTextArea.get(message.getRoom()).append(message.getFrom() + "::" + message.getMensaje() + "\n");
         }
 
     }
@@ -170,11 +213,14 @@ public class PequeChatFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton jButtonAgregarPrivado;
+    private javax.swing.JButton jButtonBorraPrivado;
+    private javax.swing.JButton jButtonConectar;
+    private javax.swing.JButton jButtonEnviar;
+    private javax.swing.JTabbedPane jTabbedPanePrincipal;
+    private javax.swing.JTabbedPane jTabbedPanePrivados;
+    private javax.swing.JTabbedPane jTabbedPaneRooms;
+    private javax.swing.JTextField jTextFieldMensaje;
     private javax.swing.JTextField jTextFieldNombre;
     // End of variables declaration//GEN-END:variables
 }
