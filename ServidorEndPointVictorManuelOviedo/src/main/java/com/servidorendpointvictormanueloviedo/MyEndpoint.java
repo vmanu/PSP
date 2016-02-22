@@ -39,6 +39,10 @@
  */
 package com.servidorendpointvictormanueloviedo;
 
+import com.mycompany.objetoendpointvictormanueloviedo.MetaMensajeWS;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
@@ -54,44 +58,56 @@ import javax.websocket.server.ServerEndpoint;
 /**
  * @author Arun Gupta
  */
-@ServerEndpoint(value="/websocket", configurator=ServletAwareConfig.class)
+@ServerEndpoint(value = "/websocket", configurator = ServletAwareConfig.class)
 public class MyEndpoint {
 
-   @OnOpen
-   public void onOpen(Session session, EndpointConfig config){
-       System.out.println(session.getRequestParameterMap().get("usuario").get(0));
-       session.getUserProperties().put("user", session.getRequestParameterMap().get("usuario").get(0));
-       
-   }
-    
-   @OnClose
-   public void onClose(Session session)
-   {
-        for (Session s : session.getOpenSessions())
-        {
+    @OnOpen
+    public void onOpen(Session session, EndpointConfig config) {
+        System.out.println(session.getRequestParameterMap().get("usuario").get(0));
+        session.getUserProperties().put("user",
+                session.getRequestParameterMap().get("usuario").get(0));
+
+    }
+
+    @OnClose
+    public void onClose(Session session) {
+        for (Session s : session.getOpenSessions()) {
             try {
                 System.out.println(s.getUserProperties().get("user"));
-                s.getBasicRemote().sendText("SALIDO "+session.getUserProperties().get("user").toString());
+                s.getBasicRemote().sendText("SALIDO " + session.getUserProperties().get("user").toString());
             } catch (IOException ex) {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-   }
-   
-   
+    }
+
     @OnMessage
-    public void echoText(String name,Session session) {
-        session.getUserProperties().put("text", name);
-        for (Session s : session.getOpenSessions())
-        {
-            try {
-                System.out.println(s.getUserProperties().get("text"));
-                s.getBasicRemote().sendText(session.getUserProperties().get("user")+"::"+name);
-            } catch (IOException ex) {
-                Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+    public void echoText(String mensaje, Session session) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            MetaMensajeWS meta = mapper.readValue(mensaje,
+                    new TypeReference<MetaMensajeWS>() {
+            });
+
+            switch (meta.getTipo()) {
+                case MENSAJE:
+                    for (Session s : session.getOpenSessions()) {
+                        try {
+                            String men = mapper.writeValueAsString(meta.getContenido());  
+                            s.getBasicRemote().sendText(men);
+                        } catch (IOException ex) {
+                            Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    break;
+                case ORDEN:
+                    break;
             }
+        } catch (IOException ex) {
+            Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
-       
+
     }
 
     @OnMessage
@@ -102,16 +118,13 @@ public class MyEndpoint {
             builder.append(b);
         }
         System.out.println(builder);
-        
-        for (Session s : session.getOpenSessions())
-        {
+
+        for (Session s : session.getOpenSessions()) {
             System.out.println(s.getUserProperties().get("nombre"));
             s.getBasicRemote().sendBinary(ByteBuffer.wrap(data));
         }
-            
+
     }
-    
-    
 
 //    @WebSocketMessage
 //    public void echoBinary(ByteBuffer data, Session session) throws IOException {
