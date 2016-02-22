@@ -1,5 +1,3 @@
-package com.clienteendpointvictormanueloviedo;
-
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
@@ -39,47 +37,97 @@ package com.clienteendpointvictormanueloviedo;
  * only if the new code is made subject to such option by the copyright
  * holder.
  */
+package com.clienteendpointvictormanueloviedo;
 
-
+import com.mycompany.objetoendpointvictormanueloviedo.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.net.URI;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.ClientEndpoint;
+import javax.websocket.ClientEndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import org.glassfish.tyrus.client.ClientManager;
 
 /**
  * @author Arun Gupta
  */
 @ClientEndpoint
 public class MyClient {
-    private Session session;
+    private Session userSession;
+    private MessageHandler messageHandler;
+    
+    public MyClient( URI endpointURI) {
+         try {
+            final ClientEndpointConfig cec = ClientEndpointConfig.Builder.create().build();
+
+            ClientManager client = ClientManager.createClient();
+            client.connectToServer(this, endpointURI);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        
+    }
+    
     @OnOpen
     public void onOpen(Session session) {
-        this.session = session;
+        this.userSession = session;
         System.out.println("Connected to endpoint: " + session.getBasicRemote());
+       
+    }
+    
+    public void addMessageHandler(final MessageHandler msgHandler) {
+        messageHandler = msgHandler;
+    }
+
+    public void sendMessage(Mensaje message) {
         try {
-            String name = "Duke";
-            System.out.println("Sending message to endpoint: " + name);
-            session.getBasicRemote().sendText(name);
-        } catch (IOException ex) {
+            MetaMensajeWS ms = new MetaMensajeWS();
+            ms.setTipo(TipoMensaje.MENSAJE);
+            ms.setContenido(message);
+            ObjectMapper mapper = new ObjectMapper();
+            String men = mapper.writeValueAsString(ms);
+            userSession.getAsyncRemote().sendText(men);
+        } catch (JsonProcessingException ex) {
             Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-   
 
     
     @OnMessage
     public void processMessage(String message) {
-        System.out.println("Received message in client: " + message);
+       if (messageHandler != null) {
+           try {
+               ObjectMapper mapper = new ObjectMapper();
+               mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+               Mensaje mensaje = mapper.readValue(message,
+                       new TypeReference<Mensaje>() {
+                       });
+               
+               messageHandler.handleMessage(mensaje);
+           } catch (IOException ex) {
+               Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
+           }
+        }
     }
     
     @OnError
     public void processError(Throwable t) {
         t.printStackTrace();
     }
+    
+    
+    public static interface MessageHandler {
+
+        public void handleMessage(Mensaje message);
+    }
+    
 }

@@ -5,7 +5,7 @@
  */
 package com.clienteendpointvictormanueloviedo;
 
-import com.datoshttp.Mensaje;
+import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
