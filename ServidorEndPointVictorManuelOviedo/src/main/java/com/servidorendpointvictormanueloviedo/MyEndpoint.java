@@ -58,7 +58,7 @@ import javax.websocket.server.ServerEndpoint;
 /**
  * @author Arun Gupta
  */
-@ServerEndpoint(value = "/websocket", configurator = ServletAwareConfig.class)
+@ServerEndpoint(value = "/websocket")
 public class MyEndpoint {
 
     @OnOpen
@@ -66,7 +66,7 @@ public class MyEndpoint {
         System.out.println(session.getRequestParameterMap().get("usuario").get(0));
         session.getUserProperties().put("user",
                 session.getRequestParameterMap().get("usuario").get(0));
-
+        System.out.println("ENTRAMOS EN ON OPEN MYENDPOINT");
     }
 
     @OnClose
@@ -79,6 +79,7 @@ public class MyEndpoint {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        System.out.println("ENTRAMOS EN ON CLOSE MYENDPOINT");
     }
 
     @OnMessage
@@ -107,7 +108,7 @@ public class MyEndpoint {
         } catch (IOException ex) {
             Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+System.out.println("ENTRAMOS EN ECHO TEXT MYENDPOINT");
     }
 
     @OnMessage
@@ -123,7 +124,7 @@ public class MyEndpoint {
             System.out.println(s.getUserProperties().get("nombre"));
             s.getBasicRemote().sendBinary(ByteBuffer.wrap(data));
         }
-
+System.out.println("ENTRAMOS EN ECHO BINARY MYENDPOINT");
     }
 
 //    @WebSocketMessage
