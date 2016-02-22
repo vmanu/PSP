@@ -10,5 +10,5 @@ package com.mycompany.objetoendpointvictormanueloviedo;
  * @author oscar
  */
 public enum TipoMensaje {
-    ORDEN,MENSAJE
+    ORDEN,MENSAJE,PRIVADO
 }
