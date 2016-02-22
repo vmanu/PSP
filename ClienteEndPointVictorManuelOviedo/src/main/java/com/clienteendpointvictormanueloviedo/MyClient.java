@@ -56,6 +56,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
+import static com.mycompany.objetoendpointvictormanueloviedo.TipoMensaje.*;
 
 /**
  * @author Arun Gupta
@@ -76,7 +77,7 @@ public class MyClient {
         }
         
     }
-    
+        
     @OnOpen
     public void onOpen(Session session) {
         this.userSession = session;
@@ -91,7 +92,7 @@ public class MyClient {
     public void sendMessage(Mensaje message) {
         try {
             MetaMensajeWS ms = new MetaMensajeWS();
-            ms.setTipo(TipoMensaje.MENSAJE);
+            ms.setTipo(MENSAJE);
             ms.setContenido(message);
             ObjectMapper mapper = new ObjectMapper();
             String men = mapper.writeValueAsString(ms);

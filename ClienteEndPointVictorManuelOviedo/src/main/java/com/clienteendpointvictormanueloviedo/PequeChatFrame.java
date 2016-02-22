@@ -102,7 +102,8 @@ public class PequeChatFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
-            client = new MyClient(new URI("ws://localhost:8080/websocket?usuario=pp"));
+            String nombre=jTextFieldNombre.getText();
+            client = new MyClient(new URI("ws://localhost:8080/websocket?usuario="+nombre));
             client.addMessageHandler(new AtiendeMensajes());
         } catch (URISyntaxException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -113,8 +114,10 @@ public class PequeChatFrame extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         String message = jTextField1.getText();
+        String nombre=jTextFieldNombre.getText();
         Mensaje m = new Mensaje();
         m.setMensaje(message);
+        m.setFrom(nombre);
         client.sendMessage(m);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -125,7 +128,7 @@ public class PequeChatFrame extends javax.swing.JFrame {
 
         @Override
         public void handleMessage(Mensaje message) {
-            jTextArea1.append(message.getFrom() + "::" + message.getMensaje());
+            jTextArea1.append(message.getFrom() + "::" + message.getMensaje()+"\n");
         }
 
     }
