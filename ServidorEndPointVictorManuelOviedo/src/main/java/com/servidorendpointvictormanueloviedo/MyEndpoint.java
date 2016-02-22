@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.LinkedHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.websocket.CloseReason;
@@ -72,10 +73,17 @@ public class MyEndpoint {
 
     @OnClose
     public void onClose(Session session) {
+        StringBuilder cadena=new StringBuilder();
+        for(String i:session.getUserProperties().keySet()){
+            if(!i.equals("user")){
+                cadena.append(";").append(session.getUserProperties().get(i));
+            }
+        }
         for (Session s : session.getOpenSessions()) {
             try {
                 System.out.println(s.getUserProperties().get("user"));
-                s.getBasicRemote().sendText("SALIDO " + session.getUserProperties().get("user").toString());
+                System.out.println(s.getUserProperties());
+                s.getBasicRemote().sendText("HA SALIDO " + session.getUserProperties().get("user").toString()+cadena.toString());
             } catch (IOException ex) {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -94,6 +102,14 @@ public class MyEndpoint {
 
             switch (meta.getTipo()) {
                 case MENSAJE:
+                    String room=((LinkedHashMap)meta.getContenido()).get("room").toString();
+                    String contenidoProperties=session.getUserProperties().toString();
+                    System.out.println("ROOM "+room);
+                    if(!contenidoProperties.contentEquals(room)){
+                        System.out.println("SESION TRAS MODIFICAR: "+session.getUserProperties().toString());
+                        session.getUserProperties().put("room"+session.getUserProperties().size(),room);
+                        System.out.println("SESION TRAS MODIFICAR: "+session.getUserProperties().toString());
+                    }
                     for (Session s : session.getOpenSessions()) {
                         try {
                             String men = mapper.writeValueAsString(meta.getContenido());  
@@ -103,7 +119,7 @@ public class MyEndpoint {
                         }
                     }
                     break;
-                case ORDEN:
+                case PRIVADO:
                     break;
             }
         } catch (IOException ex) {
