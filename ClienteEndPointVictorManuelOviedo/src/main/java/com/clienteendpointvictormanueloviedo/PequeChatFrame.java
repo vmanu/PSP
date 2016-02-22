@@ -90,12 +90,29 @@ public class PequeChatFrame extends javax.swing.JFrame {
             }
         });
 
+        jTabbedPanePrincipal.setMinimumSize(new java.awt.Dimension(430, 310));
+        jTabbedPanePrincipal.setPreferredSize(new java.awt.Dimension(430, 310));
+        jTabbedPanePrincipal.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPanePrincipalStateChanged(evt);
+            }
+        });
         jTabbedPanePrincipal.addTab("ROOMS", jTabbedPaneRooms);
         jTabbedPanePrincipal.addTab("PRIVADOS", jTabbedPanePrivados);
 
         jButtonAgregarPrivado.setText("Add");
+        jButtonAgregarPrivado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarPrivadoActionPerformed(evt);
+            }
+        });
 
         jButtonBorraPrivado.setText("Remove");
+        jButtonBorraPrivado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBorraPrivadoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,13 +121,13 @@ public class PequeChatFrame extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jTabbedPanePrincipal)
+                    .addComponent(jTabbedPanePrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jTextFieldMensaje)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonConectar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonBorraPrivado)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonAgregarPrivado)
@@ -168,6 +185,34 @@ public class PequeChatFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonEnviarActionPerformed
 
+    private void jTabbedPanePrincipalStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPanePrincipalStateChanged
+        if(jTabbedPanePrincipal.getSelectedComponent().equals(jTabbedPanePrivados)){
+            jButtonAgregarPrivado.setVisible(true);
+            jButtonBorraPrivado.setVisible(true);
+        }else{
+            jButtonAgregarPrivado.setVisible(false);
+            jButtonBorraPrivado.setVisible(false);
+        }
+    }//GEN-LAST:event_jTabbedPanePrincipalStateChanged
+
+    private void jButtonAgregarPrivadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarPrivadoActionPerformed
+        addTab(JOptionPane.showInputDialog(this,"Introduce el usuario con el que desea hablar","Elige usuario",JOptionPane.INFORMATION_MESSAGE),jTabbedPanePrivados);
+    }//GEN-LAST:event_jButtonAgregarPrivadoActionPerformed
+
+    private void jButtonBorraPrivadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorraPrivadoActionPerformed
+        jTabbedPanePrivados.remove(jTabbedPanePrivados.getSelectedComponent());
+    }//GEN-LAST:event_jButtonBorraPrivadoActionPerformed
+
+    private void addTab(String nombreRoom, javax.swing.JTabbedPane tabbedPane){
+        javax.swing.JTextArea jTextAreaChat = new javax.swing.JTextArea();
+        jTextAreaChat.setColumns(20);
+        jTextAreaChat.setRows(5);
+        javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
+        jScrollPane1.setViewportView(jTextAreaChat);
+        tabbedPane.addTab(nombreRoom, jScrollPane1);
+        mapTextArea.put(tabbedPane.getTitleAt(tabbedPane.getComponentZOrder(jScrollPane1)), jTextAreaChat);
+    }
+    
     private class AtiendeMensajes implements MyClient.MessageHandler {
 
         @Override

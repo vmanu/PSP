@@ -146,9 +146,7 @@ public class MyClient {
                 } else {
                     String msg=message.substring(0, message.indexOf(";"));
                     String []valores=message.split(";");
-                    //ArrayList<String> rooms=new ArrayList();
                     for(int i=1;i<valores.length;i++){
-                        //rooms.add(valores[i]);
                         mensaje = new Mensaje();
                         mensaje.setMensaje(msg);
                         mensaje.setRoom(valores[i]);
@@ -163,7 +161,7 @@ public class MyClient {
 
     @OnError
     public void processError(Throwable t) {
-        //t.printStackTrace();
+        t.printStackTrace();
     }
 
     public static interface MessageHandler {
