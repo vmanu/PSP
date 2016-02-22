@@ -57,6 +57,12 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import org.glassfish.tyrus.client.ClientManager;
 import static com.mycompany.objetoendpointvictormanueloviedo.TipoMensaje.*;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import javax.websocket.CloseReason;
+import javax.websocket.CloseReason.CloseCode;
 import javax.websocket.DeploymentException;
 
 /**
@@ -65,12 +71,15 @@ import javax.websocket.DeploymentException;
 @ClientEndpoint
 public class MyClient {
 
+    private ClientManager client;
     private Session userSession;
     private MessageHandler messageHandler;
+    private ArrayList<String> rooms;
 
     public MyClient(URI endpointURI) {
         try {
-            ClientManager client = ClientManager.createClient();
+            rooms = new ArrayList();
+            client = ClientManager.createClient();
             client.connectToServer(this, endpointURI);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -131,19 +140,20 @@ public class MyClient {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 Mensaje mensaje = null;
-                if (!message.startsWith("SALIDO ")) {
-                    mensaje = mapper.readValue(message, new TypeReference<Mensaje>() {
-                    });
-                } else {
-                    mensaje = new Mensaje();
-                    /*int posicion = message.indexOf("::");
-                    String msg = message.substring(0, posicion);
-                    String room = message.substring(posicion + 2, message.length());*/
-                    mensaje.setMensaje(message);
-                    //mensaje.setRoom(room);
-                }
-                if (mensaje != null) {
+                if (!message.startsWith("HA SALIDO ")) {
+                    mensaje = mapper.readValue(message, new TypeReference<Mensaje>() {});
                     messageHandler.handleMessage(mensaje);
+                } else {
+                    String msg=message.substring(0, message.indexOf(";"));
+                    String []valores=message.split(";");
+                    //ArrayList<String> rooms=new ArrayList();
+                    for(int i=1;i<valores.length;i++){
+                        //rooms.add(valores[i]);
+                        mensaje = new Mensaje();
+                        mensaje.setMensaje(msg);
+                        mensaje.setRoom(valores[i]);
+                        messageHandler.handleMessage(mensaje);
+                    }
                 }
             } catch (IOException ex) {
                 Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);

@@ -8,6 +8,7 @@ package com.clienteendpointvictormanueloviedo;
 import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,6 +31,8 @@ public class PequeChatFrame extends javax.swing.JFrame {
         initComponents();
         conectado = false;
         mapTextArea = new HashMap();
+        jButtonAgregarPrivado.setVisible(false);
+        jButtonBorraPrivado.setVisible(false);
         /*jTabbedPane1.setTitleAt(0, "room 1");
         jTabbedPane1.getComponent(0).setName("tabla1");*/
         // <editor-fold defaultstate="collapsed" desc="addTab">                          
@@ -40,7 +43,6 @@ public class PequeChatFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextAreaChat);
         String nombreRoom = "room " + (1 + jTabbedPaneRooms.getComponentCount());
         jTabbedPaneRooms.addTab(nombreRoom, jScrollPane1);
-        //</editor-fold>
         mapTextArea.put(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getComponentZOrder(jScrollPane1)), jTextAreaChat);
         jTextAreaChat = new javax.swing.JTextArea();
         jTextAreaChat.setColumns(20);
@@ -51,7 +53,6 @@ public class PequeChatFrame extends javax.swing.JFrame {
         jTabbedPaneRooms.addTab(nombreRoom, jScrollPane1);
         //</editor-fold>
         mapTextArea.put(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getComponentZOrder(jScrollPane1)), jTextAreaChat);
-
     }
 
     /**
@@ -171,7 +172,13 @@ public class PequeChatFrame extends javax.swing.JFrame {
 
         @Override
         public void handleMessage(Mensaje message) {
-            mapTextArea.get(message.getRoom()).append(message.getFrom() + "::" + message.getMensaje() + "\n");
+            if(!message.getMensaje().contains("HA SALIDO ")){
+                System.out.println("ENTRAMOS EN MENSAJE NORMAL");
+                mapTextArea.get(message.getRoom()).append(message.getFrom() + "::" + message.getMensaje() + "\n");
+            }else{
+                mapTextArea.get(message.getRoom()).append(message.getMensaje() + "\n");
+            }
+            System.out.println("SALIMOS DEL HANDLE");
         }
 
     }
