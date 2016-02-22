@@ -73,9 +73,9 @@ public class MyEndpoint {
 
     @OnClose
     public void onClose(Session session) {
-        StringBuilder cadena=new StringBuilder();
-        for(String i:session.getUserProperties().keySet()){
-            if(!i.equals("user")){
+        StringBuilder cadena = new StringBuilder();
+        for (String i : session.getUserProperties().keySet()) {
+            if (!i.equals("user")) {
                 cadena.append(";").append(session.getUserProperties().get(i));
             }
         }
@@ -83,7 +83,7 @@ public class MyEndpoint {
             try {
                 System.out.println(s.getUserProperties().get("user"));
                 System.out.println(s.getUserProperties());
-                s.getBasicRemote().sendText("HA SALIDO " + session.getUserProperties().get("user").toString()+cadena.toString());
+                s.getBasicRemote().sendText("HA SALIDO " + session.getUserProperties().get("user").toString() + cadena.toString());
             } catch (IOException ex) {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -98,21 +98,21 @@ public class MyEndpoint {
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             MetaMensajeWS meta = mapper.readValue(mensaje,
                     new TypeReference<MetaMensajeWS>() {
-            });
-
+                    });
+            String room = ((LinkedHashMap) meta.getContenido()).get("room").toString();
+            String contenidoProperties = session.getUserProperties().toString();
+            System.out.println("ROOM " + room);
+            System.out.println("contenidoProp "+contenidoProperties);
+            if (!contenidoProperties.contains(room)) {
+                System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
+                session.getUserProperties().put("room" + session.getUserProperties().size(), room);
+                System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
+            }
             switch (meta.getTipo()) {
                 case MENSAJE:
-                    String room=((LinkedHashMap)meta.getContenido()).get("room").toString();
-                    String contenidoProperties=session.getUserProperties().toString();
-                    System.out.println("ROOM "+room);
-                    if(!contenidoProperties.contentEquals(room)){
-                        System.out.println("SESION TRAS MODIFICAR: "+session.getUserProperties().toString());
-                        session.getUserProperties().put("room"+session.getUserProperties().size(),room);
-                        System.out.println("SESION TRAS MODIFICAR: "+session.getUserProperties().toString());
-                    }
                     for (Session s : session.getOpenSessions()) {
                         try {
-                            String men = mapper.writeValueAsString(meta.getContenido());  
+                            String men = mapper.writeValueAsString(meta.getContenido());
                             s.getBasicRemote().sendText(men);
                         } catch (IOException ex) {
                             Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,7 +125,7 @@ public class MyEndpoint {
         } catch (IOException ex) {
             Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
-System.out.println("ENTRAMOS EN ECHO TEXT MYENDPOINT");
+        System.out.println("ENTRAMOS EN ECHO TEXT MYENDPOINT");
     }
 
     @OnMessage
@@ -141,7 +141,7 @@ System.out.println("ENTRAMOS EN ECHO TEXT MYENDPOINT");
             System.out.println(s.getUserProperties().get("nombre"));
             s.getBasicRemote().sendBinary(ByteBuffer.wrap(data));
         }
-System.out.println("ENTRAMOS EN ECHO BINARY MYENDPOINT");
+        System.out.println("ENTRAMOS EN ECHO BINARY MYENDPOINT");
     }
 
 //    @WebSocketMessage
