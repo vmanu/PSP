@@ -43,6 +43,7 @@ import com.mycompany.objetoendpointvictormanueloviedo.MetaMensajeWS;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.logging.Level;
