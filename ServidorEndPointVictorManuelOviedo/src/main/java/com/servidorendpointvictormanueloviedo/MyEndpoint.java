@@ -39,12 +39,16 @@
  */
 package com.servidorendpointvictormanueloviedo;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.mycompany.objetoendpointvictormanueloviedo.MetaMensajeWS;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.objetoendpointvictormanueloviedo.Mensaje;
+import com.mycompany.objetoendpointvictormanueloviedo.TipoMensaje;
+import static constants.Constantes.*;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.util.LinkedHashMap;
 import java.util.logging.Level;
@@ -56,6 +60,7 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
+import model.UserWS;
 
 /**
  * @author Arun Gupta
@@ -66,26 +71,38 @@ public class MyEndpoint {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         System.out.println(session.getRequestParameterMap().get("usuario").get(0));
+        UserWS user=new UserWS();
+        user.setNombre(session.getRequestParameterMap().get("usuario").get(0));
         session.getUserProperties().put("user",
-                session.getRequestParameterMap().get("usuario").get(0));
+                user);
         System.out.println("ENTRAMOS EN ON OPEN MYENDPOINT");
     }
 
     @OnClose
     public void onClose(Session session) {
-        StringBuilder cadena = new StringBuilder();
-        for (String i : session.getUserProperties().keySet()) {
-            if (!i.equals("user")) {
-                cadena.append(";").append(session.getUserProperties().get(i));
-            }
-        }
-        for (Session s : session.getOpenSessions()) {
+        System.out.println("ENTRAMOS EN ONCLOSE");
+        UserWS user=(UserWS)session.getUserProperties().get("user");
+        ObjectMapper mapper=new ObjectMapper();
+        Mensaje msg=new Mensaje();
+        msg.setMensaje(MENSAJE_HA_SALIDO+user.getNombre());
+        msg.setFormateado(false);
+        String envia="";
+        System.out.println(user);
+        for (String i : user.getRooms()) {
+            System.out.println("room "+i);
+            msg.setRoom(i);
             try {
-                System.out.println(s.getUserProperties().get("user"));
-                System.out.println(s.getUserProperties());
-                s.getBasicRemote().sendText("HA SALIDO " + session.getUserProperties().get("user").toString() + cadena.toString());
-            } catch (IOException ex) {
+                envia=mapper.writeValueAsString(msg);
+            } catch (JsonProcessingException ex) {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("envia: "+envia);
+            for (Session s : session.getOpenSessions()) {
+                try {
+                    s.getBasicRemote().sendText(envia);
+                } catch (IOException ex) {
+                    Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         System.out.println("ENTRAMOS EN ON CLOSE MYENDPOINT");
@@ -101,11 +118,13 @@ public class MyEndpoint {
                     });
             String room = ((LinkedHashMap) meta.getContenido()).get("room").toString();
             String contenidoProperties = session.getUserProperties().toString();
+            UserWS u=(UserWS)session.getUserProperties().get("user");
             System.out.println("ROOM " + room);
             System.out.println("contenidoProp "+contenidoProperties);
-            if (!contenidoProperties.contains(room)) {
+            if (!u.getRooms().contains(room)) {
                 System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
-                session.getUserProperties().put("room" + session.getUserProperties().size(), room);
+                u.getRooms().add(room);
+                session.getUserProperties().put("user", u);
                 System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
             }
             switch (meta.getTipo()) {
