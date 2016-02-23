@@ -162,6 +162,9 @@ public class PequeChatFrame extends javax.swing.JFrame {
                 client.addMessageHandler(new AtiendeMensajes());
                 conectado = true;
                 jButtonConectar.setText("Desconectar");
+                jButtonAgregarPrivado.setEnabled(true);
+                jButtonBorraPrivado.setEnabled(true);
+                jButtonEnviar.setEnabled(true);
             } catch (URISyntaxException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage());
             }
@@ -169,6 +172,9 @@ public class PequeChatFrame extends javax.swing.JFrame {
             client.disconnect();
             conectado=false;
             jButtonConectar.setText("Conectar");
+            jButtonAgregarPrivado.setEnabled(false);
+            jButtonBorraPrivado.setEnabled(false);
+            jButtonEnviar.setEnabled(false);
         }
     }//GEN-LAST:event_jButtonConectarActionPerformed
 
