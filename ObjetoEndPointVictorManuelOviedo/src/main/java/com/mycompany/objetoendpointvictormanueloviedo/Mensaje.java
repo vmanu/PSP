@@ -14,6 +14,24 @@ public class Mensaje {
     private String room;
     private String mensaje;
     private String from;
+    private boolean formateado;
+    private boolean enforceCreation;
+
+    public boolean isEnforceCreation() {
+        return enforceCreation;
+    }
+
+    public void setEnforceCreation(boolean enforceCreation) {
+        this.enforceCreation = enforceCreation;
+    }
+
+    public boolean isFormateado() {
+        return formateado;
+    }
+
+    public void setFormateado(boolean formateado) {
+        this.formateado = formateado;
+    }
 
     public String getFrom() {
         return from;
