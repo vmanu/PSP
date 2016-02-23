@@ -179,6 +179,7 @@ public class PequeChatFrame extends javax.swing.JFrame {
             String nombre = jTextFieldNombre.getText();
             Mensaje m = new Mensaje();
             m.setMensaje(message);
+            m.setFormateado(true);
             m.setFrom(nombre);
             m.setRoom(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getSelectedIndex()));
             client.sendMessage(m);
@@ -217,7 +218,7 @@ public class PequeChatFrame extends javax.swing.JFrame {
 
         @Override
         public void handleMessage(Mensaje message) {
-            if(!message.getMensaje().contains("HA SALIDO ")){
+            if(message.isFormateado()){
                 System.out.println("ENTRAMOS EN MENSAJE NORMAL");
                 mapTextArea.get(message.getRoom()).append(message.getFrom() + "::" + message.getMensaje() + "\n");
             }else{
