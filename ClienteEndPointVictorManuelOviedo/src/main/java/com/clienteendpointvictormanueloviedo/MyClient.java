@@ -89,7 +89,6 @@ public class MyClient {
     @OnOpen
     public void onOpen(Session session) {
         this.userSession = session;
-        System.out.println("Connected to endpoint: " + session.getBasicRemote());
 
     }
 
