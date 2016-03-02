@@ -64,40 +64,33 @@ import javax.websocket.server.ServerEndpoint;
 import model.UserWS;
 
 /**
- * @author Arun Gupta
+ * @author Victor Manuel
  */
 @ServerEndpoint(value = "/websocket")
 public class MyEndpoint {
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
-        System.out.println(session.getRequestParameterMap().get("usuario").get(0));
         UserWS user = new UserWS();
         user.setNombre(session.getRequestParameterMap().get("usuario").get(0));
-        session.getUserProperties().put("user",
-                user);
-        System.out.println("ENTRAMOS EN ON OPEN MYENDPOINT");
+        session.getUserProperties().put("user", user);
     }
 
     @OnClose
     public void onClose(Session session) {
-        System.out.println("ENTRAMOS EN ONCLOSE");
         UserWS user = (UserWS) session.getUserProperties().get("user");
         ObjectMapper mapper = new ObjectMapper();
         Mensaje msg = new Mensaje();
         msg.setMensaje(MENSAJE_HA_SALIDO + user.getNombre());
         msg.setFormateado(false);
         String envia = "";
-        System.out.println(user);
         for (String i : user.getRooms()) {
-            System.out.println("room " + i);
             msg.setRoom(i);
             try {
                 envia = mapper.writeValueAsString(msg);
             } catch (JsonProcessingException ex) {
                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.out.println("envia: " + envia);
             for (Session s : session.getOpenSessions()) {
                 try {
                     s.getBasicRemote().sendText(envia);
@@ -106,7 +99,6 @@ public class MyEndpoint {
                 }
             }
         }
-        System.out.println("ENTRAMOS EN ON CLOSE MYENDPOINT");
     }
 
     @OnMessage
@@ -118,15 +110,10 @@ public class MyEndpoint {
                     new TypeReference<MetaMensajeWS>() {
                     });
             String room = ((LinkedHashMap) meta.getContenido()).get("room").toString();
-//            String contenidoProperties = session.getUserProperties().toString();
             UserWS u = (UserWS) session.getUserProperties().get("user");
-//            System.out.println("ROOM " + room);
-//            System.out.println("contenidoProp "+contenidoProperties);
             if (!u.getRooms().contains(room)) {
-//                System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
                 u.getRooms().add(room);
                 session.getUserProperties().put("user", u);
-//                System.out.println("SESION TRAS MODIFICAR: " + session.getUserProperties().toString());
             }
             switch (meta.getTipo()) {
                 case MENSAJE:
@@ -141,24 +128,27 @@ public class MyEndpoint {
                     break;
                 case PRIVADO:
                     String men = mapper.writeValueAsString(meta.getContenido());
-                    Mensaje msg=mapper.readValue(men, new TypeReference<Mensaje>(){});
+                    Mensaje msg = mapper.readValue(men, new TypeReference<Mensaje>() {
+                    });
                     String[] usuarios = msg.getRoom().split("-");
                     boolean encontrado = false;
                     ArrayList<Session> openSesion = new ArrayList(session.getOpenSessions());
+                    int indexMuestra = ((UserWS) session.getUserProperties().get("user")).getNombre().equals(usuarios[0]) ? 1 : 0;
                     for (int i = 0; i < openSesion.size() && !encontrado; i++) {
-                        if (usuarios[1].equals(((UserWS) openSesion.get(i).getUserProperties().get("user")).getNombre())) {
-                            System.out.println("ENTRA EN PRIVADO Y EN ENVIO, EL USUARIO ES: "+((UserWS) openSesion.get(i).getUserProperties().get("user")).getNombre());
+                        if (usuarios[indexMuestra].equals(((UserWS) openSesion.get(i).getUserProperties().get("user")).getNombre())) {
                             try {
                                 openSesion.get(i).getBasicRemote().sendText(men);
-                                encontrado=true;
+                                encontrado = true;
                             } catch (IOException ex) {
                                 Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
-                    msg.setFrom(usuarios[1]);
-                    men= mapper.writeValueAsString(msg);
-                    if(encontrado){
+                    if (msg.isEnforceCreation()) {
+                        msg.setFrom(usuarios[1]);
+                        men = mapper.writeValueAsString(msg);
+                    }
+                    if (encontrado) {
                         session.getBasicRemote().sendText(men);
                     }
                     break;
@@ -166,33 +156,17 @@ public class MyEndpoint {
         } catch (IOException ex) {
             Logger.getLogger(MyEndpoint.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("ENTRAMOS EN ECHO TEXT MYENDPOINT");
     }
 
     @OnMessage
     public void echoBinary(byte[] data, Session session) throws IOException {
-        System.out.println("echoBinary: " + data);
         StringBuilder builder = new StringBuilder();
         for (byte b : data) {
             builder.append(b);
         }
-        System.out.println(builder);
 
         for (Session s : session.getOpenSessions()) {
-            System.out.println(s.getUserProperties().get("nombre"));
             s.getBasicRemote().sendBinary(ByteBuffer.wrap(data));
         }
-        System.out.println("ENTRAMOS EN ECHO BINARY MYENDPOINT");
     }
-
-//    @WebSocketMessage
-//    public void echoBinary(ByteBuffer data, Session session) throws IOException {
-//        System.out.println("echoBinary: " + data);
-//        StringBuilder builder = new StringBuilder();
-//        for (byte b : data.array()) {
-//            builder.append(b);
-//        }
-//        System.out.println(builder);
-//        session.getRemote().sendBytes(data);
-//    }
 }
