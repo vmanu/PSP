@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -23,6 +24,7 @@ public class PequeChatFrame extends javax.swing.JFrame {
     private HashMap<String, javax.swing.JTextArea> mapTextArea;
     private MyClient client = null;
     private boolean conectado;
+    private String nombre;
 
     /**
      * Creates new form PequeChatFrame
@@ -157,7 +159,7 @@ public class PequeChatFrame extends javax.swing.JFrame {
     private void jButtonConectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConectarActionPerformed
         if (!conectado) {
             try {
-                String nombre = jTextFieldNombre.getText();
+                nombre = jTextFieldNombre.getText();
                 client=new MyClient(new URI("ws://localhost:8080/websocket?usuario=" + nombre));
                 client.addMessageHandler(new AtiendeMensajes());
                 conectado = true;
@@ -175,20 +177,33 @@ public class PequeChatFrame extends javax.swing.JFrame {
             jButtonAgregarPrivado.setEnabled(false);
             jButtonBorraPrivado.setEnabled(false);
             jButtonEnviar.setEnabled(false);
+            nombre=null;
         }
     }//GEN-LAST:event_jButtonConectarActionPerformed
 
     private void jButtonEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEnviarActionPerformed
         if (conectado) {
-            jTabbedPaneRooms.getComponent(jTabbedPaneRooms.getSelectedIndex()).getName();
-            String message = jTextFieldMensaje.getText();
-            String nombre = jTextFieldNombre.getText();
             Mensaje m = new Mensaje();
-            m.setMensaje(message);
-            m.setFormateado(true);
-            m.setFrom(nombre);
-            m.setRoom(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getSelectedIndex()));
-            client.sendMessage(m);
+            if(jTabbedPanePrincipal.getTitleAt(jTabbedPanePrincipal.getSelectedIndex()).equals("ROOMS")){
+                System.out.println("ENTRO EN ROOMS");
+                jTabbedPaneRooms.getComponent(jTabbedPaneRooms.getSelectedIndex()).getName();
+                String message = jTextFieldMensaje.getText();
+                m.setMensaje(message);
+                m.setFormateado(true);
+                m.setFrom(nombre);
+                m.setRoom(jTabbedPaneRooms.getTitleAt(jTabbedPaneRooms.getSelectedIndex()));
+                client.sendMessage(m);
+            }else{
+                System.out.println("ENTRO EN PRIVADOS");
+                String message = jTextFieldMensaje.getText();
+                m.setMensaje(message);
+                m.setFormateado(true);
+                m.setFrom(nombre);
+                m.setRoom(jTabbedPanePrivados.getComponent(jTabbedPanePrivados.getSelectedIndex()).getName());
+                System.out.println("ROOM DEL QUE MANDO MENSAJE "+m.getRoom());
+                client.sendPrivateMessage(m);
+            }
+            
         }
     }//GEN-LAST:event_jButtonEnviarActionPerformed
 
@@ -203,32 +218,46 @@ public class PequeChatFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jTabbedPanePrincipalStateChanged
 
     private void jButtonAgregarPrivadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarPrivadoActionPerformed
-        addTab(JOptionPane.showInputDialog(this,"Introduce el usuario con el que desea hablar","Elige usuario",JOptionPane.INFORMATION_MESSAGE),jTabbedPanePrivados);
+        String usuarioDestino=JOptionPane.showInputDialog(this,"Introduce el usuario con el que desea hablar","Elige usuario",JOptionPane.INFORMATION_MESSAGE);
+        Mensaje msg=new Mensaje();
+        msg.setFrom(nombre);
+        msg.setRoom(nombre.concat("-").concat(usuarioDestino));
+        msg.setEnforceCreation(true);
+        client.sendPrivateMessage(msg);
     }//GEN-LAST:event_jButtonAgregarPrivadoActionPerformed
 
     private void jButtonBorraPrivadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorraPrivadoActionPerformed
         jTabbedPanePrivados.remove(jTabbedPanePrivados.getSelectedComponent());
     }//GEN-LAST:event_jButtonBorraPrivadoActionPerformed
 
-    private void addTab(String nombreRoom, javax.swing.JTabbedPane tabbedPane){
+    private void addTab(String nombreTab,String nombreRoom, javax.swing.JTabbedPane tabbedPane){
         javax.swing.JTextArea jTextAreaChat = new javax.swing.JTextArea();
         jTextAreaChat.setColumns(20);
         jTextAreaChat.setRows(5);
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
         jScrollPane1.setViewportView(jTextAreaChat);
+        jScrollPane1.setName(nombreTab);
         tabbedPane.addTab(nombreRoom, jScrollPane1);
-        mapTextArea.put(tabbedPane.getTitleAt(tabbedPane.getComponentZOrder(jScrollPane1)), jTextAreaChat);
+        mapTextArea.put(nombreTab, jTextAreaChat);
     }
     
     private class AtiendeMensajes implements MyClient.MessageHandler {
 
         @Override
         public void handleMessage(Mensaje message) {
+            System.out.println("HANDLEMESSAGE");
             if(message.isFormateado()){
                 System.out.println("ENTRAMOS EN MENSAJE NORMAL");
                 mapTextArea.get(message.getRoom()).append(message.getFrom() + "::" + message.getMensaje() + "\n");
             }else{
-                mapTextArea.get(message.getRoom()).append(message.getMensaje() + "\n");
+                System.out.println("ENTRAMOS EN ALGO DIFERENTE");
+                if(!message.isEnforceCreation()){
+                    System.out.println("MENSAJE ALGO ANORMAL");
+                    mapTextArea.get(message.getRoom()).append(message.getMensaje() + "\n");
+                }else{
+                    System.out.println("CREAMOS TABLA");
+                    addTab(message.getRoom(),message.getFrom(),jTabbedPanePrivados);
+                }
             }
             System.out.println("SALIMOS DEL HANDLE");
         }

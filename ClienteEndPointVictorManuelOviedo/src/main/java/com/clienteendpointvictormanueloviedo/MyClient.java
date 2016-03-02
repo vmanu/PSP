@@ -140,19 +140,8 @@ public class MyClient {
                 ObjectMapper mapper = new ObjectMapper();
                 mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 Mensaje mensaje = null;
-                //if (!message.startsWith("HA SALIDO ")) {
-                    mensaje = mapper.readValue(message, new TypeReference<Mensaje>() {});
-                    messageHandler.handleMessage(mensaje);
-                /*} else {
-                    String msg=message.substring(0, message.indexOf(";"));
-                    String []valores=message.split(";");
-                    for(int i=1;i<valores.length;i++){
-                        mensaje = new Mensaje();
-                        mensaje.setMensaje(msg);
-                        mensaje.setRoom(valores[i]);
-                        messageHandler.handleMessage(mensaje);
-                    }
-                }*/
+                mensaje = mapper.readValue(message, new TypeReference<Mensaje>() {});
+                messageHandler.handleMessage(mensaje);
             } catch (IOException ex) {
                 Logger.getLogger(MyClient.class.getName()).log(Level.SEVERE, null, ex);
             }
